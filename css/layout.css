@@ -1,0 +1,205 @@
+/* ============================================
+   LAYOUT — Nav, Footer, Grid, Containers
+   ============================================ */
+
+/* --- Grain Overlay --- */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-grain);
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  mix-blend-mode: overlay;
+}
+
+/* --- Mesh Gradient Background --- */
+.mesh-gradient {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.mesh-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.15;
+  will-change: transform;
+  animation: meshFloat 20s var(--ease-in-out-quint) infinite alternate;
+}
+
+[data-theme="light"] .mesh-blob {
+  opacity: 0.08;
+}
+
+.mesh-blob--1 {
+  width: 40vw;
+  height: 40vw;
+  background: var(--mesh-1);
+  top: -10%;
+  right: -10%;
+  animation-delay: 0s;
+}
+
+.mesh-blob--2 {
+  width: 35vw;
+  height: 35vw;
+  background: var(--mesh-2);
+  bottom: -10%;
+  left: -5%;
+  animation-delay: -7s;
+}
+
+.mesh-blob--3 {
+  width: 30vw;
+  height: 30vw;
+  background: var(--mesh-3);
+  top: 40%;
+  left: 30%;
+  animation-delay: -14s;
+}
+
+@keyframes meshFloat {
+  0% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -50px) scale(1.1); }
+  66% { transform: translate(-20px, 30px) scale(0.95); }
+  100% { transform: translate(10px, -20px) scale(1.05); }
+}
+
+/* (Nav removed — navigation is inline in pages) */
+
+/* --- Main Content --- */
+.main {
+  min-height: 100vh;
+}
+
+/* Homepage: single viewport, no scroll */
+.main--home {
+  height: 100dvh;
+  height: 100vh; /* fallback */
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- Section Container --- */
+.section {
+  padding: var(--space-3xl) var(--space-lg);
+}
+
+.section--hero {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: var(--space-lg);
+}
+
+.container {
+  max-width: var(--content-width);
+  margin: 0 auto;
+  width: 100%;
+}
+
+.container--narrow {
+  max-width: var(--narrow-width);
+}
+
+/* --- Hero Bento Grid --- */
+.grid-hero {
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  gap: var(--space-xl);
+  align-items: center;
+  width: 100%;
+}
+
+.grid-hero__left {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.grid-hero__right {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto auto auto;
+  gap: var(--space-sm);
+}
+
+/* Grid item span modifiers */
+.grid-hero__item--span2 { grid-column: span 2; }
+.grid-hero__item--span3 { grid-column: span 3; }
+.grid-hero__item--tall  { grid-row: span 2; }
+
+/* --- Footer --- */
+.footer {
+  border-top: 1px solid var(--border);
+  background: var(--bg-secondary);
+  padding: var(--space-2xl) var(--space-lg) var(--space-lg);
+}
+
+.footer__inner {
+  max-width: var(--content-width);
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-xl);
+}
+
+.footer__brand {
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  font-weight: 800;
+}
+
+.footer__accent {
+  color: var(--accent);
+}
+
+.footer__tagline {
+  color: var(--text-tertiary);
+  margin-top: var(--space-2xs);
+  font-size: var(--text-sm);
+}
+
+.footer__socials {
+  display: flex;
+  gap: var(--space-xs);
+}
+
+.footer__social {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-full);
+  color: var(--text-tertiary);
+  transition: color var(--transition-fast),
+              background var(--transition-fast),
+              transform var(--transition-fast);
+}
+
+.footer__social svg {
+  width: 18px;
+  height: 18px;
+}
+
+.footer__social:hover {
+  color: var(--accent);
+  background: var(--accent-subtle);
+  transform: translateY(-2px);
+}
+
+.footer__bottom {
+  max-width: var(--content-width);
+  margin: var(--space-xl) auto 0;
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--border);
+  text-align: center;
+  color: var(--text-tertiary);
+  font-size: var(--text-xs);
+}
