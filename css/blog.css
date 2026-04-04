@@ -416,6 +416,11 @@
   cursor: zoom-out;
 }
 
+[data-theme="light"] .mermaid-modal {
+  background: rgba(253, 248, 248, 0.6);
+  backdrop-filter: blur(6px);
+}
+
 .mermaid-modal.visible {
   opacity: 1;
 }

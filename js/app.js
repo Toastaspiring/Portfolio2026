@@ -16,12 +16,41 @@
   Cursor.init();
   Animations.init();
 
-  // Init mermaid with dark theme
-  if (typeof mermaid !== 'undefined') {
+  // Init mermaid with theme-aware config
+  function initMermaid() {
+    if (typeof mermaid === 'undefined') return;
+    const isLight = document.documentElement.dataset.theme === 'light';
     mermaid.initialize({
       startOnLoad: false,
-      theme: 'dark',
-      themeVariables: {
+      theme: isLight ? 'base' : 'dark',
+      themeVariables: isLight ? {
+        primaryColor: '#f5eeee',
+        primaryBorderColor: '#c2223b',
+        primaryTextColor: '#1a0e10',
+        lineColor: '#7a6068',
+        secondaryColor: '#ebe0e0',
+        tertiaryColor: '#fdf8f8',
+        fontFamily: 'Inter, sans-serif',
+        noteBkgColor: '#f5eeee',
+        noteTextColor: '#1a0e10',
+        pie1: '#c2223b',
+        pie2: '#7a1525',
+        pie3: '#d4838d',
+        pieTextColor: '#1a0e10',
+        xyChart: {
+          backgroundColor: 'transparent',
+          titleColor: '#1a0e10',
+          xAxisLabelColor: '#5a4048',
+          yAxisLabelColor: '#5a4048',
+          xAxisTitleColor: '#1a0e10',
+          yAxisTitleColor: '#1a0e10',
+          xAxisTickColor: '#ebe0e0',
+          yAxisTickColor: '#ebe0e0',
+          xAxisLineColor: '#ebe0e0',
+          yAxisLineColor: '#ebe0e0',
+          plotColorPalette: '#d4838d',
+        },
+      } : {
         primaryColor: '#e63946',
         primaryBorderColor: '#8b1a2b',
         primaryTextColor: '#f2eeef',
@@ -32,6 +61,11 @@
       }
     });
   }
+  initMermaid();
+
+  // Re-init mermaid when theme changes
+  const themeObserver = new MutationObserver(() => initMermaid());
+  themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 
   Router.init();
 
@@ -140,17 +174,18 @@
 
     hackerEl = document.createElement('div');
     hackerEl.id = 'hacker-bg';
+    const isLight = document.documentElement.dataset.theme === 'light';
     hackerEl.style.cssText = `
       position: fixed; inset: 0; z-index: -2;
-      background: #000; overflow: hidden;
+      background: ${isLight ? '#f5eeee' : '#000'}; overflow: hidden;
       font-family: 'JetBrains Mono', monospace;
       font-size: 13px; line-height: 1.6;
-      color: #0f0; padding: 20px;
+      color: ${isLight ? '#a81d33' : '#0f0'}; padding: 20px;
       opacity: 0; transition: opacity 1s ease;
       white-space: pre; pointer-events: none;
     `;
     document.body.appendChild(hackerEl);
-    requestAnimationFrame(() => { hackerEl.style.opacity = '0.2'; });
+    requestAnimationFrame(() => { hackerEl.style.opacity = isLight ? '0.3' : '0.2'; });
 
     const mesh = document.querySelector('.mesh-gradient');
     if (mesh) mesh.style.opacity = '0';
@@ -315,13 +350,16 @@
   function drawWaves(ctx, w, h, level, t) {
     ctx.clearRect(0, 0, w, h);
     const baseY = h - level * h;
+    const isLight = document.documentElement.dataset.theme === 'light';
 
     for (let layer = 0; layer < 2; layer++) {
       const amplitude = layer === 0 ? 6 : 4;
       const frequency = layer === 0 ? 0.02 : 0.03;
       const speed = layer === 0 ? t * 2 : -t * 1.5;
       const offset = layer === 0 ? 0 : 2;
-      const alpha = layer === 0 ? 0.25 : 0.15;
+      const alpha = layer === 0
+        ? (isLight ? 0.12 : 0.25)
+        : (isLight ? 0.08 : 0.15);
 
       ctx.beginPath();
       ctx.moveTo(0, h);
@@ -334,9 +372,11 @@
       ctx.lineTo(w, h);
       ctx.closePath();
 
+      const r1 = isLight ? '194, 34, 59' : '230, 57, 70';
+      const r2 = isLight ? '122, 21, 37' : '139, 26, 43';
       const grad = ctx.createLinearGradient(0, baseY, 0, h);
-      grad.addColorStop(0, `rgba(230, 57, 70, ${alpha})`);
-      grad.addColorStop(1, `rgba(139, 26, 43, ${alpha + 0.1})`);
+      grad.addColorStop(0, `rgba(${r1}, ${alpha})`);
+      grad.addColorStop(1, `rgba(${r2}, ${alpha + 0.1})`);
       ctx.fillStyle = grad;
       ctx.fill();
     }
@@ -465,8 +505,9 @@
         document.body.appendChild(bg);
       }
 
+      const isLight = document.documentElement.dataset.theme === 'light';
       bg.style.backgroundImage = `url(${dataUrl})`;
-      bg.style.filter = 'brightness(0.15) saturate(0.6)';
+      bg.style.filter = isLight ? 'brightness(0.85) saturate(0.4)' : 'brightness(0.15) saturate(0.6)';
       requestAnimationFrame(() => { bg.style.opacity = '1'; });
 
       // Hide the mesh gradient

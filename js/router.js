@@ -91,6 +91,11 @@ const Router = (() => {
     exitPanel.style.display = 'none';
     exitTargets.forEach(el => [...el.children].forEach(c => c.getAnimations().forEach(a => a.cancel())));
 
+    // Reset reveals on the hidden panel so they replay next time
+    exitPanel.querySelectorAll('.reveal, .reveal-stagger, .hero-text-reveal').forEach(el => {
+      el.classList.remove('visible');
+    });
+
     const app = document.getElementById('app');
     if (to === '#/') {
       app.style.cssText = '';
@@ -112,13 +117,25 @@ const Router = (() => {
 
     // === ENTER ===
     const enterTargets = getTargets(enterPanel);
+
+    // Trigger reveals early so they animate alongside the slide
+    setTimeout(() => {
+      enterPanel.querySelectorAll('.reveal, .reveal-stagger, .hero-text-reveal').forEach(el => {
+        el.classList.add('visible');
+      });
+    }, 200);
+
     await animateChildren(enterTargets, [
       { opacity: 0, transform: enterFrom },
       { opacity: 1, transform: enterBounce, offset: 0.6 },
       { opacity: 1, transform: 'translate(0,0) scale(1)' }
     ], { duration: 650, easing: 'cubic-bezier(0.22, 1, 0.36, 1)', fill: 'both' });
 
-    enterTargets.forEach(el => [...el.children].forEach(c => c.getAnimations().forEach(a => a.cancel())));
+    // Cancel enter animations
+    enterTargets.forEach(el => [...el.children].forEach(c => {
+      c.getAnimations().forEach(a => a.cancel());
+    }));
+
     transitioning = false;
   }
 

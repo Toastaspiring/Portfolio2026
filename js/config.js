@@ -13,7 +13,7 @@ const CONFIG = {
   // Social links
   socials: {
     github: 'https://github.com/toastaspiring',
-    linkedin: 'https://linkedin.com/in/',
+    linkedin: 'https://www.linkedin.com/in/marec-louis/',
   },
 
   // Navigation

@@ -77,7 +77,7 @@ const Pages = (() => {
 
               <!-- Intro (wide) -->
               <div class="card grid-hero__item--span2" style="padding: var(--space-lg);">
-                <p style="font-family: var(--font-serif); font-size: var(--text-base); font-weight: 700; line-height: 1.6; color: var(--text-secondary);"><strong style="color: var(--text-primary);">Autodidacte</strong>, basé en <span style="color: var(--accent);">France</span>. Je touche à tout, je casse souvent, et je finis toujours par faire marcher. En ce moment je build des trucs en <strong style="color: var(--accent);">AI</strong> et <strong style="color: var(--purple);">computer vision</strong>.</p>
+                <p style="font-family: var(--font-serif); font-size: var(--text-base); font-weight: 700; line-height: 1.6; color: var(--text-secondary);"><strong style="color: var(--text-primary);">Autodidacte</strong>, basé en <span style="color: var(--accent);">France</span>. Je touche à tout, ça marche pas tout le temps. En ce moment je build des trucs en <strong style="color: var(--accent);">AI</strong> et <strong style="color: var(--purple);">computer vision</strong>.</p>
               </div>
 
               <!-- AI Engineer -->

@@ -215,6 +215,4 @@ graph TD
     C -->|Scale| D[AI-Native Company]
     D --> E[Competitive Advantage]
     
-    style A fill:#1a1214,stroke:#e63946,color:#f2eeef
-    style E fill:#1a1214,stroke:#e63946,color:#f2eeef
 ```
