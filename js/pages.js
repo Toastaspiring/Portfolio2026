@@ -77,14 +77,14 @@ const Pages = (() => {
 
               <!-- Intro (wide) -->
               <div class="card grid-hero__item--span2" style="padding: var(--space-lg);">
-                <p style="font-family: var(--font-serif); font-size: var(--text-base); font-weight: 700; line-height: 1.6; color: var(--text-secondary);"><strong style="color: var(--text-primary);">Dev self-taught</strong> basé en <span style="color: var(--accent);">France</span>. J'aime break des trucs pour comprendre comment ils marchent. En ce moment deep dans l'<strong style="color: var(--accent);">AI</strong>, la <strong style="color: var(--purple);">computer vision</strong>, et le build de trucs qui tiennent en prod.</p>
+                <p style="font-family: var(--font-serif); font-size: var(--text-base); font-weight: 700; line-height: 1.6; color: var(--text-secondary);"><strong style="color: var(--text-primary);">Autodidacte</strong>, basé en <span style="color: var(--accent);">France</span>. Je touche à tout, je casse souvent, et je finis toujours par faire marcher. En ce moment je build des trucs en <strong style="color: var(--accent);">AI</strong> et <strong style="color: var(--purple);">computer vision</strong>.</p>
               </div>
 
               <!-- AI Engineer -->
-              <div class="card" style="padding: var(--space-lg); display: flex; align-items: center; justify-content: center; text-align: center;">
+              <div class="card" id="egg-title" style="padding: var(--space-lg); display: flex; align-items: center; justify-content: center; text-align: center; cursor: default;">
                 <div>
-                  <div style="font-family: var(--font-serif); font-size: var(--text-3xl); font-weight: 900; background: linear-gradient(135deg, var(--accent), var(--purple)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; line-height: 1;">AI</div>
-                  <div class="mono-label" style="margin-top: 6px;">ENGINEER</div>
+                  <div id="egg-title-big" style="font-family: var(--font-serif); font-size: var(--text-3xl); font-weight: 900; background: linear-gradient(135deg, var(--accent), var(--purple)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; line-height: 1;">AI</div>
+                  <div id="egg-title-sub" class="mono-label" style="margin-top: 6px;">ENGINEER</div>
                 </div>
               </div>
 
@@ -98,7 +98,7 @@ const Pages = (() => {
                   <div class="stack-icon" data-tooltip="PyTorch" style="color: var(--accent-hover);">
                     <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.005 0L4.952 7.053a9.865 9.865 0 0 0 0 13.94 9.866 9.866 0 0 0 13.94 0 9.865 9.865 0 0 0 0-13.94l-3.488 3.488a4.87 4.87 0 0 1 0 6.964 4.87 4.87 0 0 1-6.964 0 4.87 4.87 0 0 1 0-6.964l4.95-4.95 1.05-1.06zM16.2 4.2a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4z"/></svg>
                   </div>
-                  <div class="stack-icon" data-tooltip="Computer Vision" style="color: var(--accent);">
+                  <div class="stack-icon" data-tooltip="Computer Vision" style="color: var(--accent);" id="cv-eye">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                   </div>
                   <div class="stack-icon" data-tooltip="LLMs" style="color: var(--purple);">
@@ -110,7 +110,7 @@ const Pages = (() => {
                   <div class="stack-icon" data-tooltip="FastAPI" style="color: var(--accent);">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L4.5 12H12l-1 10 8.5-10H12l1-10z"/></svg>
                   </div>
-                  <div class="stack-icon" data-tooltip="Linux" style="color: var(--accent);">
+                  <div class="stack-icon" data-tooltip="Linux" style="color: var(--accent);" id="linux-icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 10h8M8 14h5"/></svg>
                   </div>
                   <div class="stack-icon" data-tooltip="Git" style="color: var(--accent-hover);">
@@ -123,16 +123,16 @@ const Pages = (() => {
               </div>
 
               <!-- Git joke -->
-              <div class="card grid-hero__item--span2" style="padding: var(--space-lg); display: flex; flex-direction: column; justify-content: center;">
+              <div class="card grid-hero__item--span2" id="egg-git" style="padding: var(--space-lg); display: flex; flex-direction: column; justify-content: center; cursor: default;">
                 <p class="mono-label" style="color: var(--purple);">STATUS</p>
                 <div style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-tertiary); margin-top: var(--space-xs); line-height: 1.9;">
                   <div style="color: var(--accent);">$ git log --oneline -1</div>
-                  <div><span style="color: var(--purple);">e4f2a1b</span> fix: fix the fix that fixed the fix</div>
+                  <div id="egg-git-msg"><span style="color: var(--purple);">e4f2a1b</span> fix: fix the fix that fixed the fix</div>
                 </div>
               </div>
 
               <!-- Code snippet — coffee recursion joke -->
-              <div class="card grid-hero__item--span3" style="padding: var(--space-md) var(--space-lg); background: var(--code-bg); border-color: var(--code-border); font-family: var(--font-mono); font-size: var(--text-sm); line-height: 1.7; overflow: hidden;">
+              <div class="card grid-hero__item--span3" id="egg-coffee" style="padding: var(--space-md) var(--space-lg); background: var(--code-bg); border-color: var(--code-border); font-family: var(--font-mono); font-size: var(--text-sm); line-height: 1.7; overflow: hidden; position: relative;">
                 <div><span style="color: var(--purple);">def</span> <span style="color: var(--accent);">daily_routine</span>():</div>
                 <div>&nbsp;&nbsp;coffee = <span style="color: var(--accent);">drink</span>(<span style="color: #e5a04b;">"espresso"</span>)</div>
                 <div>&nbsp;&nbsp;<span style="color: var(--purple);">while</span> coffee:</div>
@@ -479,7 +479,7 @@ const Pages = (() => {
     } catch { /* use CONFIG.posts */ }
 
     const posts = await loadPostsMeta(slugs);
-    if (posts.length === 0) { container.innerHTML = '<p style="color: var(--text-tertiary); text-align: center;">Aucun post pour l'instant.</p>'; return; }
+    if (posts.length === 0) { container.innerHTML = '<p style="color: var(--text-tertiary); text-align: center;">Aucun post pour le moment.</p>'; return; }
     container.innerHTML = posts.map(({ meta, slug }) => postItem(meta, slug)).join('');
   }
 
