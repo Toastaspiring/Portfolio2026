@@ -10,7 +10,6 @@
   Router.register('#/projects', Pages.home);
   Router.register('#/blog', Pages.home);
   Router.register('#/blog/:slug', Pages.blogPost);
-  Router.register('#/about', Pages.about);
 
   // Init modules
   Theme.init();

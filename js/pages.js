@@ -5,28 +5,7 @@
 
 const Pages = (() => {
 
-  /* Inline nav bar for sub-pages (not homepage) */
-  function pageNav() {
-    return `
-      <div class="page-nav reveal">
-        <a href="#/" class="page-nav__back">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-          Home
-        </a>
-        <div class="page-nav__links">
-          <a href="#/blog" class="page-nav__link">Blog</a>
-          <a href="#/projects" class="page-nav__link">Projects</a>
-          <a href="#/about" class="page-nav__link">About</a>
-          <button class="theme-toggle" id="theme-toggle-page" aria-label="Toggle theme" onclick="Theme.toggle()">
-            <svg class="theme-toggle__sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-            <svg class="theme-toggle__moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-          </button>
-        </div>
-      </div>
-    `;
-  }
-
-  /* ---- HOME (renders both home + projects panels) ---- */
+  /* ---- HOME (renders all panels) ---- */
   function home(app) {
     app.classList.add('main--home');
 
@@ -61,14 +40,14 @@ const Pages = (() => {
 
               <!-- Tagline -->
               <p class="reveal" style="font-size: var(--text-lg); color: var(--text-secondary); max-width: 30rem; line-height: var(--line-height-relaxed);">
-                Training models, shipping products, automating the boring stuff. I build <em style="color: var(--accent); font-style: normal; font-weight: 600;">AI that works in production</em>.
+                Je code des trucs, je casse des trucs, je recommence. <em style="color: var(--accent); font-style: normal; font-weight: 600;">Des fois ça marche du premier coup</em> — mais c'est rare.
               </p>
 
               <!-- CTAs -->
               <div class="reveal" style="display: flex; gap: var(--space-sm); margin-top: var(--space-sm);">
                 <a href="#/projects" class="btn btn--primary">
                   <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-                  Projects
+                  Projets
                 </a>
                 <a href="#/blog" class="btn btn--ghost">
                   <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
@@ -80,15 +59,15 @@ const Pages = (() => {
               <div class="reveal" style="display: flex; gap: var(--space-xl); padding-top: var(--space-md); border-top: 1px solid var(--border); margin-top: var(--space-md);">
                 <div class="stat">
                   <div class="stat__number">3+</div>
-                  <div class="stat__label">Years</div>
+                  <div class="stat__label">Ans</div>
                 </div>
                 <div class="stat">
                   <div class="stat__number">10+</div>
-                  <div class="stat__label">Projects</div>
+                  <div class="stat__label">Projets</div>
                 </div>
                 <div class="stat">
                   <div class="stat__number">&infin;</div>
-                  <div class="stat__label">Curiosity</div>
+                  <div class="stat__label">Curiosité</div>
                 </div>
               </div>
             </div>
@@ -98,7 +77,7 @@ const Pages = (() => {
 
               <!-- Intro (wide) -->
               <div class="card grid-hero__item--span2" style="padding: var(--space-lg);">
-                <p style="font-family: var(--font-serif); font-size: var(--text-base); font-weight: 700; line-height: 1.6; color: var(--text-secondary);"><strong style="color: var(--text-primary);">Self-taught dev</strong> from <span style="color: var(--accent);">France</span>. I like breaking things to understand how they work. Currently deep into <strong style="color: var(--accent);">AI</strong>, <strong style="color: var(--purple);">computer vision</strong>, and building stuff that actually works.</p>
+                <p style="font-family: var(--font-serif); font-size: var(--text-base); font-weight: 700; line-height: 1.6; color: var(--text-secondary);"><strong style="color: var(--text-primary);">Dev autodidacte</strong> basé en <span style="color: var(--accent);">France</span>. J'aime casser des trucs pour comprendre comment ils marchent. En ce moment à fond dans l'<strong style="color: var(--accent);">IA</strong>, la <strong style="color: var(--purple);">vision par ordinateur</strong>, et la construction de trucs qui tiennent debout.</p>
               </div>
 
               <!-- AI Engineer -->
@@ -175,10 +154,10 @@ const Pages = (() => {
               <div>
                 <a href="#/" style="display: inline-flex; align-items: center; gap: var(--space-2xs); font-size: var(--text-sm); color: var(--text-tertiary); margin-bottom: var(--space-xs); transition: color 300ms ease;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text-tertiary)'">
                   <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-                  Home
+                  Accueil
                 </a>
-                <h1 style="font-family: var(--font-serif); font-size: var(--text-3xl); font-weight: 900;">Projects</h1>
-                <p style="color: var(--text-tertiary); font-size: var(--text-sm); margin-top: var(--space-2xs);">Open source & experiments</p>
+                <h1 style="font-family: var(--font-serif); font-size: var(--text-3xl); font-weight: 900;">Projets</h1>
+                <p style="color: var(--text-tertiary); font-size: var(--text-sm); margin-top: var(--space-2xs);">Open source & expérimentations</p>
               </div>
               <a href="${CONFIG.socials.github}" class="btn btn--ghost" target="_blank" rel="noopener">
                 <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
@@ -205,7 +184,7 @@ const Pages = (() => {
               <div>
                 <a href="#/" style="display: inline-flex; align-items: center; gap: var(--space-2xs); font-size: var(--text-sm); color: var(--text-tertiary); margin-bottom: var(--space-xs); transition: color 300ms ease;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text-tertiary)'">
                   <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-                  Home
+                  Accueil
                 </a>
                 <h1 style="font-family: var(--font-serif); font-size: var(--text-3xl); font-weight: 900;">Blog</h1>
               </div>
@@ -270,7 +249,7 @@ const Pages = (() => {
         <div class="article__nav">
           <a href="#/blog" class="article__back">
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-            Back to blog
+            Retour au blog
           </a>
           <button class="theme-toggle" aria-label="Toggle theme" onclick="Theme.toggle()">
             <svg class="theme-toggle__sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
@@ -289,7 +268,7 @@ const Pages = (() => {
         <div style="text-align: center; padding: var(--space-3xl) 0 var(--space-xl);">
           <a href="#/blog" class="btn btn--ghost">
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-            All posts
+            Tous les articles
           </a>
         </div>
       </article>
@@ -460,71 +439,9 @@ const Pages = (() => {
   }
 
   /* ---- ABOUT ---- */
-  function about(app) {
-    cleanupHome(app);
-    app.innerHTML = `
-      ${pageNav()}
-      <section class="section">
-        <div class="container">
-          <div class="reveal" style="margin-bottom: var(--space-xl);">
-            <p class="mono-label" style="color: var(--accent);">ABOUT</p>
-            <h1 style="font-family: var(--font-serif); font-size: var(--text-3xl); font-weight: 900; margin-top: var(--space-2xs);">About Me</h1>
-            <div class="accent-bar"></div>
-          </div>
-
-          <div class="grid-about reveal-stagger">
-            <div class="card grid-about__bio" style="padding: var(--space-lg);">
-              <p class="mono-label">BIO</p>
-              <div class="prose" style="margin-top: var(--space-sm);">
-                <p>I'm an AI engineer who cares about <strong style="color: var(--accent);">craft</strong>. I train models, build inference pipelines, and ship AI products end-to-end.</p>
-                <p>Currently building <strong style="color: var(--purple);">Spixer</strong> — an AI-powered platform that uses computer vision to automate event photography workflows.</p>
-              </div>
-            </div>
-
-            <div class="card grid-about__facts" style="padding: var(--space-md); display: flex; flex-direction: column; gap: var(--space-sm);">
-              <p class="mono-label">QUICK FACTS</p>
-              <div style="display: flex; align-items: center; gap: var(--space-xs);"><span style="font-size: 1.2rem;">&#127467;&#127479;</span><span style="font-size: var(--text-sm); color: var(--text-primary);">Based in France</span></div>
-              <div style="display: flex; align-items: center; gap: var(--space-xs);"><span style="font-size: 1.2rem;">&#9749;</span><span style="font-size: var(--text-sm); color: var(--text-primary);">Coffee-powered</span></div>
-              <div style="display: flex; align-items: center; gap: var(--space-xs);"><span style="font-size: 1.2rem;">&#127919;</span><span style="font-size: var(--text-sm); color: var(--text-primary);">Self-taught</span></div>
-              <div style="display: flex; align-items: center; gap: var(--space-xs);"><span style="font-size: 1.2rem;">&#128640;</span><span style="font-size: var(--text-sm); color: var(--text-primary);">Always shipping</span></div>
-            </div>
-
-            ${skillCard('Backend', ['Python', 'FastAPI', 'Node.js', 'PostgreSQL', 'Redis'])}
-            ${skillCard('AI / ML', ['YOLOv8', 'PyTorch', 'InsightFace', 'CV', 'OCR'])}
-            ${skillCard('Frontend', ['Flutter', 'JS', 'HTML/CSS', 'React'])}
-            ${skillCard('DevOps', ['Docker', 'Linux', 'Nginx', 'CI/CD'])}
-            ${skillCard('Tools', ['Git', 'VS Code', 'Figma', 'Postman'])}
-            ${skillCard('Soft', ['Problem Solving', 'Self-taught', 'Fast Learner'])}
-          </div>
-        </div>
-      </section>
-    `;
-  }
 
   /* ---- Helpers ---- */
 
-  function projectCard(project) {
-    return `
-      <a href="${project.link}" class="card" style="padding: var(--space-xl);" target="_blank" rel="noopener">
-        <span class="card__arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span>
-        <p class="mono-label">${project.tags?.[0] || 'PROJECT'}</p>
-        <h3 style="font-family: var(--font-serif); font-size: var(--text-2xl); font-weight: 800; margin-top: var(--space-xs);">${project.title}</h3>
-        <p style="color: var(--text-secondary); font-size: var(--text-base); margin-top: var(--space-sm); line-height: var(--line-height-relaxed);">${project.description}</p>
-        <div class="card__tags" style="margin-top: var(--space-lg);">
-          ${(project.tags || []).map(t => `<span class="tag">${t}</span>`).join('')}
-        </div>
-      </a>
-    `;
-  }
-
-  function skillCard(title, skills) {
-    return `
-      <div class="card" style="padding: var(--space-md);">
-        <p class="mono-label" style="color: var(--accent);">${title}</p>
-        <div class="card__tags" style="margin-top: var(--space-xs);">${skills.map(s => `<span class="tag">${s}</span>`).join('')}</div>
-      </div>
-    `;
-  }
 
   function postItem(meta, slug) {
     const date = meta.date ? new Date(meta.date) : new Date();
@@ -562,7 +479,7 @@ const Pages = (() => {
     } catch { /* use CONFIG.posts */ }
 
     const posts = await loadPostsMeta(slugs);
-    if (posts.length === 0) { container.innerHTML = '<p style="color: var(--text-tertiary); text-align: center;">No posts yet.</p>'; return; }
+    if (posts.length === 0) { container.innerHTML = '<p style="color: var(--text-tertiary); text-align: center;">Aucun article pour l'instant.</p>'; return; }
     container.innerHTML = posts.map(({ meta, slug }) => postItem(meta, slug)).join('');
   }
 
@@ -614,7 +531,7 @@ const Pages = (() => {
         .sort((a, b) => (b.stargazers_count - a.stargazers_count) || new Date(b.pushed_at) - new Date(a.pushed_at));
 
       if (repos.length === 0) {
-        container.innerHTML = '<p style="color: var(--text-tertiary);">No public repos found.</p>';
+        container.innerHTML = '<p style="color: var(--text-tertiary);">Aucun repo trouvé.</p>';
         return;
       }
 
@@ -673,7 +590,7 @@ const Pages = (() => {
       container.innerHTML = repos.map(r => repoCard(r)).join('');
     } catch (e) {
       console.error('Failed to load GitHub repos:', e);
-      container.innerHTML = '<p style="color: var(--text-tertiary);">Could not load repos from GitHub.</p>';
+      container.innerHTML = '<p style="color: var(--text-tertiary);">Impossible de charger les repos GitHub.</p>';
     }
   }
 
@@ -703,5 +620,5 @@ const Pages = (() => {
     `;
   }
 
-  return { home, blogPost, about, loadProjects, loadBlog };
+  return { home, blogPost, loadProjects, loadBlog };
 })();
