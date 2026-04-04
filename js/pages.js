@@ -40,7 +40,7 @@ const Pages = (() => {
 
               <!-- Tagline -->
               <p class="reveal" style="font-size: var(--text-lg); color: var(--text-secondary); max-width: 30rem; line-height: var(--line-height-relaxed);">
-                Je code des trucs, je casse des trucs, je recommence. <em style="color: var(--accent); font-style: normal; font-weight: 600;">Des fois ça marche du premier coup</em> — mais c'est rare.
+                Je code, je break, je recommence. <em style="color: var(--accent); font-style: normal; font-weight: 600;">Des fois ça marche du premier coup</em> — mais c'est rare.
               </p>
 
               <!-- CTAs -->
@@ -77,7 +77,7 @@ const Pages = (() => {
 
               <!-- Intro (wide) -->
               <div class="card grid-hero__item--span2" style="padding: var(--space-lg);">
-                <p style="font-family: var(--font-serif); font-size: var(--text-base); font-weight: 700; line-height: 1.6; color: var(--text-secondary);"><strong style="color: var(--text-primary);">Dev autodidacte</strong> basé en <span style="color: var(--accent);">France</span>. J'aime casser des trucs pour comprendre comment ils marchent. En ce moment à fond dans l'<strong style="color: var(--accent);">IA</strong>, la <strong style="color: var(--purple);">vision par ordinateur</strong>, et la construction de trucs qui tiennent debout.</p>
+                <p style="font-family: var(--font-serif); font-size: var(--text-base); font-weight: 700; line-height: 1.6; color: var(--text-secondary);"><strong style="color: var(--text-primary);">Dev self-taught</strong> basé en <span style="color: var(--accent);">France</span>. J'aime break des trucs pour comprendre comment ils marchent. En ce moment deep dans l'<strong style="color: var(--accent);">AI</strong>, la <strong style="color: var(--purple);">computer vision</strong>, et le build de trucs qui tiennent en prod.</p>
               </div>
 
               <!-- AI Engineer -->
