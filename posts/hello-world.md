@@ -7,13 +7,13 @@ excerpt: "Premier post ! Pourquoi j'ai décidé de me mettre à écrire, et ce q
 
 ## Pourquoi un blog ?
 
-Ça fait un moment que je build des trucs, et j'ai réalisé un truc : **j'apprends mieux quand j'explique aux autres.** Ce blog, c'est mon espace pour faire exactement ça. (Et non, ce n'est pas juste pour avoir l'air sérieux sur LinkedIn.)
+Ça fait un moment que je build des trucs, et j'ai réalisé un truc : **j'apprends mieux quand j'explique aux autres.** Ce blog, c'est mon espace pour faire exactement ça. (Et non, ce n'est pas juste pour avoir l'air sérieux sur LinkedIn même si ça aide.)
 
 Au programme :
 - Projets AI et computer vision
-- Patterns de full-stack development
-- Les trucs que je casse et comment je les répare
-- Les problèmes chelous que je croise en route
+- Patterns de développement fullstack
+- Les phases de Debug où j'ai appris des trucs
+- Les problèmes particulièrement chelous que je croise en route
 
 ## La suite au prochain épisode
 
