@@ -1,5 +1,5 @@
 ---
-title: "Hello World — Bienvenue sur mon Blog"
+title: "Hello World - Bienvenue sur mon Blog"
 date: 2026-04-02
 tags: [meta, personal]
 excerpt: "Premier post ! Pourquoi j'ai décidé de me mettre à écrire, et ce que vous pouvez attendre de ce blog."
@@ -17,4 +17,4 @@ Au programme :
 
 ## La suite au prochain épisode
 
-En ce moment je suis à fond sur **Spixer**, une plateforme AI pour la photographie de course. Y'a beaucoup à raconter — de la YOLO object detection à la person re-identification. Stay tuned.
+En ce moment je suis à fond sur **Spixer**, une plateforme AI pour la photographie de course. Y'a beaucoup à raconter - de la detection YOLO au fonctionnement du RE-ID. Stay tuned.
