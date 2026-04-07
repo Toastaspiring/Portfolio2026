@@ -1,20 +1,20 @@
 ---
-title: "Hello World — Welcome to My Blog"
+title: "Hello World — Bienvenue sur mon Blog"
 date: 2026-04-02
 tags: [meta, personal]
-excerpt: "First post! Why I decided to start writing, and what you can expect from this blog."
+excerpt: "Premier post ! Pourquoi j'ai décidé de me mettre à écrire, et ce que vous pouvez attendre de ce blog."
 ---
 
-## Why a blog?
+## Pourquoi un blog ?
 
-I've been building software for a while now, and I realized something: **I learn best when I explain things to others.** This blog is my space to do exactly that.
+Ça fait un moment que je build des trucs, et j'ai réalisé un truc : **j'apprends mieux quand j'explique aux autres.** Ce blog, c'est mon espace pour faire exactement ça. (Et non, ce n'est pas juste pour avoir l'air sérieux sur LinkedIn.)
 
-Expect posts about:
-- AI and computer vision projects
-- Full-stack development patterns
-- Things I break and how I fix them
-- Interesting problems I encounter
+Au programme :
+- Projets AI et computer vision
+- Patterns de full-stack development
+- Les trucs que je casse et comment je les répare
+- Les problèmes chelous que je croise en route
 
-## What's coming next
+## La suite au prochain épisode
 
-I'm currently deep into building **Spixer**, an AI-powered platform for race photography. There's a lot to share — from YOLO object detection to person re-identification. Stay tuned.
+En ce moment je suis à fond sur **Spixer**, une plateforme AI pour la photographie de course. Y'a beaucoup à raconter — de la YOLO object detection à la person re-identification. Stay tuned.
