@@ -7,7 +7,7 @@ excerpt: "Premier post ! Pourquoi j'ai décidé de me mettre à écrire, et ce q
 
 ## Pourquoi un blog ?
 
-Ça fait un moment que je build des trucs, et j'ai réalisé un truc : **j'apprends mieux quand j'explique aux autres.** Ce blog, c'est mon espace pour faire exactement ça. (Et non, ce n'est pas juste pour avoir l'air sérieux sur LinkedIn même si ça aide.)
+Ça fait un moment que je build des apps et autres logiciels, et j'ai réalisé un truc : **j'apprends mieux quand j'explique aux autres.** Ce blog, c'est mon espace pour faire exactement ça. (Et non, ce n'est pas juste pour avoir l'air sérieux sur LinkedIn même si ça aide.)
 
 Au programme :
 - Projets AI et computer vision
