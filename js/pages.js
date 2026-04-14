@@ -280,6 +280,20 @@ const Pages = (() => {
     if (typeof mermaid !== 'undefined') {
       try { await mermaid.run(); } catch(e) { console.warn('Mermaid render error:', e); }
     }
+
+    // Render LaTeX math with KaTeX
+    if (window.renderMathInElement) {
+      const prose = app.querySelector('.prose');
+      if (prose) {
+        renderMathInElement(prose, {
+          delimiters: [
+            { left: '$$', right: '$$', display: true },
+            { left: '$', right: '$', display: false },
+          ],
+          throwOnError: false,
+        });
+      }
+    }
     // Attach media modal to mermaid diagrams and images
     app.querySelectorAll('pre.mermaid').forEach(el => {
       el.addEventListener('click', () => openMediaModal(el));

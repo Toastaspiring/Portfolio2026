@@ -23,6 +23,24 @@ const Markdown = (() => {
 
   /* Convert markdown to HTML with all features */
   function render(markdownStr) {
+    // Protect LaTeX math delimiters from being mangled by the Markdown parser.
+    // We extract each math span, stash it, and replace it with a safe placeholder.
+    // After marked.parse() we restore the original delimiters so KaTeX can process them.
+    const mathStore = [];
+
+    // Display math: $$...$$  (must come first so $$ is not consumed by the inline rule)
+    let src = markdownStr.replace(/\$\$([\s\S]+?)\$\$/g, (_, math) => {
+      const idx = mathStore.length;
+      mathStore.push({ display: true, math });
+      return `MATHPLACEHOLDER${idx}END`;
+    });
+
+    // Inline math: $...$  (single-line only, no empty content)
+    src = src.replace(/\$([^\n$]+?)\$/g, (_, math) => {
+      const idx = mathStore.length;
+      mathStore.push({ display: false, math });
+      return `MATHPLACEHOLDER${idx}END`;
+    });
     marked.setOptions({
       gfm: true,
       breaks: false,
@@ -74,7 +92,15 @@ const Markdown = (() => {
 
     marked.use({ renderer });
 
-    let html = marked.parse(markdownStr);
+    let html = marked.parse(src);
+
+    // Restore LaTeX math placeholders so KaTeX can render them after DOM insertion.
+    html = html.replace(/MATHPLACEHOLDER(\d+)END/g, (_, idx) => {
+      const { display, math } = mathStore[parseInt(idx, 10)];
+      return display
+        ? `<span class="math-display">$$${math}$$</span>`
+        : `<span class="math-inline">$${math}$</span>`;
+    });
 
     // Post-process: YouTube embeds
     html = html.replace(
