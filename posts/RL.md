@@ -1,4 +1,11 @@
-Le Reinforcement Learning (RL) est une approche de l'intelligence artificielle où un agent apprend à prendre des décisions en interagissant avec un environnement. L'objectif est de maximiser une récompense cumulative à long terme. Ce document couvre les bases mathématiques du RL et une implémentation simple en Luau pour Roblox.
+---
+title: "Reinforcement Learning (RL) — Fondamentaux et implémentation Python"
+date: 2026-04-14
+tags: [AI, reinforcement-learning, python]
+excerpt: "Bases mathématiques du RL, principaux types d'algorithmes, et exemple pratique de Q-Learning en Python."
+---
+
+Le Reinforcement Learning (RL) est une approche de l'intelligence artificielle où un agent apprend à prendre des décisions en interagissant avec un environnement. L'objectif est de maximiser une récompense cumulative à long terme. Ce document couvre les bases mathématiques du RL et une implémentation simple en Python.
 
 ## I. Fondamentaux Mathématiques
 
@@ -61,6 +68,15 @@ Les algorithmes de RL permettent d'apprendre les optimal policies et value funct
 
 *   **Temporal-Difference (TD) Learning** : Apprend de l'expérience sans modèle, comme MC, mais met à jour les connaissances à chaque pas de temps en utilisant des estimations de valeurs futures (bootstrapping). Le Q-Learning est un algorithme TD.
 
+### Autres grandes familles de RL
+
+Au-delà des méthodes orientées valeur (Q-Learning/SARSA), on retrouve aussi :
+
+*   **Policy Gradient** : optimise directement la policy (ex: REINFORCE).
+*   **Actor-Critic** : combine un acteur (policy) et un critique (value function), base de méthodes modernes (A2C, PPO).
+*   **Model-Based RL** : apprend/utilise un modèle de l'environnement pour planifier.
+*   **Deep RL** : utilise des réseaux de neurones pour gérer des espaces d'états/actions plus complexes.
+
 ### Q-Learning
 
 Le Q-Learning est un algorithme **model-free** et **off-policy** qui estime l'optimal action-value function $Q^*(s, a)$.
@@ -85,228 +101,74 @@ Le Q-Learning est un algorithme **model-free** et **off-policy** qui estime l'op
 $$Q(s, a) \leftarrow Q(s, a) + \alpha \left[ R + \gamma Q(s', a') - Q(s, a) \right]$$
 SARSA apprend la valeur de la policy suivie, tandis que Q-Learning apprend la valeur de l'optimal policy.
 
-## III. Implémentation en Luau sur Roblox
+## III. Implémentation en Python (Q-Learning)
 
-Implémentons un agent Q-Learning dans un environnement simple de type "Gridworld" sur Roblox.
+Implémentons un agent Q-Learning sur un environnement discret simple (`FrozenLake-v1`) avec `gymnasium`.
 
-### Environnement Roblox : Gridworld
+### Installation
 
-*   **Agent** : Un `Part` qui se déplace.
-*   **Cible (Goal)** : Un `Part` à atteindre (récompense positive).
-*   **Obstacles (Traps)** : Des `Part` à éviter (pénalité négative).
-*   **Grille Implicite** : Les états sont des positions discrètes (coordonnées `(x, z)` arrondies) sur une grille. Les actions sont des déplacements `Vector3` (UP, DOWN, LEFT, RIGHT).
-
-### Code Luau pour l'Agent Q-Learning
-
-Le script suivant est attaché à l'objet `Agent` dans Roblox Studio.
-
-```lua
---!strict
-
-local Agent = script.Parent :: Part
-local Workspace = game:GetService("Workspace")
-
-local GoalPart = Workspace:WaitForChild("Goal") :: Part
-local ObstacleParts = Workspace:WaitForChild("Obstacles"):GetChildren() :: {Part}
-
--- Paramètres du Q-Learning
-local ALPHA = 0.1 
-local GAMMA = 0.9 
-local EPSILON_START = 1.0 
-local EPSILON_END = 0.01 
-local EPSILON_DECAY_RATE = 0.001 
-local NUM_EPISODES = 5000 
-local MAX_STEPS_PER_EPISODE = 100 
-
--- Actions possibles
-local ACTIONS = {
-    Vector3.new(0, 0, -1), -- Forward
-    Vector3.new(0, 0, 1),  -- Backward
-    Vector3.new(-1, 0, 0), -- Left
-    Vector3.new(1, 0, 0)   -- Right
-}
-local ACTION_NAMES = {"Forward", "Backward", "Left", "Right"}
-
--- Configuration de la grille et de la carte
-local GRID_SIZE = 2 
-local MAP_X_MIN, MAP_X_MAX = -20, 20
-local MAP_Z_MIN, MAP_Z_MAX = -20, 20
-
--- Q-Table: {[state_key]: {[action_index]: q_value}}
-local QTable: {[string]: {[number]: number}} = {}
-
--- Convertit une position 3D en clé d'état discrète
-local function getState(position: Vector3): string
-    local x = math.floor(position.X / GRID_SIZE) * GRID_SIZE
-    local z = math.floor(position.Z / GRID_SIZE) * GRID_SIZE
-    return string.format("%d,%d", x, z)
-end
-
--- Calcule la récompense et détermine si l'épisode est terminé
-local function getRewardAndDone(newPosition: Vector3): (number, boolean)
-    local reward = -0.1 
-    local done = false
-
-    if (newPosition - GoalPart.Position).Magnitude < GRID_SIZE then
-        reward = 100 
-        done = true
-    end
-
-    for _, obstacle in ObstacleParts do
-        if (newPosition - obstacle.Position).Magnitude < GRID_SIZE then
-            reward = -50 
-            done = true
-            break
-        end
-    end
-
-    if newPosition.X < MAP_X_MIN or newPosition.X > MAP_X_MAX or
-       newPosition.Z < MAP_Z_MIN or newPosition.Z > MAP_Z_MAX then
-        reward = -20 
-        done = true
-    end
-
-    return reward, done
-end
-
--- Choisit une action selon la stratégie epsilon-greedy
-local function chooseAction(stateKey: string, currentEpsilon: number): number
-    if QTable[stateKey] == nil then
-        QTable[stateKey] = {}
-        for i = 0, #ACTIONS - 1 do
-            QTable[stateKey][i] = 0
-        end
-    end
-
-    if math.random() < currentEpsilon then
-        return math.random(0, #ACTIONS - 1)
-    else
-        local bestAction = 0
-        local maxQ = -math.huge
-        for actionIndex, qValue in pairs(QTable[stateKey]) do
-            if qValue > maxQ then
-                maxQ = qValue
-                bestAction = actionIndex
-            end
-        end
-        return bestAction
-    end
-end
-
--- Met à jour la Q-Table
-local function updateQTable(stateKey: string, actionIndex: number, reward: number, nextStateKey: string)
-    if QTable[nextStateKey] == nil then
-        QTable[nextStateKey] = {}
-        for i = 0, #ACTIONS - 1 do
-            QTable[nextStateKey][i] = 0
-        end
-    end
-
-    local oldQ = QTable[stateKey][actionIndex]
-    local maxNextQ = -math.huge
-    for _, qValue in pairs(QTable[nextStateKey]) do
-        maxNextQ = math.max(maxNextQ, qValue)
-    end
-
-    local newQ = oldQ + ALPHA * (reward + GAMMA * maxNextQ - oldQ)
-    QTable[stateKey][actionIndex] = newQ
-end
-
--- Fonction d'entraînement de l'agent
-local function trainAgent()
-    local currentEpsilon = EPSILON_START
-    local originalAgentPosition = Agent.Position
-
-    for episode = 1, NUM_EPISODES do
-        Agent.Position = originalAgentPosition
-        local currentState = Agent.Position
-        local currentStateKey = getState(currentState)
-        local done = false
-        local totalReward = 0
-
-        for step = 1, MAX_STEPS_PER_EPISODE do
-            local actionIndex = chooseAction(currentStateKey, currentEpsilon)
-            local actionVector = ACTIONS[actionIndex + 1]
-
-            local nextPosition = currentState + actionVector * GRID_SIZE
-            Agent.Position = nextPosition
-
-            local reward, isDone = getRewardAndDone(nextPosition)
-            local nextStateKey = getState(nextPosition)
-
-            updateQTable(currentStateKey, actionIndex, reward, nextStateKey)
-
-            currentState = nextPosition
-            currentStateKey = nextStateKey
-            totalReward += reward
-            done = isDone
-
-            if done then
-                break
-            end
-        end
-
-        currentEpsilon = math.max(EPSILON_END, currentEpsilon - EPSILON_DECAY_RATE)
-
-        if episode % 100 == 0 then
-            print(string.format("Episode %d: Total Reward = %.2f, Epsilon = %.2f", episode, totalReward, currentEpsilon))
-        end
-    end
-    print("Entraînement terminé.")
-end
-
--- Exécute la politique optimale apprise
-local function runOptimalPolicy()
-    print("Exécution de la politique optimale...")
-    Agent.Position = script.Parent.Position
-    local currentState = Agent.Position
-    local currentStateKey = getState(currentState)
-    local done = false
-    local steps = 0
-
-    while not done and steps < MAX_STEPS_PER_EPISODE * 2 do 
-        local actionIndex = chooseAction(currentStateKey, 0) 
-        local actionVector = ACTIONS[actionIndex + 1]
-
-        local nextPosition = currentState + actionVector * GRID_SIZE
-        Agent.Position = nextPosition
-        currentState = nextPosition
-        currentStateKey = getState(currentState)
-
-        local _, isDone = getRewardAndDone(nextPosition)
-        done = isDone
-        steps += 1
-
-        task.wait(0.1)
-    end
-    print("Exécution terminée.")
-end
-
--- Lancement
-trainAgent()
-runOptimalPolicy()
-
--- Sauvegarde optionnelle de la Q-table
--- game:GetService("DataStoreService"):GetDataStore("QTableStore"):SetAsync("AgentQTable", QTable)
+```bash
+pip install gymnasium numpy
 ```
 
-### Configuration dans Roblox Studio
+### Code Python
 
-1.  **Créer les `Part`** : Un `Part` nommé `Agent`, un `Part` nommé `Goal`, et un `Model` nommé `Obstacles` contenant plusieurs `Part` pour les obstacles. Assurez-vous que tous sont `Anchored`.
-2.  **Attacher le script** : Créez un `Script` à l'intérieur de l'`Agent` Part et collez le code Luau ci-dessus.
-3.  **Lancer** : Exécutez le jeu en mode `Run` ou `Play`. L'agent s'entraînera et exécutera sa politique apprise.
+```python
+import numpy as np
+import gymnasium as gym
 
-### Limitations et Améliorations
+env = gym.make("FrozenLake-v1", is_slippery=True)
 
-Cet exemple est basique. Pour des environnements plus complexes :
+n_states = env.observation_space.n
+n_actions = env.action_space.n
+q_table = np.zeros((n_states, n_actions), dtype=np.float32)
 
-*   **Taille de la Q-Table** : Les grands espaces d'états/actions peuvent saturer la mémoire. Le Deep Reinforcement Learning (avec des réseaux de neurones) est nécessaire, mais difficile à implémenter directement en Luau.
-*   **Vitesse d'Entraînement** : L'entraînement peut être lent. Pour des jeux complexes, l'entraînement hors ligne sur un serveur puissant est préférable, avec chargement du modèle appris dans Roblox.
+alpha = 0.1
+gamma = 0.99
+epsilon = 1.0
+epsilon_min = 0.05
+# Décroissance douce: epsilon atteint ~0.05 vers ~6 000 épisodes (ln(0.05)/ln(0.9995)).
+epsilon_decay = 0.9995
+episodes = 10_000
+max_steps = 200
 
-Malgré cela, pour des problèmes de navigation simples ou des comportements d'NPCs réactifs, le Q-Learning en Luau est une solution viable. Des améliorations incluent des récompenses plus fines, des états plus riches (vitesse, direction), et des actions plus variées.
+for episode in range(episodes):
+    state, _ = env.reset()
+    done = False
+
+    for _ in range(max_steps):
+        if np.random.rand() < epsilon:
+            action = env.action_space.sample()
+        else:
+            action = int(np.argmax(q_table[state]))
+
+        next_state, reward, terminated, truncated, _ = env.step(action)
+        done = terminated or truncated
+
+        best_next = np.max(q_table[next_state])
+        continuing_mask = 0.0 if done else 1.0
+        td_target = reward + gamma * best_next * continuing_mask
+        q_table[state, action] += alpha * (td_target - q_table[state, action])
+
+        state = next_state
+        if done:
+            break
+
+    epsilon = max(epsilon_min, epsilon * epsilon_decay)
+
+print("Entraînement terminé.")
+print("Q-table apprise :")
+print(q_table)
+```
+
+### Limitations et améliorations
+
+*   **Table Q limitée** : sur de grands espaces d'états, la Q-table devient impraticable.
+*   **Récompenses rares** : certains environnements apprennent lentement sans reward shaping.
+*   **Passage au Deep RL** : DQN, PPO ou SAC sont généralement préférables pour des tâches complexes.
 
 ## Références
 
 *   [1] Sutton, R. S., & Barto, A. G. (2018). Reinforcement Learning: An Introduction. MIT Press. [Lien](http://incompleteideas.net/book/the-book-2nd.html)
-*   [2] Roblox Creator Documentation. *Luau Language Reference*. [Lien](https://create.roblox.com/docs/reference/luau)
+*   [2] Gymnasium Documentation. *API Reference*. [Lien](https://gymnasium.farama.org/)
 *   [3] FreeCodeCamp. *Q-Learning Explained*. [Lien](https://www.freecodecamp.org/news/an-introduction-to-q-learning-reinforcement-learning-1811b4c17977/)
