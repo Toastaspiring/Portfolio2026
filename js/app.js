@@ -42,28 +42,116 @@
     const footerCopyright = document.querySelector('.footer__bottom p');
     if (footerCopyright) footerCopyright.innerHTML = t('footer.copyright').replace(/·/g, '&middot;');
 
-    // Wire up the language switcher
-    const switcher = document.getElementById('lang-switcher');
-    if (switcher) {
-      switcher.value = I18n.current();
-      switcher.setAttribute('aria-label', t('footer.lang_aria'));
-      switcher.addEventListener('change', (e) => I18n.setLocale(e.target.value));
+    // Wire up the custom language picker
+    setupLangPicker();
+  }
+
+  /* Custom language picker: pill trigger + popover list. Keyboard accessible,
+     closes on outside click / Escape, arrow key navigation between options. */
+  function setupLangPicker() {
+    const picker = document.getElementById('lang-picker');
+    if (!picker) return;
+
+    const trigger = picker.querySelector('.lang-picker__trigger');
+    const menu = picker.querySelector('.lang-picker__menu');
+    const options = [...picker.querySelectorAll('.lang-picker__option')];
+    const codeEl = picker.querySelector('[data-lang-code]');
+    const current = I18n.current();
+
+    // Sync initial state
+    trigger.setAttribute('aria-label', I18n.t('footer.lang_aria'));
+    if (codeEl) codeEl.textContent = current.toUpperCase();
+    options.forEach(opt => {
+      opt.setAttribute('aria-selected', opt.dataset.lang === current ? 'true' : 'false');
+    });
+
+    let focusedIndex = options.findIndex(o => o.dataset.lang === current);
+    if (focusedIndex < 0) focusedIndex = 0;
+
+    function open() {
+      picker.classList.add('is-open');
+      trigger.setAttribute('aria-expanded', 'true');
+      setFocused(focusedIndex);
+      document.addEventListener('click', onOutside);
+      document.addEventListener('keydown', onKey);
     }
+
+    function close() {
+      picker.classList.remove('is-open');
+      trigger.setAttribute('aria-expanded', 'false');
+      options.forEach(o => o.classList.remove('is-focused'));
+      document.removeEventListener('click', onOutside);
+      document.removeEventListener('keydown', onKey);
+    }
+
+    function toggle() {
+      if (picker.classList.contains('is-open')) close();
+      else open();
+    }
+
+    function setFocused(i) {
+      focusedIndex = ((i % options.length) + options.length) % options.length;
+      options.forEach((o, idx) => o.classList.toggle('is-focused', idx === focusedIndex));
+      options[focusedIndex]?.scrollIntoView({ block: 'nearest' });
+    }
+
+    function select(lang) {
+      if (lang === I18n.current()) { close(); return; }
+      I18n.setLocale(lang);
+    }
+
+    function onOutside(e) {
+      if (!picker.contains(e.target)) close();
+    }
+
+    function onKey(e) {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        close();
+        trigger.focus();
+      } else if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        setFocused(focusedIndex + 1);
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        setFocused(focusedIndex - 1);
+      } else if (e.key === 'Home') {
+        e.preventDefault();
+        setFocused(0);
+      } else if (e.key === 'End') {
+        e.preventDefault();
+        setFocused(options.length - 1);
+      } else if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        select(options[focusedIndex].dataset.lang);
+      }
+    }
+
+    trigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggle();
+    });
+
+    trigger.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        if (!picker.classList.contains('is-open')) open();
+      }
+    });
+
+    options.forEach((opt, i) => {
+      opt.addEventListener('click', (e) => {
+        e.stopPropagation();
+        select(opt.dataset.lang);
+      });
+      opt.addEventListener('mouseenter', () => setFocused(i));
+    });
   }
 
   /* Scroll gate: on panel routes the body is overflow:hidden. When the mouse
-     approaches the viewport bottom (last 120px), we add .scroll-hint which
-     unlocks vertical scroll, letting the user reveal the footer by scrolling.
-     A small pill hints at the gate when the mouse is close. */
+     approaches the viewport bottom (last 140px), we add .scroll-hint which
+     unlocks vertical scroll, letting the user reveal the footer by scrolling. */
   function setupScrollGate() {
-    // Inject the hint element
-    const hint = document.createElement('div');
-    hint.className = 'scroll-gate-hint';
-    hint.innerHTML = '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg><span data-i18n-hint></span>';
-    const hintLabels = { fr: 'scroll', en: 'scroll', de: 'scrollen', es: 'scroll' };
-    hint.querySelector('[data-i18n-hint]').textContent = hintLabels[I18n.current()] || 'scroll';
-    document.body.appendChild(hint);
-
     const BOTTOM_THRESHOLD = 140;
     let nearBottom = false;
 
@@ -71,7 +159,6 @@
       const near = y > window.innerHeight - BOTTOM_THRESHOLD;
       if (near !== nearBottom) {
         nearBottom = near;
-        document.body.classList.toggle('near-bottom', near);
         document.body.classList.toggle('scroll-hint', near);
       }
     }

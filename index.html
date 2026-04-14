@@ -35,12 +35,12 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 
   <!-- Styles -->
-  <link rel="stylesheet" href="css/design-system.css">
-  <link rel="stylesheet" href="css/layout.css">
-  <link rel="stylesheet" href="css/components.css">
-  <link rel="stylesheet" href="css/animations.css">
-  <link rel="stylesheet" href="css/blog.css">
-  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/design-system.css?v=6">
+  <link rel="stylesheet" href="css/layout.css?v=6">
+  <link rel="stylesheet" href="css/components.css?v=6">
+  <link rel="stylesheet" href="css/animations.css?v=6">
+  <link rel="stylesheet" href="css/blog.css?v=6">
+  <link rel="stylesheet" href="css/responsive.css?v=6">
 </head>
 <body>
   <!-- Noise texture overlay -->
@@ -78,22 +78,36 @@
     </div>
     <div class="footer__bottom">
       <p>Disponible &middot; France &middot; &copy; 2026 Louis</p>
-      <div class="footer__lang" translate="no">
-        <svg class="footer__lang-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <circle cx="12" cy="12" r="10"/>
-          <line x1="2" y1="12" x2="22" y2="12"/>
-          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-        </svg>
-        <select id="lang-switcher" class="footer__lang-select" aria-label="Choisir la langue">
-          <option value="fr">Français</option>
-          <option value="en">English</option>
-          <option value="es">Español</option>
-          <option value="de">Deutsch</option>
-          <option value="it">Italiano</option>
-          <option value="pt">Português</option>
-          <option value="ja">日本語</option>
-          <option value="zh-CN">中文</option>
-        </select>
+      <div class="lang-picker" id="lang-picker" translate="no">
+        <button type="button" class="lang-picker__trigger" aria-haspopup="listbox" aria-expanded="false" aria-controls="lang-picker-menu">
+          <svg class="lang-picker__globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="2" y1="12" x2="22" y2="12"/>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+          </svg>
+          <span class="lang-picker__code" data-lang-code>FR</span>
+          <svg class="lang-picker__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </button>
+        <ul class="lang-picker__menu" id="lang-picker-menu" role="listbox" tabindex="-1">
+          <li class="lang-picker__option" role="option" data-lang="fr" tabindex="-1">
+            <span class="lang-picker__option-code">FR</span>
+            <span class="lang-picker__option-label">Français</span>
+          </li>
+          <li class="lang-picker__option" role="option" data-lang="en" tabindex="-1">
+            <span class="lang-picker__option-code">EN</span>
+            <span class="lang-picker__option-label">English</span>
+          </li>
+          <li class="lang-picker__option" role="option" data-lang="de" tabindex="-1">
+            <span class="lang-picker__option-code">DE</span>
+            <span class="lang-picker__option-label">Deutsch</span>
+          </li>
+          <li class="lang-picker__option" role="option" data-lang="es" tabindex="-1">
+            <span class="lang-picker__option-code">ES</span>
+            <span class="lang-picker__option-label">Español</span>
+          </li>
+        </ul>
       </div>
     </div>
   </footer>
@@ -107,14 +121,14 @@
   <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
 
   <!-- App -->
-  <script src="js/i18n.js?v=4"></script>
-  <script src="js/config.js?v=4"></script>
-  <script src="js/theme.js?v=4"></script>
-  <script src="js/cursor.js?v=4"></script>
-  <script src="js/animations.js?v=4"></script>
-  <script src="js/markdown.js?v=4"></script>
-  <script src="js/router.js?v=4"></script>
-  <script src="js/pages.js?v=4"></script>
-  <script src="js/app.js?v=4"></script>
+  <script src="js/i18n.js?v=6"></script>
+  <script src="js/config.js?v=6"></script>
+  <script src="js/theme.js?v=6"></script>
+  <script src="js/cursor.js?v=6"></script>
+  <script src="js/animations.js?v=6"></script>
+  <script src="js/markdown.js?v=6"></script>
+  <script src="js/router.js?v=6"></script>
+  <script src="js/pages.js?v=6"></script>
+  <script src="js/app.js?v=6"></script>
 </body>
 </html>
