@@ -8,7 +8,6 @@
   // I18n is synchronous (dicts are inlined in i18n.js), so we can apply
   // static strings and render immediately without awaiting anything.
   applyStaticI18n();
-  setupScrollGate();
 
   // Register routes (home renders all panel views)
   Router.register('#/', Pages.home);
@@ -148,33 +147,6 @@
     });
   }
 
-  /* Scroll gate: on panel routes the body is overflow:hidden, so the hero
-     stays fullscreen by default. The gate opens (body.scroll-hint) when
-     EITHER the mouse approaches the viewport bottom OR the user has already
-     scrolled down — that way, moving the mouse away while reading the footer
-     doesn't trap the user; they can always scroll back up to the hero. */
-  function setupScrollGate() {
-    const BOTTOM_THRESHOLD = 140;
-    const SCROLLED_THRESHOLD = 8;
-    let lastY = 0;
-
-    function update() {
-      const mouseNearBottom = lastY > window.innerHeight - BOTTOM_THRESHOLD;
-      const alreadyScrolled = window.scrollY > SCROLLED_THRESHOLD;
-      const shouldUnlock = mouseNearBottom || alreadyScrolled;
-      document.body.classList.toggle('scroll-hint', shouldUnlock);
-    }
-
-    document.addEventListener('mousemove', (e) => { lastY = e.clientY; update(); });
-    document.addEventListener('mouseleave', () => { lastY = 0; update(); });
-    window.addEventListener('scroll', update, { passive: true });
-
-    // Touch devices: tapping the bottom strip also opens the gate briefly.
-    document.addEventListener('touchstart', (e) => {
-      const t = e.touches[0];
-      if (t) { lastY = t.clientY; update(); }
-    }, { passive: true });
-  }
 
   // Init mermaid with theme-aware config
   function initMermaid() {

@@ -274,11 +274,6 @@ const Router = (() => {
     window.scrollTo({ top: 0 });
     await handler(app, params);
 
-    // Keep the footer in the DOM but lock body scrolling on panel routes —
-    // scroll is only re-enabled when the mouse is near the viewport bottom
-    // (handled in app.js), so the hero stays fullscreen by default.
-    document.body.classList.toggle('panel-mode', toPanel);
-
     Animations.observeElements();
 
     if (!supportsVT) {

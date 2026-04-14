@@ -134,17 +134,6 @@
 .grid-hero__item--span3 { grid-column: span 3; }
 .grid-hero__item--tall  { grid-row: span 2; }
 
-/* --- Scroll gate for panel routes --- */
-/* On panel routes, body scrolling is locked by default so the hero stays
-   fullscreen. When the mouse approaches the viewport bottom, JS adds
-   .scroll-hint and scrolling is re-enabled, revealing the footer. */
-body.panel-mode {
-  overflow: hidden;
-}
-body.panel-mode.scroll-hint {
-  overflow-y: auto;
-}
-
 /* --- Footer --- */
 .footer {
   border-top: 1px solid var(--border);
