@@ -127,6 +127,7 @@ alpha = 0.1
 gamma = 0.99
 epsilon = 1.0
 epsilon_min = 0.05
+# Décroissance douce: epsilon atteint ~0.05 après plusieurs milliers d'épisodes.
 epsilon_decay = 0.9995
 episodes = 10_000
 max_steps = 200
@@ -145,7 +146,8 @@ for episode in range(episodes):
         done = terminated or truncated
 
         best_next = np.max(q_table[next_state])
-        td_target = reward + gamma * best_next * (0 if done else 1)
+        discount_mask = 0.0 if done else 1.0
+        td_target = reward + gamma * best_next * discount_mask
         q_table[state, action] += alpha * (td_target - q_table[state, action])
 
         state = next_state
