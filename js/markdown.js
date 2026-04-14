@@ -62,7 +62,7 @@ const Markdown = (() => {
 
       // Mermaid diagrams — render as a special div, not a code block
       if (lang === 'mermaid') {
-        return `<pre class="mermaid">${code}</pre>`;
+        return `<pre class="mermaid" translate="no">${code}</pre>`;
       }
 
       let highlighted;
@@ -73,7 +73,7 @@ const Markdown = (() => {
       } catch {
         highlighted = code;
       }
-      return `<pre data-lang="${lang}"><code class="hljs language-${lang}">${highlighted}</code><button class="code-copy-btn" onclick="Markdown.copyCode(this)">Copy</button></pre>`;
+      return `<pre data-lang="${lang}" translate="no" class="notranslate"><code class="hljs language-${lang}">${highlighted}</code><button class="code-copy-btn" onclick="Markdown.copyCode(this)">Copy</button></pre>`;
     };
 
     // image(href, title, text)
@@ -95,11 +95,12 @@ const Markdown = (() => {
     let html = marked.parse(src);
 
     // Restore LaTeX math placeholders so KaTeX can render them after DOM insertion.
+    // translate="no" prevents Google Translate from mangling LaTeX source before KaTeX parses it.
     html = html.replace(/MATHPLACEHOLDER(\d+)END/g, (_, idx) => {
       const { display, math } = mathStore[parseInt(idx, 10)];
       return display
-        ? `<span class="math-display">$$${math}$$</span>`
-        : `<span class="math-inline">$${math}$</span>`;
+        ? `<span class="math-display notranslate" translate="no">$$${math}$$</span>`
+        : `<span class="math-inline notranslate" translate="no">$${math}$</span>`;
     });
 
     // Post-process: YouTube embeds
@@ -117,23 +118,29 @@ const Markdown = (() => {
     return html;
   }
 
-  /* Fetch and parse a markdown file */
+  /* Fetch and parse a markdown file. Tries the current-locale variant first
+     (e.g. posts/RL.en.md) and falls back to the original French file. */
   async function loadPost(slug) {
-    try {
-      const res = await fetch(`posts/${slug}.md`);
-      if (!res.ok) throw new Error(`Post not found: ${slug}`);
-      const raw = await res.text();
-      const { meta, body } = parseFrontmatter(raw);
-      const html = render(body);
+    const suffix = (typeof I18n !== 'undefined') ? I18n.postSuffix() : '';
+    const candidates = suffix ? [`posts/${slug}${suffix}.md`, `posts/${slug}.md`] : [`posts/${slug}.md`];
 
-      const words = body.trim().split(/\s+/).length;
-      meta.readingTime = Math.max(1, Math.ceil(words / 250));
+    for (const path of candidates) {
+      try {
+        const res = await fetch(path);
+        if (!res.ok) continue;
+        const raw = await res.text();
+        const { meta, body } = parseFrontmatter(raw);
+        const html = render(body);
 
-      return { meta, html, raw: body };
-    } catch (e) {
-      console.error(e);
-      return null;
+        const words = body.trim().split(/\s+/).length;
+        meta.readingTime = Math.max(1, Math.ceil(words / 250));
+
+        return { meta, html, raw: body };
+      } catch (e) {
+        console.warn(`[markdown] failed to load ${path}`, e);
+      }
     }
+    return null;
   }
 
   /* Copy code block content */

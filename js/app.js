@@ -5,6 +5,11 @@
 (function () {
   'use strict';
 
+  // I18n is synchronous (dicts are inlined in i18n.js), so we can apply
+  // static strings and render immediately without awaiting anything.
+  applyStaticI18n();
+  setupScrollGate();
+
   // Register routes (home renders all panel views)
   Router.register('#/', Pages.home);
   Router.register('#/projects', Pages.home);
@@ -15,6 +20,71 @@
   Theme.init();
   Cursor.init();
   Animations.init();
+
+  /* Update static index.html strings: title, meta, footer copyright,
+     and wire up the language switcher. */
+  function applyStaticI18n() {
+    const t = I18n.t;
+    document.title = t('meta.title');
+    const setMeta = (sel, val) => {
+      const el = document.querySelector(sel);
+      if (el && val) el.setAttribute('content', val);
+    };
+    setMeta('meta[name="description"]', t('meta.description'));
+    setMeta('meta[property="og:title"]', t('meta.og_title'));
+    setMeta('meta[property="og:description"]', t('meta.og_description'));
+    setMeta('meta[name="twitter:title"]', t('meta.og_title'));
+    setMeta('meta[name="twitter:description"]', t('meta.og_description'));
+
+    // Footer copyright + tagline
+    const footerTagline = document.querySelector('.footer__tagline');
+    if (footerTagline) footerTagline.textContent = t('footer.tagline');
+    const footerCopyright = document.querySelector('.footer__bottom p');
+    if (footerCopyright) footerCopyright.innerHTML = t('footer.copyright').replace(/·/g, '&middot;');
+
+    // Wire up the language switcher
+    const switcher = document.getElementById('lang-switcher');
+    if (switcher) {
+      switcher.value = I18n.current();
+      switcher.setAttribute('aria-label', t('footer.lang_aria'));
+      switcher.addEventListener('change', (e) => I18n.setLocale(e.target.value));
+    }
+  }
+
+  /* Scroll gate: on panel routes the body is overflow:hidden. When the mouse
+     approaches the viewport bottom (last 120px), we add .scroll-hint which
+     unlocks vertical scroll, letting the user reveal the footer by scrolling.
+     A small pill hints at the gate when the mouse is close. */
+  function setupScrollGate() {
+    // Inject the hint element
+    const hint = document.createElement('div');
+    hint.className = 'scroll-gate-hint';
+    hint.innerHTML = '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg><span data-i18n-hint></span>';
+    const hintLabels = { fr: 'scroll', en: 'scroll', de: 'scrollen', es: 'scroll' };
+    hint.querySelector('[data-i18n-hint]').textContent = hintLabels[I18n.current()] || 'scroll';
+    document.body.appendChild(hint);
+
+    const BOTTOM_THRESHOLD = 140;
+    let nearBottom = false;
+
+    function updateFromY(y) {
+      const near = y > window.innerHeight - BOTTOM_THRESHOLD;
+      if (near !== nearBottom) {
+        nearBottom = near;
+        document.body.classList.toggle('near-bottom', near);
+        document.body.classList.toggle('scroll-hint', near);
+      }
+    }
+
+    document.addEventListener('mousemove', (e) => updateFromY(e.clientY));
+    document.addEventListener('mouseleave', () => updateFromY(0));
+
+    // Touch devices: tapping the bottom strip also opens the gate briefly.
+    document.addEventListener('touchstart', (e) => {
+      const t = e.touches[0];
+      if (t) updateFromY(t.clientY);
+    }, { passive: true });
+  }
 
   // Init mermaid with theme-aware config
   function initMermaid() {

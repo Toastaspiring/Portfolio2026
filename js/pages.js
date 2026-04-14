@@ -5,9 +5,20 @@
 
 const Pages = (() => {
 
+  /* Shortcut for I18n lookups */
+  const t = (k, fallback) => (typeof I18n !== 'undefined' ? I18n.t(k, fallback) : fallback || k);
+
   /* ---- HOME (renders all panels) ---- */
   function home(app) {
     app.classList.add('main--home');
+
+    // Pre-process the intro HTML — replace placeholder classes with inline styles
+    // so we keep the localized HTML fragments coloured correctly.
+    const introHtml = t('home.intro_html')
+      .replace(/class="accent-fr"/g, 'style="color: var(--accent);"')
+      .replace(/class="purple-fr"/g, 'style="color: var(--purple);"');
+    const taglineHtml = t('home.tagline_html')
+      .replace(/<em>/g, '<em style="color: var(--accent); font-style: normal; font-weight: 600;">');
 
     app.innerHTML = `
       <!-- ===== HOME PANEL ===== -->
@@ -21,7 +32,7 @@ const Pages = (() => {
               <!-- Status row -->
               <div class="reveal" style="display: flex; align-items: center; justify-content: space-between; gap: var(--space-sm); margin-bottom: var(--space-sm);">
                 <div style="display: flex; gap: var(--space-xs); font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-tertiary);">
-                  <span class="badge badge--status"><span class="badge__dot"></span> AVAILABLE</span>
+                  <span class="badge badge--status"><span class="badge__dot"></span> ${t('home.badge_available')}</span>
                   <span class="badge badge--accent">v3.0</span>
                 </div>
                 <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" onclick="Theme.toggle()">
@@ -40,18 +51,18 @@ const Pages = (() => {
 
               <!-- Tagline -->
               <p class="reveal" style="font-size: var(--text-lg); color: var(--text-secondary); max-width: 30rem; line-height: var(--line-height-relaxed);">
-                Je code, je break, je recommence. <em style="color: var(--accent); font-style: normal; font-weight: 600;">Des fois ça marche du premier coup</em> — mais c'est rare.
+                ${taglineHtml}
               </p>
 
               <!-- CTAs -->
               <div class="reveal" style="display: flex; gap: var(--space-sm); margin-top: var(--space-sm);">
                 <a href="#/projects" class="btn btn--primary">
                   <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-                  Projets
+                  ${t('home.cta_projects')}
                 </a>
                 <a href="#/blog" class="btn btn--ghost">
                   <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
-                  Blog
+                  ${t('home.cta_blog')}
                 </a>
               </div>
 
@@ -59,15 +70,15 @@ const Pages = (() => {
               <div class="reveal" style="display: flex; gap: var(--space-xl); padding-top: var(--space-md); border-top: 1px solid var(--border); margin-top: var(--space-md);">
                 <div class="stat">
                   <div class="stat__number">3+</div>
-                  <div class="stat__label">Ans</div>
+                  <div class="stat__label">${t('home.stats_years')}</div>
                 </div>
                 <div class="stat">
                   <div class="stat__number">10+</div>
-                  <div class="stat__label">Projets</div>
+                  <div class="stat__label">${t('home.stats_projects')}</div>
                 </div>
                 <div class="stat">
                   <div class="stat__number">&infin;</div>
-                  <div class="stat__label">Curiosité</div>
+                  <div class="stat__label">${t('home.stats_curiosity')}</div>
                 </div>
               </div>
             </div>
@@ -77,20 +88,20 @@ const Pages = (() => {
 
               <!-- Intro (wide) -->
               <div class="card grid-hero__item--span2" style="padding: var(--space-lg);">
-                <p style="font-family: var(--font-serif); font-size: var(--text-base); font-weight: 700; line-height: 1.6; color: var(--text-secondary);"><strong style="color: var(--text-primary);">Autodidacte</strong>, basé en <span style="color: var(--accent);">France</span>. Je touche à tout, ça marche pas tout le temps. En ce moment je build des trucs en <strong style="color: var(--accent);">AI</strong> et <strong style="color: var(--purple);">computer vision</strong>.</p>
+                <p style="font-family: var(--font-serif); font-size: var(--text-base); font-weight: 700; line-height: 1.6; color: var(--text-secondary);">${introHtml}</p>
               </div>
 
               <!-- AI Engineer -->
               <div class="card" id="egg-title" style="padding: var(--space-lg); display: flex; align-items: center; justify-content: center; text-align: center; cursor: default;">
                 <div>
-                  <div id="egg-title-big" style="font-family: var(--font-serif); font-size: var(--text-3xl); font-weight: 900; background: linear-gradient(135deg, var(--accent), var(--purple)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; line-height: 1;">AI</div>
-                  <div id="egg-title-sub" class="mono-label" style="margin-top: 6px;">ENGINEER</div>
+                  <div id="egg-title-big" style="font-family: var(--font-serif); font-size: var(--text-3xl); font-weight: 900; background: linear-gradient(135deg, var(--accent), var(--purple)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; line-height: 1;">${t('home.ai_engineer_big')}</div>
+                  <div id="egg-title-sub" class="mono-label" style="margin-top: 6px;">${t('home.ai_engineer_sub')}</div>
                 </div>
               </div>
 
               <!-- Stack icons (compact) -->
               <div class="card" style="padding: var(--space-md); display: flex; flex-direction: column; justify-content: center;">
-                <p class="mono-label">STACK</p>
+                <p class="mono-label">${t('home.stack_label')}</p>
                 <div class="stack-icons stack-icons--grid" style="margin-top: var(--space-sm);">
                   <div class="stack-icon" data-tooltip="Python" style="color: var(--accent);">
                     <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.914 0C5.82 0 6.2 2.656 6.2 2.656l.007 2.752h5.814v.826H3.9S0 5.789 0 11.969c0 6.18 3.403 5.96 3.403 5.96h2.03v-2.867s-.109-3.403 3.35-3.403h5.766s3.24.052 3.24-3.134V3.2S18.28 0 11.914 0zM8.708 1.85a1.06 1.06 0 1 1 0 2.12 1.06 1.06 0 0 1 0-2.12z"/><path d="M12.086 24c6.094 0 5.714-2.656 5.714-2.656l-.007-2.752h-5.814v-.826h8.121S24 18.211 24 12.031c0-6.18-3.403-5.96-3.403-5.96h-2.03v2.867s.109 3.403-3.35 3.403H9.451s-3.24-.052-3.24 3.134v5.325S5.72 24 12.086 24zm3.206-1.85a1.06 1.06 0 1 1 0-2.12 1.06 1.06 0 0 1 0 2.12z"/></svg>
@@ -124,21 +135,21 @@ const Pages = (() => {
 
               <!-- Git joke -->
               <div class="card grid-hero__item--span2" id="egg-git" style="padding: var(--space-lg); display: flex; flex-direction: column; justify-content: center; cursor: default;">
-                <p class="mono-label" style="color: var(--purple);">STATUS</p>
+                <p class="mono-label" style="color: var(--purple);">${t('home.status_label')}</p>
                 <div style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-tertiary); margin-top: var(--space-xs); line-height: 1.9;">
-                  <div style="color: var(--accent);">$ git log --oneline -1</div>
-                  <div id="egg-git-msg"><span style="color: var(--purple);">e4f2a1b</span> fix: fix the fix that fixed the fix</div>
+                  <div style="color: var(--accent);">${t('home.git_log_cmd')}</div>
+                  <div id="egg-git-msg"><span style="color: var(--purple);">e4f2a1b</span> ${t('home.git_log_msg')}</div>
                 </div>
               </div>
 
-              <!-- Code snippet — coffee recursion joke -->
-              <div class="card grid-hero__item--span3" id="egg-coffee" style="padding: var(--space-md) var(--space-lg); background: var(--code-bg); border-color: var(--code-border); font-family: var(--font-mono); font-size: var(--text-sm); line-height: 1.7; overflow: hidden; position: relative;">
+              <!-- Code snippet — coffee recursion joke (kept English — it's code) -->
+              <div class="card grid-hero__item--span3" id="egg-coffee" style="padding: var(--space-md) var(--space-lg); background: var(--code-bg); border-color: var(--code-border); font-family: var(--font-mono); font-size: var(--text-sm); line-height: 1.7; overflow: hidden; position: relative;" translate="no">
                 <div><span style="color: var(--purple);">def</span> <span style="color: var(--accent);">daily_routine</span>():</div>
                 <div>&nbsp;&nbsp;coffee = <span style="color: var(--accent);">drink</span>(<span style="color: #e5a04b;">"espresso"</span>)</div>
                 <div>&nbsp;&nbsp;<span style="color: var(--purple);">while</span> coffee:</div>
                 <div>&nbsp;&nbsp;&nbsp;&nbsp;code() ; sleep(<span style="color: var(--accent);">2</span>)</div>
                 <div>&nbsp;&nbsp;&nbsp;&nbsp;coffee = <span style="color: var(--accent);">drink</span>(<span style="color: #e5a04b;">"more espresso"</span>)</div>
-                <div>&nbsp;&nbsp;<span style="color: var(--text-tertiary);"># unreachable: coffee is always truthy</span></div>
+                <div>&nbsp;&nbsp;<span style="color: var(--text-tertiary);">${t('home.coffee_comment')}</span></div>
               </div>
             </div>
 
@@ -154,10 +165,10 @@ const Pages = (() => {
               <div>
                 <a href="#/" style="display: inline-flex; align-items: center; gap: var(--space-2xs); font-size: var(--text-sm); color: var(--text-tertiary); margin-bottom: var(--space-xs); transition: color 300ms ease;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text-tertiary)'">
                   <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-                  Accueil
+                  ${t('projects.back_home')}
                 </a>
-                <h1 style="font-family: var(--font-serif); font-size: var(--text-3xl); font-weight: 900;">Projets</h1>
-                <p style="color: var(--text-tertiary); font-size: var(--text-sm); margin-top: var(--space-2xs);">Open source & side projects</p>
+                <h1 style="font-family: var(--font-serif); font-size: var(--text-3xl); font-weight: 900;">${t('projects.title')}</h1>
+                <p style="color: var(--text-tertiary); font-size: var(--text-sm); margin-top: var(--space-2xs);">${t('projects.subtitle')}</p>
               </div>
               <a href="${CONFIG.socials.github}" class="btn btn--ghost" target="_blank" rel="noopener">
                 <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
@@ -184,9 +195,9 @@ const Pages = (() => {
               <div>
                 <a href="#/" style="display: inline-flex; align-items: center; gap: var(--space-2xs); font-size: var(--text-sm); color: var(--text-tertiary); margin-bottom: var(--space-xs); transition: color 300ms ease;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text-tertiary)'">
                   <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-                  Accueil
+                  ${t('blog.back_home')}
                 </a>
-                <h1 style="font-family: var(--font-serif); font-size: var(--text-3xl); font-weight: 900;">Blog</h1>
+                <h1 style="font-family: var(--font-serif); font-size: var(--text-3xl); font-weight: 900;">${t('blog.title')}</h1>
               </div>
             </div>
             <div class="post-list" id="blog-posts">
@@ -235,21 +246,23 @@ const Pages = (() => {
       app.innerHTML = `
         <div class="empty-state">
           <div class="empty-state__icon">404</div>
-          <p class="empty-state__text">Post not found</p>
-          <a href="#/blog" class="btn btn--ghost" style="margin-top: var(--space-lg);">&larr; Back</a>
+          <p class="empty-state__text">${t('blog.not_found')}</p>
+          <a href="#/blog" class="btn btn--ghost" style="margin-top: var(--space-lg);">&larr; ${t('blog.back_to_blog')}</a>
         </div>`;
       return;
     }
 
-    const date = post.meta.date ? new Date(post.meta.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : '';
-    const tags = (post.meta.tags || []).map(t => `<span class="tag">${t}</span>`).join('');
+    const localeMap = { fr: 'fr-FR', en: 'en-US', de: 'de-DE', es: 'es-ES' };
+    const dateLocale = localeMap[typeof I18n !== 'undefined' ? I18n.current() : 'fr'] || 'en-US';
+    const date = post.meta.date ? new Date(post.meta.date).toLocaleDateString(dateLocale, { year: 'numeric', month: 'long', day: 'numeric' }) : '';
+    const tags = (post.meta.tags || []).map(tag => `<span class="tag">${tag}</span>`).join('');
 
     app.innerHTML = `
       <article class="article">
         <div class="article__nav">
           <a href="#/blog" class="article__back">
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-            Back to blog
+            ${t('blog.back_to_blog')}
           </a>
           <button class="theme-toggle" aria-label="Toggle theme" onclick="Theme.toggle()">
             <svg class="theme-toggle__sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
@@ -259,7 +272,7 @@ const Pages = (() => {
         <header class="article__header reveal">
           <div class="article__meta" style="margin-bottom: var(--space-md);">
             ${date ? `<span>${date}</span>` : ''}
-            <span style="color: var(--accent);">${post.meta.readingTime} min read</span>
+            <span style="color: var(--accent);">${post.meta.readingTime} ${t('blog.reading_time_full')}</span>
           </div>
           <h1 class="article__title">${post.meta.title || slug}</h1>
           ${tags ? `<div class="article__tags">${tags}</div>` : ''}
@@ -268,7 +281,7 @@ const Pages = (() => {
         <div style="text-align: center; padding: var(--space-3xl) 0 var(--space-xl);">
           <a href="#/blog" class="btn btn--ghost">
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-            All posts
+            ${t('blog.all_posts')}
           </a>
         </div>
       </article>
@@ -460,8 +473,10 @@ const Pages = (() => {
   function postItem(meta, slug) {
     const date = meta.date ? new Date(meta.date) : new Date();
     const day = date.getDate().toString().padStart(2, '0');
-    const month = date.toLocaleDateString('en-US', { month: 'short' }).toUpperCase();
-    const tags = (meta.tags || []).map(t => `<span class="tag tag--clickable">${t}</span>`).join('');
+    const localeMap = { fr: 'fr-FR', en: 'en-US', de: 'de-DE', es: 'es-ES' };
+    const loc = localeMap[typeof I18n !== 'undefined' ? I18n.current() : 'fr'] || 'en-US';
+    const month = date.toLocaleDateString(loc, { month: 'short' }).toUpperCase();
+    const tags = (meta.tags || []).map(tag => `<span class="tag tag--clickable">${tag}</span>`).join('');
 
     return `
       <a href="#/blog/${slug}" class="post-item">
@@ -474,7 +489,7 @@ const Pages = (() => {
           ${meta.excerpt ? `<p class="post-item__excerpt">${meta.excerpt}</p>` : ''}
           <div class="post-item__meta">
             ${tags}
-            ${meta.readingTime ? `<span class="post-item__reading-time">${meta.readingTime} min</span>` : ''}
+            ${meta.readingTime ? `<span class="post-item__reading-time">${meta.readingTime} ${t('blog.reading_time_suffix')}</span>` : ''}
           </div>
         </div>
       </a>
@@ -493,17 +508,24 @@ const Pages = (() => {
     } catch { /* use CONFIG.posts */ }
 
     const posts = await loadPostsMeta(slugs);
-    if (posts.length === 0) { container.innerHTML = '<p style="color: var(--text-tertiary); text-align: center;">Aucun post pour le moment.</p>'; return; }
+    if (posts.length === 0) { container.innerHTML = `<p style="color: var(--text-tertiary); text-align: center;">${t('blog.empty')}</p>`; return; }
     container.innerHTML = posts.map(({ meta, slug }) => postItem(meta, slug)).join('');
   }
 
   async function loadPostsMeta(slugs) {
+    const suffix = (typeof I18n !== 'undefined') ? I18n.postSuffix() : '';
     const results = [];
     for (const slug of slugs) {
+      const candidates = suffix ? [`posts/${slug}${suffix}.md`, `posts/${slug}.md`] : [`posts/${slug}.md`];
+      let raw = null;
+      for (const path of candidates) {
+        try {
+          const res = await fetch(path);
+          if (res.ok) { raw = await res.text(); break; }
+        } catch { /* try next */ }
+      }
+      if (!raw) continue;
       try {
-        const res = await fetch(`posts/${slug}.md`);
-        if (!res.ok) continue;
-        const raw = await res.text();
         const { meta, body } = Markdown.parseFrontmatter(raw);
         const words = body.trim().split(/\s+/).length;
         meta.readingTime = Math.max(1, Math.ceil(words / 250));
@@ -545,7 +567,7 @@ const Pages = (() => {
         .sort((a, b) => (b.stargazers_count - a.stargazers_count) || new Date(b.pushed_at) - new Date(a.pushed_at));
 
       if (repos.length === 0) {
-        container.innerHTML = '<p style="color: var(--text-tertiary);">Aucun repo trouvé.</p>';
+        container.innerHTML = `<p style="color: var(--text-tertiary);">${t('projects.empty')}</p>`;
         return;
       }
 
@@ -575,19 +597,19 @@ const Pages = (() => {
           <div style="display: flex; gap: var(--space-xl); margin-bottom: var(--space-md);">
             <div style="text-align: center;">
               <div style="font-family: var(--font-serif); font-size: var(--text-2xl); font-weight: 900; color: var(--accent);">${repos.length}</div>
-              <div class="mono-label" style="margin-top: 2px;">REPOS</div>
+              <div class="mono-label" style="margin-top: 2px;">${t('projects.stats_repos')}</div>
             </div>
             <div style="text-align: center;">
               <div style="font-family: var(--font-serif); font-size: var(--text-2xl); font-weight: 900; color: var(--text-primary);">${totalStars}</div>
-              <div class="mono-label" style="margin-top: 2px;">STARS</div>
+              <div class="mono-label" style="margin-top: 2px;">${t('projects.stats_stars')}</div>
             </div>
             <div style="text-align: center;">
               <div style="font-family: var(--font-serif); font-size: var(--text-2xl); font-weight: 900; color: var(--text-primary);">${totalForks}</div>
-              <div class="mono-label" style="margin-top: 2px;">FORKS</div>
+              <div class="mono-label" style="margin-top: 2px;">${t('projects.stats_forks')}</div>
             </div>
             <div style="text-align: center;">
               <div style="font-family: var(--font-serif); font-size: var(--text-2xl); font-weight: 900; color: var(--purple);">${topLangs.length}</div>
-              <div class="mono-label" style="margin-top: 2px;">LANGS</div>
+              <div class="mono-label" style="margin-top: 2px;">${t('projects.stats_langs')}</div>
             </div>
           </div>
           <div style="height: 6px; background: var(--bg-tertiary); border-radius: 3px; display: flex; gap: 2px; overflow: hidden; margin-bottom: var(--space-sm);">
@@ -604,7 +626,7 @@ const Pages = (() => {
       container.innerHTML = repos.map(r => repoCard(r)).join('');
     } catch (e) {
       console.error('Failed to load GitHub repos:', e);
-      container.innerHTML = '<p style="color: var(--text-tertiary);">Impossible de load les repos GitHub.</p>';
+      container.innerHTML = `<p style="color: var(--text-tertiary);">${t('projects.load_error')}</p>`;
     }
   }
 
@@ -614,7 +636,9 @@ const Pages = (() => {
     const stars = repo.stargazers_count;
     const forks = repo.forks_count;
     const d = new Date(repo.pushed_at);
-    const updated = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + " '" + String(d.getFullYear()).slice(2);
+    const localeMap = { fr: 'fr-FR', en: 'en-US', de: 'de-DE', es: 'es-ES' };
+    const loc = localeMap[typeof I18n !== 'undefined' ? I18n.current() : 'fr'] || 'en-US';
+    const updated = d.toLocaleDateString(loc, { month: 'short', day: 'numeric' }) + " '" + String(d.getFullYear()).slice(2);
 
     return `
       <a href="${repo.html_url}" class="card" style="padding: var(--space-lg); display: flex; flex-direction: column;" target="_blank" rel="noopener">
