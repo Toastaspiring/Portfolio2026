@@ -146,8 +146,8 @@ for episode in range(episodes):
         done = terminated or truncated
 
         best_next = np.max(q_table[next_state])
-        not_done_mask = 0.0 if done else 1.0
-        td_target = reward + gamma * best_next * not_done_mask
+        continuing_mask = 0.0 if done else 1.0
+        td_target = reward + gamma * best_next * continuing_mask
         q_table[state, action] += alpha * (td_target - q_table[state, action])
 
         state = next_state
