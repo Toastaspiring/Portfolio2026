@@ -11,7 +11,12 @@ const Cursor = (() => {
   let visible = false;
 
   function init() {
+    // Skip custom cursor on touch devices (no hover pointer at all)
     if (window.matchMedia('(hover: none)').matches) return;
+
+    // Respect the OS "reduce motion" preference — give those users the
+    // native cursor with no lerp, no custom crosshair, no surprises.
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     el = document.createElement('div');
     el.id = 'custom-cursor';
@@ -118,8 +123,10 @@ const Cursor = (() => {
   }
 
   function animate() {
-    curX += (mouseX - curX) * 0.18;
-    curY += (mouseY - curY) * 0.18;
+    // Tighter lerp (was 0.18) — still smooth, but tracks the real cursor
+    // closely enough to feel responsive rather than laggy.
+    curX += (mouseX - curX) * 0.35;
+    curY += (mouseY - curY) * 0.35;
     // Center the 32x32 element on the cursor position
     el.style.transform = `translate(${curX - 16}px, ${curY - 16}px)`;
     requestAnimationFrame(animate);
