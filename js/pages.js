@@ -235,9 +235,13 @@ const Pages = (() => {
   async function blogPost(app, params) {
     cleanupHome(app);
     const slug = params.slug;
+
+    // Skeleton while the markdown file downloads and while we process
+    // Mermaid / KaTeX / images on the final article below.
     app.innerHTML = `
-      <article class="article">
+      <article class="article" id="article-skeleton">
         <div class="skeleton" style="height: 40px; width: 60%; margin: 0 auto var(--space-md);"></div>
+        <div class="skeleton" style="height: 24px; width: 40%; margin: 0 auto var(--space-lg);"></div>
         <div class="skeleton" style="height: 300px;"></div>
       </article>`;
 
@@ -257,8 +261,11 @@ const Pages = (() => {
     const date = post.meta.date ? new Date(post.meta.date).toLocaleDateString(dateLocale, { year: 'numeric', month: 'long', day: 'numeric' }) : '';
     const tags = (post.meta.tags || []).map(tag => `<span class="tag">${tag}</span>`).join('');
 
+    // Build the real article element, replacing the skeleton. It starts with
+    // opacity 0 so any raw Mermaid / KaTeX source isn't visible while we
+    // process it. Once everything is rendered, we fade it in.
     app.innerHTML = `
-      <article class="article">
+      <article class="article article--preparing">
         <div class="article__nav">
           <a href="#/blog" class="article__back">
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
@@ -284,19 +291,22 @@ const Pages = (() => {
             ${t('blog.all_posts')}
           </a>
         </div>
-      </article>
-    `;
+      </article>`;
 
-    Animations.observeElements();
+    const article = app.querySelector('.article');
 
-    // Render mermaid diagrams then attach modal click handlers
+    // Render mermaid diagrams (article is in flow with width 0 during fade)
     if (typeof mermaid !== 'undefined') {
-      try { await mermaid.run(); } catch(e) { console.warn('Mermaid render error:', e); }
+      try {
+        await mermaid.run();
+      } catch (e) {
+        console.warn('Mermaid render error:', e?.message || e);
+      }
     }
 
     // Render LaTeX math with KaTeX
     if (window.renderMathInElement) {
-      const prose = app.querySelector('.prose');
+      const prose = article.querySelector('.prose');
       if (prose) {
         renderMathInElement(prose, {
           delimiters: [
@@ -307,11 +317,30 @@ const Pages = (() => {
         });
       }
     }
+
+    // Wait for all images in the article to finish loading (or fail), with a
+    // safety timeout so a stuck CDN doesn't block the reveal forever.
+    const images = [...article.querySelectorAll('img')];
+    await Promise.all(images.map(img => {
+      if (img.complete && img.naturalWidth > 0) return null;
+      return new Promise(resolve => {
+        const timer = setTimeout(() => { img.onload = img.onerror = null; resolve(); }, 4000);
+        img.onload = () => { clearTimeout(timer); resolve(); };
+        img.onerror = () => { clearTimeout(timer); resolve(); };
+      });
+    }));
+
+    // Fade the processed article in.
+    article.classList.remove('article--preparing');
+    article.classList.add('article--revealed');
+
+    Animations.observeElements();
+
     // Attach media modal to mermaid diagrams and images
-    app.querySelectorAll('pre.mermaid').forEach(el => {
+    article.querySelectorAll('pre.mermaid').forEach(el => {
       el.addEventListener('click', () => openMediaModal(el));
     });
-    app.querySelectorAll('.prose img').forEach(el => {
+    article.querySelectorAll('.prose img').forEach(el => {
       el.style.cursor = 'zoom-in';
       el.addEventListener('click', () => openMediaModal(el));
     });
