@@ -235,6 +235,11 @@ const Router = (() => {
     const handler = routes[path] || routes['#/'];
     const app = document.getElementById('app');
 
+    // Mark body as "article mode" on blog post routes so the reading
+    // progress bar (bottom of viewport) is only shown there. Done at the
+    // top of navigate() so every early-return branch picks it up too.
+    document.body.classList.toggle('is-article', path.startsWith('#/blog/') && path !== '#/blog');
+
     const fromPanel = currentRoute !== null && isPanel(currentRoute);
     const toPanel = isPanel(path);
 

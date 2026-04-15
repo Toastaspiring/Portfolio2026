@@ -271,9 +271,23 @@ const I18n = (() => {
 
   /* ---- Runtime state ---- */
 
+  /* Pick the initial locale:
+     1. Explicit user choice in localStorage (always wins — we never override it).
+     2. Browser languages (navigator.languages → navigator.language), matched
+        against our supported list by the short tag (e.g. "en-US" → "en").
+     3. Fall back to French. */
   function getStoredLocale() {
     const stored = localStorage.getItem(STORAGE_KEY);
-    return LOCALES.includes(stored) ? stored : DEFAULT;
+    if (LOCALES.includes(stored)) return stored;
+
+    const browserLangs = navigator.languages && navigator.languages.length
+      ? navigator.languages
+      : [navigator.language || ''];
+    for (const raw of browserLangs) {
+      const short = String(raw).toLowerCase().split('-')[0];
+      if (LOCALES.includes(short)) return short;
+    }
+    return DEFAULT;
   }
 
   let current = getStoredLocale();
