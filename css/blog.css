@@ -105,6 +105,22 @@
   padding: var(--space-2xl) var(--space-lg);
 }
 
+/* While the article is being processed (Mermaid render, KaTeX, image load),
+   it sits in the flow with opacity 0 and a slight offset. The opacity +
+   transform transitions are inlined from JS once the reveal class is added,
+   which avoids CSS @keyframes throttling in inspected/backgrounded tabs. */
+.article--preparing {
+  opacity: 0;
+  transform: translateY(6px);
+}
+
+.article--revealed {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 450ms cubic-bezier(0.22, 1, 0.36, 1),
+              transform 450ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 .article__nav {
   display: flex;
   align-items: center;

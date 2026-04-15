@@ -109,9 +109,9 @@ flowchart TD
     S[Zustand s] --> A1[Aktion a1]
     S --> A2[Aktion a2]
     S --> A3[Aktion a3]
-    A1 -->|Q(s,a1) = 8.2| R1[Geschätzte zukünftige Belohnung]
-    A2 -->|Q(s,a2) = 3.1| R2[Geschätzte zukünftige Belohnung]
-    A3 -->|Q(s,a3) = 9.7| R3[Geschätzte zukünftige Belohnung]
+    A1 -->|"Q(s,a1) = 8.2"| R1[Geschätzte zukünftige Belohnung]
+    A2 -->|"Q(s,a2) = 3.1"| R2[Geschätzte zukünftige Belohnung]
+    A3 -->|"Q(s,a3) = 9.7"| R3[Geschätzte zukünftige Belohnung]
     R3 --> CHOOSE[Gewählte Aktion: a3]
     style CHOOSE fill:#10b981,stroke:#064e3b,color:#fff
     style A3 fill:#10b981,stroke:#064e3b,color:#fff

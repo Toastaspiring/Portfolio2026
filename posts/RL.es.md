@@ -109,9 +109,9 @@ flowchart TD
     S[Estado s] --> A1[Acción a1]
     S --> A2[Acción a2]
     S --> A3[Acción a3]
-    A1 -->|Q(s,a1) = 8.2| R1[Recompensa futura estimada]
-    A2 -->|Q(s,a2) = 3.1| R2[Recompensa futura estimada]
-    A3 -->|Q(s,a3) = 9.7| R3[Recompensa futura estimada]
+    A1 -->|"Q(s,a1) = 8.2"| R1[Recompensa futura estimada]
+    A2 -->|"Q(s,a2) = 3.1"| R2[Recompensa futura estimada]
+    A3 -->|"Q(s,a3) = 9.7"| R3[Recompensa futura estimada]
     R3 --> CHOOSE[Acción elegida: a3]
     style CHOOSE fill:#10b981,stroke:#064e3b,color:#fff
     style A3 fill:#10b981,stroke:#064e3b,color:#fff
