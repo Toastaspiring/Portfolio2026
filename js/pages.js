@@ -507,18 +507,22 @@ const Pages = (() => {
     const month = date.toLocaleDateString(loc, { month: 'short' }).toUpperCase();
     const tags = (meta.tags || []).map(tag => `<span class="tag tag--clickable">${I18n.t('tags.' + tag, tag)}</span>`).join('');
 
+    const readingTime = meta.readingTime
+      ? `${meta.readingTime} ${t('blog.reading_time_suffix')}`
+      : '';
     return `
       <a href="#/blog/${slug}" class="post-item">
         <div class="post-item__date">
           <span class="post-item__day">${day}</span>
           <span class="post-item__month">${month}</span>
         </div>
+        ${readingTime ? `<span class="post-item__reading-time post-item__reading-time--mobile">${readingTime}</span>` : ''}
         <div class="post-item__content">
           <h3 class="post-item__title">${meta.title || slug}</h3>
           ${meta.excerpt ? `<p class="post-item__excerpt">${meta.excerpt}</p>` : ''}
           <div class="post-item__meta">
             ${tags}
-            ${meta.readingTime ? `<span class="post-item__reading-time">${meta.readingTime} ${t('blog.reading_time_suffix')}</span>` : ''}
+            ${readingTime ? `<span class="post-item__reading-time">${readingTime}</span>` : ''}
           </div>
         </div>
       </a>

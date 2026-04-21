@@ -99,6 +99,12 @@
   margin-right: var(--space-xs);
 }
 
+/* The mobile-only reading-time sits next to the date badge. Hidden on
+   desktop (the in-meta copy is shown instead). */
+.post-item__reading-time--mobile {
+  display: none;
+}
+
 /* --- Blog Post Article --- */
 .article {
   max-width: var(--narrow-width);
