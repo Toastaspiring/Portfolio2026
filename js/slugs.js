@@ -12,7 +12,7 @@ const Slugs = (() => {
 
   function load() {
     if (readyPromise) return readyPromise;
-    readyPromise = fetch('posts/slugs.json')
+    readyPromise = fetch('/posts/slugs.json')
       .then(r => r.ok ? r.json() : {})
       .catch(() => ({}))
       .then(data => {

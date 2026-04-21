@@ -1,22 +1,22 @@
 ---
-title: "When the Master's apprentice inherits a Master's intern"
+title: "When the Master's apprentice mentors his 1-year-ago self"
 date: 2026-04-21
 tags: [personal, humor, meta]
-excerpt: "A little spring mise en abyme: I'm you, you're me, and we both have a report to hand in come September."
+excerpt: "A little time-loop mise en abyme: I'm mentoring an intern who is literally me from 12 months ago, and I'm repeating the exact advice I got back then."
 ---
 
 Ok so I'm an apprentice on my Master's 1. Translation: I do my Master's *inside* the company, half school half work, and I turn in a report at the end of the year like any self-respecting student.
 
-Last week, the company drops the good news: I'm getting an intern. A Master's 1 intern. Who's going to work on my project. And who I'll be mentoring.
+Last week, the company drops the good news: I'm getting an intern. A Bachelor-year-3 intern. Who's going to work on my project. And who I'll be mentoring. Bachelor 3. One year behind me. Next year he'll be exactly where I am now.
 
 ![Spider-Man pointing at Spider-Man](https://i.imgflip.com/1tkjq9.jpg)
 
-Kickoff meeting. I walk him through the project. He takes notes. I look at him. He looks at me. Same age. Same degree level. Same low-key panic about our end-of-year reports. The only difference is I've been here a year and a half, so technically I'm the "senior". Senior of a year and a half. On a project that started a year ago.
+Kickoff meeting. I walk him through the project. He takes notes. I look at him. He looks at me. And then it hits me: his questions, I was asking them exactly a year ago. His doubts about the code, I had them. His "ok but for real what even is a REST API" — I remember *precisely* the moment I asked my mentor that. This is literally time travel.
 
-![Apprentice / intern — they're the same picture](https://api.memegen.link/images/same/apprentice/intern.jpg)
+![me now / me last year — they're the same picture](https://api.memegen.link/images/same/me_now/me_last_year.jpg)
 
-So Monday morning I prep my intern's to-do, and Monday evening my apprenticeship mentor preps mine — perfect mise en abyme. I have to sign off on his report while I'm struggling to write mine, the blind leading the blind in LaTeX. When he asks me a technical question I answer with a majestic "good question, let me get back to you" that really means "let me Google this in peace for 45 minutes". And in 1-on-1s I have to fake having experience — "so in the pro world..." bro, I've been here since Tuesday.
+So Monday morning I prep his to-do, and Monday evening my apprenticeship mentor preps mine — three-layer mise en abyme. I'm literally repeating the sentences my mentor tells me, with 12 months of hindsight. When he asks a technical question I answer with a majestic "good question, let me get back to you" that really means "let me Google this in peace for 45 minutes". And in 1-on-1s I have to fake experience — "so in the pro world..." bro, a year ago I was literally you.
 
-Ok, jokes aside, it's surprisingly formative. Having to explain something to someone forces you to actually understand it. Imposter syndrome loses a little ground every time the intern comes back with "oh yeah it works, thanks!". And the big one: when you don't know, say you don't know. The biggest trap when you're "the reference" with a year and a half's advance is trying to fake it. Spoiler: it shows.
+Ok, jokes aside, it's surprisingly formative. Having to explain something to someone forces you to understand it for real — and realizing you ACTUALLY GET things that were Greek to you a year ago is weirdly satisfying. Imposter syndrome loses a little ground every time the intern comes back with "oh yeah it works, thanks!". And the big one: when you don't know, say you don't know. The biggest trap when you're "the reference" with a year's advance is trying to fake it. Spoiler: it shows. And you forget that a year ago you were floundering on that exact same thing.
 
-So to all future apprentices who'll inherit an intern from their own cohort: breathe, it's actually fun. And get ready to proofread two reports in September.
+So to all future apprentices who'll inherit an intern one year behind them: breathe, it's actually fun. You're mentoring your past self — that's a rare privilege.

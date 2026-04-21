@@ -9,7 +9,7 @@ const Pages = (() => {
   const t = (k, fallback) => (typeof I18n !== 'undefined' ? I18n.t(k, fallback) : fallback || k);
 
   /* ---- HOME (renders all panels) ---- */
-  function home(app) {
+  function home(app, _params, routePath) {
     app.classList.add('main--home');
 
     // Pre-process the intro HTML — replace placeholder classes with inline styles
@@ -210,8 +210,11 @@ const Pages = (() => {
       </section>
     `;
 
-    // If URL is already on a panel route, switch immediately
-    const hash = window.location.hash;
+    // If the active route is already a non-home panel, switch immediately.
+    // We prefer the explicit routePath passed by the router over reading
+    // window.location.hash — the router strips the hash as part of syncing
+    // the URL to the canonical path form.
+    const hash = routePath || window.location.hash;
     if (hash === '#/projects') {
       document.getElementById('panel-home').style.display = 'none';
       const proj = document.getElementById('panel-projects');
@@ -257,16 +260,16 @@ const Pages = (() => {
     }
 
     // Rewrite the browser URL to the path form (/en/blog/apprentice-intern/)
-    // so that copy-pasting it into Discord/Slack/etc. gets the pre-rendered
-    // OG tags. Hash routing still drives the actual SPA navigation.
+    // so copy-pasting into Discord/Slack/etc. gets the pre-rendered OG tags.
+    // Hash routing still drives the actual SPA navigation; path carries the
+    // language so ?lang= is redundant and stripped.
     try {
       if (typeof Slugs !== 'undefined') {
         const lang = typeof I18n !== 'undefined' ? I18n.current() : 'fr';
         const canonical = Slugs.canonical(slug);
         const alias = Slugs.localized(canonical, lang);
         const prefix = lang === 'fr' ? '/blog/' : '/' + lang + '/blog/';
-        const pathUrl = prefix + alias + '/' + window.location.search;
-        history.replaceState(null, '', pathUrl);
+        history.replaceState(null, '', prefix + alias + '/');
       }
     } catch { /* replaceState failures are non-fatal */ }
 
@@ -555,7 +558,7 @@ const Pages = (() => {
     // Try to discover posts from an index, fall back to CONFIG.posts
     let slugs = CONFIG.posts || [];
     try {
-      const res = await fetch('posts/index.json');
+      const res = await fetch('/posts/index.json');
       if (res.ok) slugs = await res.json();
     } catch { /* use CONFIG.posts */ }
 
@@ -568,7 +571,7 @@ const Pages = (() => {
     const suffix = (typeof I18n !== 'undefined') ? I18n.postSuffix() : '';
     const results = [];
     for (const slug of slugs) {
-      const candidates = suffix ? [`posts/${slug}${suffix}.md`, `posts/${slug}.md`] : [`posts/${slug}.md`];
+      const candidates = suffix ? [`/posts/${slug}${suffix}.md`, `/posts/${slug}.md`] : [`/posts/${slug}.md`];
       let raw = null;
       for (const path of candidates) {
         try {
