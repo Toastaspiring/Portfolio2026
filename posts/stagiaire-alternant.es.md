@@ -1,22 +1,28 @@
 ---
-title: "Cuando el alternante de Máster tutoriza a su yo de hace un año"
+title: "Alternante de Máster 1 tutorizando a un becario de Grado 3: el viaje en el tiempo que nadie pidió"
 date: 2026-04-21
 tags: [personal, humor, meta]
-excerpt: "Pequeña mise en abyme temporal: tutorizo a un becario que es literalmente mi yo de hace 12 meses, y le repito los consejos que me daban en su lugar."
+excerpt: "Tutorizo a un becario. Está en tercero de Grado — un año por detrás. Prácticamente estoy tutorizando a mi yo del pasado, lo cual suena bonito hasta que recuerdas que tu yo del pasado era un poco cortito."
 ---
 
-Bueno, soy alternante en Máster 1. Traducción: hago mi Máster *dentro* de la empresa, mitad escuela mitad curro, y entrego un informe a final de año como todo estudiante que se precie.
+Vale, soy alternante en Máster 1. Traducción: hago el Máster DENTRO de la empresa, 3 semanas aquí 1 semana en la uni, y a final de año entrego una memoria que leerán dos personas — yo y mi tutor, y te juro que lo del tutor lo digo por cortesía.
 
-La semana pasada, la empresa me suelta la buena noticia: me asignan un becario. Un becario de tercer año de Grado. Que va a currar en mi proyecto. Y al que voy a tutorizar. Grado 3. Un año por detrás. El año que viene estará exactamente donde estoy yo ahora.
+La semana pasada la empresa me suelta, toda sonriente: «buenas noticias, te hemos asignado un becario.» Un becario. **De tercero de Grado.** Que va a currar en MI proyecto. Y al que voy a tutorizar.
+
+Tercero de Grado. Un año por detrás. El año que viene estará exactamente donde estoy yo ahora — con suerte, con una idea un poco más clara del Teorema Central del Límite de la que yo tenía.
 
 ![Spider-Man señalando a Spider-Man](https://i.imgflip.com/1tkjq9.jpg)
 
-Reunión de kickoff. Le presento el proyecto. Toma notas. Yo lo miro. Él me mira. Y ahí lo pillo: sus preguntas, yo me las hacía hace exactamente un año. Sus dudas sobre el código, las tenía. Su «vale, pero en realidad ¿qué es una API REST?» — recuerdo *exactamente* el momento en que se la pregunté a mi tutor. Esto es literalmente viaje en el tiempo.
+Reunión de kickoff. Presento el proyecto con una seguridad del 0%. Él toma apuntes. Yo lo miro. Él me mira. Y ahí CLICK — lo pillo: sus preguntas son palabra por palabra las mías de hace 12 meses. Su «vale pero en plan, ¿qué es exactamente el Teorema Central del Límite?» — recuerdo el momento EXACTO en que se la hice a mi profe de estadística con la misma cara de apuro, rezando para que la respuesta fuera corta. Spoiler: no lo era.
 
-![me now / me last year — they're the same picture](https://api.memegen.link/images/same/me_now/me_last_year.jpg)
+Y así todos los días. Mi vida se ha convertido en una telenovela en dos actos con el mismo reparto, sólo que mañana yo soy la de la izquierda y el becario el gato de la derecha :
 
-Así que el lunes por la mañana le preparo la to-do, y el lunes por la tarde mi tutor de alternancia me prepara la mía — mise en abyme perfecta en tres capas. Le repito literalmente las frases que me dice mi tutor, con 12 meses de perspectiva. Cuando me hace una pregunta técnica respondo con un majestuoso «buena pregunta, te vuelvo» que en realidad quiere decir «déjame googlearlo tranquilo 45 minutos». Y en los 1-on-1 tengo que fingir experiencia — «mira, en el mundo profesional...» tío, hace un año yo era literalmente tú.
+![Mi tutor hoy vs yo mañana con el becario](https://api.memegen.link/images/woman-cat/mi_tutor_explicandome_hoy/yo_explicandoselo_al_becario_manana.jpg)
 
-Ok, bromas aparte, es sorprendentemente formativo. Tener que explicarle algo a alguien te obliga a entenderlo de verdad — y darte cuenta de que REALMENTE pillas cosas que hace un año te sonaban a chino es raramente satisfactorio. El síndrome del impostor pierde terreno cada vez que el becario vuelve con un «ah vale, funciona, ¡gracias!». Y sobre todo: cuando no sabes, dices que no sabes. La mayor trampa cuando eres "el referente" con un año de ventaja es intentar disimular. Spoiler: se nota. Y olvidas que hace un año tú estabas peleándote exactamente con lo mismo.
+Y en los 1-on-1 tengo que fingir Experiencia Profesional que no tengo. «Mira, en el mundo profesional...» — tío, hace un año yo era *literalmente tú*, mirando mi primer notebook de jupyter como si me debiera dinero, peleándome con por qué `shape` y `size` no eran la misma cosa.
 
-Así que a todos los futuros alternantes que vayan a heredar un becario un año por detrás: respira, es divertido al final. Estás tutorizando a tu yo del pasado — es un privilegio raro.
+Vale, bromas aparte (dos segundos). Es sorprendentemente formativo. Tener que explicarle algo a alguien te obliga a entenderlo de verdad. Y darte cuenta de que REALMENTE pillas cosas que hace 12 meses te sonaban a arameo es raramente terapéutico. El síndrome del impostor retrocede un poco cada vez que el becario vuelve con un «ah vale, converge, ¡gracias!».
+
+La lección: cuando no sabes, dices que no sabes. La trampa letal cuando eres «el referente» con un añito de ventaja es querer disimular. Spoiler: se nota. Y te olvidas de que hace 12 meses eras la misma persona peleándote exactamente con la misma demostración.
+
+Así que a todos los futuros alternantes a punto de heredar un becario un año por detrás: respira. Estás tutorizando a tu yo del pasado — es un privilegio raro. La mayoría de la gente pagaría buen dinero por viajar en el tiempo y echarse la bronca a sí misma sobre una prueba de convergencia.
