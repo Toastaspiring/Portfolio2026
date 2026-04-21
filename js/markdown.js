@@ -119,10 +119,16 @@ const Markdown = (() => {
   }
 
   /* Fetch and parse a markdown file. Tries the current-locale variant first
-     (e.g. posts/RL.en.md) and falls back to the original French file. */
+     (e.g. posts/RL.en.md) and falls back to the original French file.
+     The input slug may be a per-language alias (e.g. "apprentice-intern"
+     for EN) — we resolve it to the canonical filename slug first. */
   async function loadPost(slug) {
+    if (typeof Slugs !== 'undefined') await Slugs.ready();
+    const canonical = (typeof Slugs !== 'undefined') ? Slugs.canonical(slug) : slug;
     const suffix = (typeof I18n !== 'undefined') ? I18n.postSuffix() : '';
-    const candidates = suffix ? [`posts/${slug}${suffix}.md`, `posts/${slug}.md`] : [`posts/${slug}.md`];
+    const candidates = suffix
+      ? [`posts/${canonical}${suffix}.md`, `posts/${canonical}.md`]
+      : [`posts/${canonical}.md`];
 
     for (const path of candidates) {
       try {

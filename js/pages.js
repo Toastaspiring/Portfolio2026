@@ -510,8 +510,13 @@ const Pages = (() => {
     const readingTime = meta.readingTime
       ? `${meta.readingTime} ${t('blog.reading_time_suffix')}`
       : '';
+    // Render the per-language alias (e.g. "apprentice-intern" in EN) so the
+    // URL matches the content language. Falls back to the canonical slug.
+    const hrefSlug = (typeof Slugs !== 'undefined')
+      ? Slugs.localized(slug, typeof I18n !== 'undefined' ? I18n.current() : 'fr')
+      : slug;
     return `
-      <a href="#/blog/${slug}" class="post-item">
+      <a href="#/blog/${hrefSlug}" class="post-item">
         <div class="post-item__date">
           <span class="post-item__day">${day}</span>
           <span class="post-item__month">${month}</span>
