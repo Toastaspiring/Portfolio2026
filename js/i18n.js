@@ -347,11 +347,22 @@ const I18n = (() => {
     return typeof val === 'string' ? val : (fallback ?? key);
   }
 
-  /* Change locale and reload the page (simplest way to re-render everything). */
+  /* Change locale: persist, rewrite the URL to reflect the new lang, and
+     navigate. location.replace() forces navigation to the new URL —
+     location.reload() ignores history.replaceState() and re-fetches the
+     original URL, which would re-read the stale ?lang= and clobber the
+     localStorage we just wrote. */
   function setLocale(locale) {
     if (!LOCALES.includes(locale)) return;
     localStorage.setItem(STORAGE_KEY, locale);
-    window.location.reload();
+
+    const url = new URL(window.location.href);
+    if (locale === DEFAULT) url.searchParams.delete('lang');
+    else url.searchParams.set('lang', locale);
+
+    const target = url.toString();
+    if (target === window.location.href) window.location.reload();
+    else window.location.replace(target);
   }
 
   /* Get the post file suffix: '' for FR, '.en' / '.de' / '.es' otherwise. */
