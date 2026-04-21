@@ -1,35 +1,38 @@
 ---
-title: "Alternant M1 qui encadre un stagiaire L3 : le voyage dans le temps que personne n'avait demandé"
+title: "Mon stagiaire était moi il y a un an"
 date: 2026-04-21
 tags: [personal, humor, meta]
-excerpt: "J'encadre un stagiaire. Il est en L3, j'étais en L3 il y a un an, et quand il me pose une question, j'entends littéralement ma propre voix d'il y a 12 mois."
+excerpt: "Alternant en M1, j'encadre un stagiaire en L3. C'est exactement le même gars que moi il y a 12 mois, en chair et en os, et il attend que je lui réponde."
 ---
 
-Bon. Je suis alternant en Master 1. Traduit : je fais mon Master dans l'entreprise, 3 semaines ici 1 à l'école, et en fin d'année je rends un rapport que deux personnes liront — moi et mon tuteur, et je mets une main à couper sur le « moi ».
+Mon RH débarque lundi matin avec ce sourire qui annonce jamais rien de bon.
 
-La semaine dernière, l'entreprise me sort tout sourire : « bonne nouvelle, on t'a assigné un stagiaire. » Un stagiaire. **En L3.** Qui va bosser sur MON projet. Et que je vais encadrer.
+« Louis, super nouvelle : on t'a mis un stagiaire. »
 
-L3. Un an derrière moi. L'année prochaine il sera exactement là où je suis aujourd'hui — avec, j'espère pour lui, une idée un peu plus claire du théorème central limite que celle que j'avais.
+Je souris poliment. « Un stagiaire en L3. » Mon sourire tremble. « Sur ton projet. » Mon sourire meurt.
+
+Je suis alternant en M1. Un an et demi d'ancienneté dans la boîte, dont six mois où j'ai simulé la compréhension. Et on me donne **un mec qui m'appelle monsieur.**
 
 ![Spider-Man pointant Spider-Man](https://i.imgflip.com/1tkjq9.jpg)
 
-Réunion de kickoff. Je présente le projet avec une assurance que j'ai à 0%. Il prend des notes. Je le regarde. Il me regarde. Et là PAN — je réalise : ses questions sont mot pour mot les miennes il y a 12 mois. Son « ok mais concrètement c'est quoi le CLT » — je me souviens EXACTEMENT du moment où je l'ai posée à mon prof de stats, avec la même gueule un peu gênée, en priant pour que la réponse soit courte. Spoiler : elle l'était pas.
+Réunion de kickoff. Je lui présente le projet avec une autorité que je possède à 0%. Il prend des notes. Il note *tout*. Il note même les phrases où j'improvise.
 
-Le plus beau c'est qu'on fonctionne tous en pyramide du bluff. Une Matrioshka corporate :
+Puis la première question tombe. « Ok super. Mais... en vrai, c'est quoi le théorème central limite dans notre cas ? »
 
-- **Moi avec le stagiaire** : « oui oui la convergence en loi c'est subtil, je te montre »
-- **Moi avec mon tuteur** : « en vrai cette partie du modèle je sens qu'il y a un truc, t'aurais 5 min ? »
-- **Mon tuteur avec son N+1** : aucune idée, mais j'imagine que c'est pareil
-- **Son N+1 avec le CEO** : bonne question, je reviens vers toi
+Silence. Je me fige. Parce que je me souviens. Précisément. J'ai posé cette exacte question à mon tuteur il y a 12 mois. Mardi 15h. Machine à café. Même gueule gênée. Je m'en souviens au pixel près.
 
-Ça monte comme ça jusqu'en haut, je sais pas où ça s'arrête. Peut-être jamais. L'entreprise toute entière tient debout grâce à un immense « laisse-moi Google ça 45 min » collectif.
+*Il est moi.*
+
+Et il attend une réponse. De moi. Qui viens littéralement de comprendre la semaine dernière.
+
+Depuis, on tourne en boucle parfaite. Lundi matin je lui prépare sa to-do, bienveillant. Lundi soir mon tuteur me prépare la mienne, bienveillant. Mardi il me demande un truc, je sors « bonne question, je reviens vers toi ». Mercredi je demande ce truc à mon tuteur, qui me sort « bonne question, je reviens vers toi ». Jeudi stand-up tous les trois, chacun bluffant à une couche différente du stack. Vendredi je me demande si le concept de "sachant" existe quelque part dans cet univers, ou si c'est juste une hallucination collective qu'on entretient pour pas paniquer.
 
 ![Tout le monde bluffe — this is fine](https://api.memegen.link/images/fine/tout_le_monde_bluffe/this_is_fine.jpg)
 
-Et en 1-on-1 je dois performer l'Expérience Professionnelle que j'ai pas. « Alors tu vois, dans le monde pro... » frère, il y a un an j'étais littéralement toi, j'hallucinais devant mon premier jupyter notebook qui arrivait même pas à importer numpy. Je me souviens de TOUT.
+Le pire moment c'est les 1-on-1. Je dois performer l'**Expérience Professionnelle**. « Alors tu vois, dans le monde pro... » Frère. *Frère.* Y'a un an j'étais littéralement toi. J'ouvrais VS Code pour la première fois. Je confondais numpy et pandas. Je pensais qu'on déployait un modèle en pushant sur GitHub. Je me souviens de **tout.** Je bluffe comme un fou. Et il gobe. Il prend des notes. Il dit « d'accord » avec le même sérieux que moi devant mon tuteur.
 
-Bon ok, blagues à part. C'est étonnamment formateur. Devoir expliquer un truc t'oblige à le comprendre pour de vrai — et réaliser que tu CAPTES des concepts qu'il y a 12 mois te paraissaient du sanskrit, c'est bizarrement thérapeutique. Le syndrome de l'imposteur recule de quelques pas à chaque « ah ouais ça converge, merci ! » du stagiaire.
+Blagues à part (trente secondes) : c'est étonnamment formateur. Expliquer force à comprendre. Et réaliser que les trucs qui te semblaient du grec ancien il y a 12 mois sont devenus tes outils de tous les jours — c'est une thérapie à pas cher. Chaque « ah ouais ça marche, merci ! » du stagiaire, c'est un petit coup de hache dans le syndrome de l'imposteur.
 
-La leçon : quand tu sais pas, tu dis que tu sais pas. Le piège mortel quand t'es "référent" avec un an d'avance, c'est de vouloir faire semblant. Spoiler : ça se voit. Et t'oublies qu'il y a 12 mois t'étais la même personne qui galérait sur exactement la même démo.
+La leçon qui tue : quand tu sais pas, dis que tu sais pas. Le piège quand t'es "référent" avec un an d'avance, c'est de croire qu'il faut faire semblant. Spoiler : ça se voit. Et tu te coupes de la seule personne qui pourrait te forcer à comprendre pour de vrai.
 
-Donc à tous les futurs alternants qui vont hériter d'un stagiaire un an en arrière : respire. Tu encadres ton moi du passé — c'est un privilège rare. La plupart des gens paieraient cher pour pouvoir voyager dans le temps et s'engueuler eux-mêmes sur une démo de convergence.
+Donc aux futurs alternants qui hériteront d'un stagiaire un an derrière eux : respire. Tu encadres ton moi du passé. C'est la seule occasion que la vie te donnera de lui dire les trucs que t'aurais aimé qu'on te dise. Profites-en. Et prends des notes pour ton propre tuteur.
