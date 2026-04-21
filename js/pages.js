@@ -259,7 +259,7 @@ const Pages = (() => {
     const localeMap = { fr: 'fr-FR', en: 'en-US', de: 'de-DE', es: 'es-ES' };
     const dateLocale = localeMap[typeof I18n !== 'undefined' ? I18n.current() : 'fr'] || 'en-US';
     const date = post.meta.date ? new Date(post.meta.date).toLocaleDateString(dateLocale, { year: 'numeric', month: 'long', day: 'numeric' }) : '';
-    const tags = (post.meta.tags || []).map(tag => `<span class="tag">${tag}</span>`).join('');
+    const tags = (post.meta.tags || []).map(tag => `<span class="tag">${I18n.t('tags.' + tag, tag)}</span>`).join('');
 
     // Build the real article element, replacing the skeleton. It starts with
     // opacity 0 so any raw Mermaid / KaTeX source isn't visible while we
@@ -505,7 +505,7 @@ const Pages = (() => {
     const localeMap = { fr: 'fr-FR', en: 'en-US', de: 'de-DE', es: 'es-ES' };
     const loc = localeMap[typeof I18n !== 'undefined' ? I18n.current() : 'fr'] || 'en-US';
     const month = date.toLocaleDateString(loc, { month: 'short' }).toUpperCase();
-    const tags = (meta.tags || []).map(tag => `<span class="tag tag--clickable">${tag}</span>`).join('');
+    const tags = (meta.tags || []).map(tag => `<span class="tag tag--clickable">${I18n.t('tags.' + tag, tag)}</span>`).join('');
 
     return `
       <a href="#/blog/${slug}" class="post-item">
