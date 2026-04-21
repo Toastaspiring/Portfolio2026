@@ -428,6 +428,16 @@ const I18n = (() => {
     if (locale === DEFAULT) url.searchParams.delete('lang');
     else url.searchParams.set('lang', locale);
 
+    // If we're on a blog post page, rewrite the slug to the new locale's
+    // alias so URLs stay in-language after a switch. Canonical slugs (or
+    // slugs with no translation) pass through unchanged.
+    const match = url.hash.match(/^#\/blog\/(.+)$/);
+    if (match && typeof Slugs !== 'undefined') {
+      const canonical = Slugs.canonical(match[1]);
+      const nextSlug = Slugs.localized(canonical, locale);
+      if (nextSlug !== match[1]) url.hash = '#/blog/' + nextSlug;
+    }
+
     const target = url.toString();
     if (target === window.location.href) window.location.reload();
     else window.location.replace(target);
