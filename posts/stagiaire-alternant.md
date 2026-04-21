@@ -13,8 +13,6 @@ Je souris poliment. « Un stagiaire en L3. » Mon sourire tremble. « Sur ton pr
 
 Je suis alternant en M1. Un an et demi d'ancienneté dans la boîte, dont six mois où j'ai simulé la compréhension. Et on me donne **un mec qui m'appelle monsieur.**
 
-![Spider-Man pointant Spider-Man](https://i.imgflip.com/1tkjq9.jpg)
-
 Réunion de kickoff. Je lui présente le projet avec une autorité que je possède à 0%. Il prend des notes. Il note *tout*. Il note même les phrases où j'improvise.
 
 Puis la première question tombe. « Ok super. Mais... en vrai, c'est quoi le théorème central limite dans notre cas ? »
@@ -22,6 +20,8 @@ Puis la première question tombe. « Ok super. Mais... en vrai, c'est quoi le th
 Silence. Je me fige. Parce que je me souviens. Précisément. J'ai posé cette exacte question à mon tuteur il y a 12 mois. Mardi 15h. Machine à café. Même gueule gênée. Je m'en souviens au pixel près.
 
 *Il est moi.*
+
+![Spider-Man pointant Spider-Man](https://i.imgflip.com/1tkjq9.jpg)
 
 Et il attend une réponse. De moi. Qui viens littéralement de comprendre la semaine dernière.
 
