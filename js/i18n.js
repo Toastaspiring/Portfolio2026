@@ -271,12 +271,47 @@ const I18n = (() => {
 
   /* ---- Runtime state ---- */
 
+  /* Read ?lang=xx from the URL (case-insensitive). Returns a supported locale
+     or null. Query param must appear before the hash: /?lang=en#/blog/xxx. */
+  function getUrlLang() {
+    const match = window.location.search.match(/[?&]lang=([^&]+)/);
+    if (!match) return null;
+    const lang = decodeURIComponent(match[1]).toLowerCase();
+    return LOCALES.includes(lang) ? lang : null;
+  }
+
+  /* Silently sync ?lang=xx with the active locale via replaceState — no
+     reload, no router trigger (the hash is untouched). Default locale is
+     kept off the URL to keep FR URLs clean; non-default is always shown
+     so shared/copied links land the recipient on the same language. */
+  function syncUrlParam(locale) {
+    try {
+      const url = new URL(window.location.href);
+      const currentParam = url.searchParams.get('lang');
+      if (locale === DEFAULT) {
+        if (currentParam === null) return;
+        url.searchParams.delete('lang');
+      } else {
+        if (currentParam === locale) return;
+        url.searchParams.set('lang', locale);
+      }
+      window.history.replaceState(null, '', url.toString());
+    } catch (_) { /* ignore URL parsing issues */ }
+  }
+
   /* Pick the initial locale:
-     1. Explicit user choice in localStorage (always wins — we never override it).
-     2. Browser languages (navigator.languages → navigator.language), matched
-        against our supported list by the short tag (e.g. "en-US" → "en").
-     3. Fall back to French. */
+     1. URL ?lang=xx — shareable deep links, highest priority (also persisted).
+     2. Explicit user choice in localStorage.
+     3. Browser / system languages (navigator.languages → navigator.language),
+        matched by short tag (e.g. "en-US" → "en").
+     4. Fall back to French. */
   function getStoredLocale() {
+    const urlLang = getUrlLang();
+    if (urlLang) {
+      localStorage.setItem(STORAGE_KEY, urlLang);
+      return urlLang;
+    }
+
     const stored = localStorage.getItem(STORAGE_KEY);
     if (LOCALES.includes(stored)) return stored;
 
@@ -295,6 +330,10 @@ const I18n = (() => {
 
   // Reflect the locale on the root element right away.
   document.documentElement.lang = current;
+
+  // Keep URL ?lang=xx in sync with the active locale so copied URLs
+  // always reproduce the same experience for the recipient.
+  syncUrlParam(current);
 
   /* Resolve a dot-path key against the dictionary. */
   function t(key, fallback) {
