@@ -146,18 +146,38 @@ function buildPanelUrl(lang, panel) {
   return `${SITE_URL}${langSeg}${panelSeg}/`;
 }
 
-function panelOutputPath(lang, panel) {
-  let dir = DIST;
-  if (lang !== DEFAULT_LANG) dir = path.join(dir, lang);
-  if (panel.slug) dir = path.join(dir, panel.slug);
-  return path.join(dir, 'index.html');
+/* For the default language, pages live at two URLs: the canonical one
+   (no prefix — /blog/, /) AND a symmetric one (/fr/blog/, /fr/) so users
+   who type the language prefix don't hit a 404. Returns an array of paths;
+   the first entry is the canonical output (canonical tag points there). */
+function panelOutputPaths(lang, panel) {
+  const paths = [];
+  // Canonical
+  {
+    let dir = DIST;
+    if (lang !== DEFAULT_LANG) dir = path.join(dir, lang);
+    if (panel.slug) dir = path.join(dir, panel.slug);
+    paths.push(path.join(dir, 'index.html'));
+  }
+  // Symmetric alias for the default language
+  if (lang === DEFAULT_LANG) {
+    let dir = path.join(DIST, lang);
+    if (panel.slug) dir = path.join(dir, panel.slug);
+    paths.push(path.join(dir, 'index.html'));
+  }
+  return paths;
 }
 
-function postOutputPath(lang, alias) {
-  const dir = lang === DEFAULT_LANG
+function postOutputPaths(lang, alias) {
+  const paths = [];
+  const canonical = lang === DEFAULT_LANG
     ? path.join(DIST, 'blog', alias)
     : path.join(DIST, lang, 'blog', alias);
-  return path.join(dir, 'index.html');
+  paths.push(path.join(canonical, 'index.html'));
+  if (lang === DEFAULT_LANG) {
+    paths.push(path.join(DIST, lang, 'blog', alias, 'index.html'));
+  }
+  return paths;
 }
 
 async function readMarkdownForLang(canonicalSlug, lang) {
@@ -320,12 +340,13 @@ async function preRenderPosts(template, postIndex, slugsMap) {
         bootstrap: makeBootstrap(lang, `#/blog/${alias}`),
       });
 
-      const outPath = postOutputPath(lang, alias);
-      await fs.mkdir(path.dirname(outPath), { recursive: true });
-      await fs.writeFile(outPath, html, 'utf8');
-      count++;
-      const rel = lang === DEFAULT_LANG ? `/blog/${alias}/` : `/${lang}/blog/${alias}/`;
-      console.log(`  ✓ ${rel}`);
+      for (const outPath of postOutputPaths(lang, alias)) {
+        await fs.mkdir(path.dirname(outPath), { recursive: true });
+        await fs.writeFile(outPath, html, 'utf8');
+        count++;
+        const rel = '/' + path.relative(DIST, outPath).replace(/\\/g, '/').replace(/index\.html$/, '');
+        console.log(`  ✓ ${rel}`);
+      }
     }
   }
   return count;
@@ -357,13 +378,13 @@ async function preRenderPanels(template) {
         bootstrap: makeBootstrap(lang, panel.hash),
       });
 
-      const outPath = panelOutputPath(lang, panel);
-      await fs.mkdir(path.dirname(outPath), { recursive: true });
-      await fs.writeFile(outPath, html, 'utf8');
-      count++;
-      const langSeg = lang === DEFAULT_LANG ? '' : `/${lang}`;
-      const panelSeg = panel.slug ? `/${panel.slug}` : '';
-      console.log(`  ✓ ${langSeg}${panelSeg}/`);
+      for (const outPath of panelOutputPaths(lang, panel)) {
+        await fs.mkdir(path.dirname(outPath), { recursive: true });
+        await fs.writeFile(outPath, html, 'utf8');
+        count++;
+        const rel = '/' + path.relative(DIST, outPath).replace(/\\/g, '/').replace(/index\.html$/, '');
+        console.log(`  ✓ ${rel}`);
+      }
     }
   }
   return count;
