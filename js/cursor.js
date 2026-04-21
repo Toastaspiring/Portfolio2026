@@ -11,12 +11,15 @@ const Cursor = (() => {
   let visible = false;
 
   function init() {
-    // Skip custom cursor on touch devices (no hover pointer at all)
-    if (window.matchMedia('(hover: none)').matches) return;
-
     // Respect the OS "reduce motion" preference — give those users the
-    // native cursor with no lerp, no custom crosshair, no surprises.
+    // native cursor / no animations, no surprises.
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    // Touch devices get a tap ripple instead of the crosshair cursor.
+    if (window.matchMedia('(hover: none)').matches) {
+      initTapRipple();
+      return;
+    }
 
     el = document.createElement('div');
     el.id = 'custom-cursor';
@@ -123,13 +126,52 @@ const Cursor = (() => {
   }
 
   function animate() {
-    // Tighter lerp (was 0.18) — still smooth, but tracks the real cursor
-    // closely enough to feel responsive rather than laggy.
-    curX += (mouseX - curX) * 0.35;
-    curY += (mouseY - curY) * 0.35;
+    // Near-native tracking: lerp at 0.8 catches up in ~3 frames (~50ms),
+    // imperceptible as lag but keeps the crosshair from jittering pixel-
+    // perfect with the mouse. Almost-original speed, very tiny smoothing.
+    curX += (mouseX - curX) * 0.8;
+    curY += (mouseY - curY) * 0.8;
     // Center the 32x32 element on the cursor position
     el.style.transform = `translate(${curX - 16}px, ${curY - 16}px)`;
     requestAnimationFrame(animate);
+  }
+
+  /* Touch devices: spawn an expanding red ring at each tap point.
+     Clean confirmation feedback that matches the site's accent color. */
+  function initTapRipple() {
+    const style = document.createElement('style');
+    style.textContent = `
+      .tap-ripple {
+        position: fixed;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 2px solid #e63946;
+        background: transparent;
+        pointer-events: none;
+        z-index: 99999;
+        transform: translate(-50%, -50%) scale(0);
+        animation: tap-ripple-anim 520ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        will-change: transform, opacity;
+      }
+      @keyframes tap-ripple-anim {
+        0%   { transform: translate(-50%, -50%) scale(0);   opacity: 1; }
+        35%  { transform: translate(-50%, -50%) scale(1);   opacity: 1; }
+        100% { transform: translate(-50%, -50%) scale(2.6); opacity: 0; }
+      }
+    `;
+    document.head.appendChild(style);
+
+    document.addEventListener('touchstart', (e) => {
+      const touch = e.touches[0];
+      if (!touch) return;
+      const ripple = document.createElement('div');
+      ripple.className = 'tap-ripple';
+      ripple.style.left = touch.clientX + 'px';
+      ripple.style.top = touch.clientY + 'px';
+      document.body.appendChild(ripple);
+      ripple.addEventListener('animationend', () => ripple.remove(), { once: true });
+    }, { passive: true });
   }
 
   return { init };
