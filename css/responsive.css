@@ -36,13 +36,30 @@
     text-align: center;
   }
 
+  /* Mobile post-item: [date · reading-time] on row 1, content on row 2.
+     flex-wrap forces post-item__content (flex-basis: 100%) onto its own line. */
   .post-item {
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
     gap: var(--space-sm);
   }
   .post-item__date {
     flex-direction: row;
     gap: var(--space-xs);
+  }
+  .post-item__content {
+    flex-basis: 100%;
+  }
+  .post-item__reading-time--mobile {
+    display: inline;
+    font-size: var(--text-xs);
+    color: var(--text-tertiary);
+  }
+  /* On mobile the reading-time now lives next to the date — drop the
+     duplicate inside the tags row. */
+  .post-item__meta .post-item__reading-time {
+    display: none;
   }
 
   .article__title {
