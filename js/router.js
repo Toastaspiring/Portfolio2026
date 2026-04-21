@@ -140,7 +140,7 @@ const Router = (() => {
   }
 
   /* Slide transition between blog panel and blog post page */
-  async function slidePage(direction, handler, app, params, returningToPanel) {
+  async function slidePage(direction, handler, app, params, returningToPanel, path) {
     transitioning = true;
     const dist = 120;
     const exitX = direction === 'forward' ? -dist : dist;
@@ -166,7 +166,7 @@ const Router = (() => {
       app.style.cssText = '';
       app.classList.remove('main--home');
       window.scrollTo({ top: 0 });
-      await handler(app, params);
+      await handler(app, params, path);
 
       // Show blog panel, hide others
       const homePanel = document.getElementById('panel-home');
@@ -203,7 +203,7 @@ const Router = (() => {
       app.style.cssText = '';
       app.classList.remove('main--home');
       window.scrollTo({ top: 0 });
-      await handler(app, params);
+      await handler(app, params, path);
 
       const footer = document.querySelector('.footer');
       if (footer) footer.style.display = '';
@@ -228,21 +228,42 @@ const Router = (() => {
     transitioning = false;
   }
 
+  /* Rewrite the browser URL to match the active route's canonical path URL:
+   *   #/           -> /          (or /en/, /de/, /es/)
+   *   #/blog       -> /blog/     (or /<lang>/blog/)
+   *   #/projects   -> /projects/ (or /<lang>/projects/)
+   * Post routes (#/blog/<slug>) handle their own replaceState in
+   * pages.blogPost() once the markdown has loaded. Hash is stripped in
+   * the process so shared URLs hit the pre-rendered file with its OG tags. */
+  function syncUrlPath(hashPath) {
+    if (hashPath.startsWith('#/blog/') && hashPath !== '#/blog') return;
+    const lang = typeof I18n !== 'undefined' ? I18n.current() : 'fr';
+    const langPrefix = lang === 'fr' ? '' : '/' + lang;
+    let target;
+    if (hashPath === '#/') target = (langPrefix || '') + '/';
+    else if (hashPath === '#/blog') target = langPrefix + '/blog/';
+    else if (hashPath === '#/projects') target = langPrefix + '/projects/';
+    else return;
+
+    // Build the canonical URL: target pathname, search without ?lang=,
+    // empty hash. ?lang= would be redundant with the path prefix.
+    const url = new URL(window.location.href);
+    url.pathname = target;
+    url.searchParams.delete('lang');
+    url.hash = '';
+    const desired = url.pathname + url.search;
+    const currentNoHash = window.location.pathname + window.location.search;
+    if (currentNoHash !== desired || window.location.hash) {
+      history.replaceState(null, '', desired);
+    }
+  }
+
   async function navigate() {
     if (transitioning) return;
 
-    // Keep the URL pathname clean for non-post routes. When arriving from
-    // a pre-rendered post file (/en/blog/<alias>/) the pathname is non-root;
-    // reset it so hash transitions don't leave stale paths like
-    // "/en/blog/<alias>/#/blog". blogPost() re-sets the pathname to the
-    // localized path form after a post successfully loads.
-    const pn = window.location.pathname;
-    if (pn !== '/' && pn !== '/index.html') {
-      const clean = '/' + window.location.search + window.location.hash;
-      history.replaceState(null, '', clean);
-    }
-
     const { path, params } = getRoute();
+    syncUrlPath(path);
+
     const handler = routes[path] || routes['#/'];
     const app = document.getElementById('app');
 
@@ -269,7 +290,7 @@ const Router = (() => {
     if ((fromBlogPanel && isBlogPost) || (wasBlogPost && toBlogPanel)) {
       await slidePage(
         fromBlogPanel ? 'forward' : 'backward',
-        handler, app, params, toBlogPanel
+        handler, app, params, toBlogPanel, path
       );
       currentRoute = path;
       return;
@@ -288,7 +309,7 @@ const Router = (() => {
     if (!supportsVT && currentRoute !== null) app.classList.add('page-transition-enter');
 
     window.scrollTo({ top: 0 });
-    await handler(app, params);
+    await handler(app, params, path);
 
     Animations.observeElements();
 

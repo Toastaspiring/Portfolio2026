@@ -348,37 +348,31 @@ const I18n = (() => {
     return LOCALES.includes(lang) ? lang : null;
   }
 
-  /* Silently sync ?lang=xx with the active locale via replaceState — no
-     reload, no router trigger (the hash is untouched). Default locale is
-     kept off the URL to keep FR URLs clean; non-default is always shown
-     so shared/copied links land the recipient on the same language. */
-  function syncUrlParam(locale) {
-    try {
-      const url = new URL(window.location.href);
-      const currentParam = url.searchParams.get('lang');
-      if (locale === DEFAULT) {
-        if (currentParam === null) return;
-        url.searchParams.delete('lang');
-      } else {
-        if (currentParam === locale) return;
-        url.searchParams.set('lang', locale);
-      }
-      window.history.replaceState(null, '', url.toString());
-    } catch (_) { /* ignore URL parsing issues */ }
+  /* Detect the language from the pathname prefix ("/en/...", "/de/...").
+     Returns a supported locale or null — the default lang has no prefix. */
+  function getPathLang() {
+    const match = window.location.pathname.match(/^\/([a-z]{2})(\/|$)/);
+    if (match && LOCALES.includes(match[1]) && match[1] !== DEFAULT) return match[1];
+    return null;
   }
 
-  /* Pick the initial locale:
-     1. URL ?lang=xx — shareable deep links, highest priority (also persisted).
-     2. Explicit user choice in localStorage.
-     3. Browser / system languages (navigator.languages → navigator.language),
-        matched by short tag (e.g. "en-US" → "en").
-     4. Fall back to French. */
+  /* Pick the initial locale. Path prefix is the canonical source of truth
+     post-build (pre-rendered pages live at /en/, /de/..., etc); ?lang= still
+     wins when explicitly provided (shared legacy hash URLs, deep links).
+     1. URL ?lang=xx — explicit override, persisted.
+     2. URL pathname prefix — /en/..., /de/..., /es/...
+     3. Explicit user choice in localStorage.
+     4. Browser / system languages (navigator.languages → navigator.language).
+     5. Fall back to French. */
   function getStoredLocale() {
     const urlLang = getUrlLang();
     if (urlLang) {
       localStorage.setItem(STORAGE_KEY, urlLang);
       return urlLang;
     }
+
+    const pathLang = getPathLang();
+    if (pathLang) return pathLang;
 
     const stored = localStorage.getItem(STORAGE_KEY);
     if (LOCALES.includes(stored)) return stored;
@@ -399,10 +393,6 @@ const I18n = (() => {
   // Reflect the locale on the root element right away.
   document.documentElement.lang = current;
 
-  // Keep URL ?lang=xx in sync with the active locale so copied URLs
-  // always reproduce the same experience for the recipient.
-  syncUrlParam(current);
-
   /* Resolve a dot-path key against the dictionary. */
   function t(key, fallback) {
     if (!key) return fallback ?? '';
@@ -415,27 +405,38 @@ const I18n = (() => {
     return typeof val === 'string' ? val : (fallback ?? key);
   }
 
-  /* Change locale: persist, rewrite the URL to reflect the new lang, and
-     navigate. location.replace() forces navigation to the new URL —
-     location.reload() ignores history.replaceState() and re-fetches the
-     original URL, which would re-read the stale ?lang= and clobber the
-     localStorage we just wrote. */
+  /* Change locale: persist, rewrite the URL's pathname prefix (and post
+     slug, if any) to reflect the new lang, then navigate. The pathname is
+     the canonical source of truth — ?lang= is dropped, since the new path
+     already communicates the language. location.replace() forces a real
+     navigation; location.reload() would re-fetch the stale URL. */
   function setLocale(locale) {
     if (!LOCALES.includes(locale)) return;
     localStorage.setItem(STORAGE_KEY, locale);
 
     const url = new URL(window.location.href);
-    if (locale === DEFAULT) url.searchParams.delete('lang');
-    else url.searchParams.set('lang', locale);
+    url.searchParams.delete('lang');
 
-    // If we're on a blog post page, rewrite the slug to the new locale's
-    // alias so URLs stay in-language after a switch. Canonical slugs (or
-    // slugs with no translation) pass through unchanged.
-    const match = url.hash.match(/^#\/blog\/(.+)$/);
-    if (match && typeof Slugs !== 'undefined') {
-      const canonical = Slugs.canonical(match[1]);
-      const nextSlug = Slugs.localized(canonical, locale);
-      if (nextSlug !== match[1]) url.hash = '#/blog/' + nextSlug;
+    // Swap the pathname's lang prefix. /en/blog/ -> /de/blog/, / -> /de/,
+    // /blog/ -> /de/blog/, etc. Default lang has no prefix.
+    const pathMatch = url.pathname.match(/^\/(fr|en|de|es)(\/.*)?$/);
+    const rest = pathMatch ? (pathMatch[2] || '/') : url.pathname;
+    const newPrefix = locale === DEFAULT ? '' : '/' + locale;
+    url.pathname = newPrefix + (rest.startsWith('/') ? rest : '/' + rest);
+
+    // Rewrite blog post slug to its new-lang alias — both in the hash (SPA
+    // hash routes) and in the pathname (pre-rendered path URLs).
+    const hashMatch = url.hash.match(/^#\/blog\/(.+)$/);
+    if (hashMatch && typeof Slugs !== 'undefined') {
+      const canonical = Slugs.canonical(hashMatch[1]);
+      const next = Slugs.localized(canonical, locale);
+      if (next !== hashMatch[1]) url.hash = '#/blog/' + next;
+    }
+    const pathPostMatch = url.pathname.match(/^(?:\/[a-z]{2})?\/blog\/([^/]+)\/?$/);
+    if (pathPostMatch && typeof Slugs !== 'undefined') {
+      const canonical = Slugs.canonical(pathPostMatch[1]);
+      const next = Slugs.localized(canonical, locale);
+      url.pathname = newPrefix + '/blog/' + next + '/';
     }
 
     const target = url.toString();

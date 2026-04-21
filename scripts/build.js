@@ -1,13 +1,16 @@
 #!/usr/bin/env node
 /*
- * Build script — pre-renders OG-tagged HTML for each blog post × language.
+ * Build script — pre-renders OG-tagged HTML for every blog post AND every
+ * SPA panel (home, blog listing, projects), per language.
  *
  * Why this exists: the site is a client-side SPA with hash routing. Scrapers
  * (Discord, Twitter, Slack, FB…) don't execute JS, so they only ever see
  * index.html's generic meta tags when a hash URL is shared. This script
- * writes one static file per (post, lang) at a path URL like
- *   /en/blog/apprentice-intern/index.html
- * with the post-specific <meta og:*> baked in. Scrapers see rich previews;
+ * writes one static file per (page, lang) at a path URL like
+ *   /en/blog/apprentice-intern/index.html    (blog post, EN)
+ *   /de/blog/index.html                       (blog listing, DE)
+ *   /es/index.html                            (home, ES)
+ * with the page-specific <meta og:*> baked in. Scrapers see rich previews;
  * real users load the file, an inline bootstrap hands off to the SPA.
  *
  * Output: dist/  (upload this to GitHub Pages)
@@ -22,6 +25,7 @@ const DIST = path.join(ROOT, 'dist');
 const POSTS_DIR = path.join(ROOT, 'posts');
 
 const SITE_URL = 'https://www.toastydevblog.xyz';
+const DEFAULT_OG_IMAGE = `${SITE_URL}/assets/favicon.svg`;
 const LANGS = ['fr', 'en', 'de', 'es'];
 const DEFAULT_LANG = 'fr';
 
@@ -30,6 +34,76 @@ const OG_LOCALE = {
   en: 'en_US',
   de: 'de_DE',
   es: 'es_ES',
+};
+
+/* Panels exposed by the SPA router. slug is the path segment under the
+   optional language prefix; hash is the SPA route. */
+const PANELS = [
+  { id: 'home',     slug: '',         hash: '#/' },
+  { id: 'blog',     slug: 'blog',     hash: '#/blog' },
+  { id: 'projects', slug: 'projects', hash: '#/projects' },
+];
+
+/* Per-language metadata for each panel. Pulled to this file to keep the
+   Node build pure (i18n.js is browser-scoped). Keep in sync if you change
+   the equivalent strings in js/i18n.js. */
+const PANEL_META = {
+  fr: {
+    home: {
+      title: 'Louis — Dev Portfolio',
+      description: 'Dev autodidacte basé en France. AI, computer vision, et des trucs qui marchent (des fois).',
+    },
+    blog: {
+      title: 'Blog — Louis',
+      description: "Articles sur l'AI, le dev, et les problèmes tordus qui m'ont appris un truc.",
+    },
+    projects: {
+      title: 'Projets — Louis',
+      description: "Open source et side projects — trucs que je build quand j'ai du temps.",
+    },
+  },
+  en: {
+    home: {
+      title: 'Louis — Dev Portfolio',
+      description: 'Self-taught developer based in France. AI, computer vision, and things that work (sometimes).',
+    },
+    blog: {
+      title: 'Blog — Louis',
+      description: 'Posts on AI, development, and the weird problems that taught me something.',
+    },
+    projects: {
+      title: 'Projects — Louis',
+      description: 'Open source and side projects — stuff I build when I have time.',
+    },
+  },
+  de: {
+    home: {
+      title: 'Louis — Dev Portfolio',
+      description: 'Autodidaktischer Entwickler aus Frankreich. KI, Computer Vision und Sachen, die (manchmal) funktionieren.',
+    },
+    blog: {
+      title: 'Blog — Louis',
+      description: 'Beiträge über KI, Entwicklung und die kniffligen Probleme, die mich was gelehrt haben.',
+    },
+    projects: {
+      title: 'Projekte — Louis',
+      description: 'Open Source und Nebenprojekte — Sachen, die ich baue, wenn ich Zeit habe.',
+    },
+  },
+  es: {
+    home: {
+      title: 'Louis — Dev Portfolio',
+      description: 'Desarrollador autodidacta afincado en Francia. IA, computer vision, y cosas que funcionan (a veces).',
+    },
+    blog: {
+      title: 'Blog — Louis',
+      description: 'Posts sobre IA, desarrollo y los problemas raros que me enseñaron algo.',
+    },
+    projects: {
+      title: 'Proyectos — Louis',
+      description: 'Open source y side projects — cosas que construyo cuando tengo tiempo.',
+    },
+  },
 };
 
 /* ---------- helpers ---------- */
@@ -57,7 +131,6 @@ function extractFirstImageUrl(body) {
   if (!m) return null;
   const raw = m[1];
   if (/^https?:\/\//i.test(raw)) return raw;
-  // Relative URL — resolve against site root
   return SITE_URL + (raw.startsWith('/') ? raw : '/' + raw);
 }
 
@@ -67,36 +140,73 @@ function buildPostUrl(lang, alias) {
     : `${SITE_URL}/${lang}/blog/${alias}/`;
 }
 
+function buildPanelUrl(lang, panel) {
+  const langSeg = lang === DEFAULT_LANG ? '' : '/' + lang;
+  const panelSeg = panel.slug ? '/' + panel.slug : '';
+  return `${SITE_URL}${langSeg}${panelSeg}/`;
+}
+
+function panelOutputPath(lang, panel) {
+  let dir = DIST;
+  if (lang !== DEFAULT_LANG) dir = path.join(dir, lang);
+  if (panel.slug) dir = path.join(dir, panel.slug);
+  return path.join(dir, 'index.html');
+}
+
+function postOutputPath(lang, alias) {
+  const dir = lang === DEFAULT_LANG
+    ? path.join(DIST, 'blog', alias)
+    : path.join(DIST, lang, 'blog', alias);
+  return path.join(dir, 'index.html');
+}
+
 async function readMarkdownForLang(canonicalSlug, lang) {
   const suffix = lang === DEFAULT_LANG ? '' : `.${lang}`;
   const primary = path.join(POSTS_DIR, `${canonicalSlug}${suffix}.md`);
   try {
     return await fs.readFile(primary, 'utf8');
   } catch {
-    // Fallback to the default-language file if translation is missing
     return await fs.readFile(path.join(POSTS_DIR, `${canonicalSlug}.md`), 'utf8');
   }
 }
 
+/* Inline bootstrap that runs before the SPA boots. The pathname already
+   communicates the language (/en/, /de/, ...) — all the SPA router needs
+   from us is the hash for non-home panels/posts so it routes correctly
+   on first load. User-supplied hashes are left alone. */
+function makeBootstrap(lang, hashTarget) {
+  return `
+<script>
+  (function() {
+    try {
+      if (!location.hash && ${JSON.stringify(hashTarget)} !== '#/') {
+        var u = new URL(location.href);
+        u.hash = ${JSON.stringify(hashTarget)};
+        history.replaceState(null, '', u.toString());
+      }
+    } catch (e) { /* no-op — SPA will still try to render */ }
+  })();
+</script>
+`;
+}
+
 /* ---------- template surgery ---------- */
 
-/* Build the pre-rendered HTML from the shared SPA template by:
- *  - replacing the generic <meta> tags with post-specific ones
- *  - inserting og:image, og:url, og:type=article, canonical + hreflang
- *  - injecting an inline bootstrap that rewrites the URL to the SPA's
- *    hash form before the SPA boots, so routing "just works". */
-function buildPostHtml(template, data) {
-  const { lang, alias, canonicalSlug, slugsMap, title, description, tags, ogImage } = data;
-
-  const url = buildPostUrl(lang, alias);
-  const fullTitle = `${title} — Louis`;
+/* Rewrite the shared SPA template with page-specific meta tags, inject
+   canonical + hreflang + og:image, and insert the SPA bootstrap script. */
+function buildHtml(template, data) {
+  const {
+    lang, url, fullTitle, description,
+    ogType, ogImage, tags,
+    hreflangs, bootstrap,
+  } = data;
 
   let html = template;
 
   // Root element lang
   html = html.replace(/<html[^>]*>/, `<html lang="${lang}">`);
 
-  // <title> and <meta name="description">
+  // Title + description
   html = html.replace(/<title>[^<]*<\/title>/, `<title>${escapeHtml(fullTitle)}</title>`);
   html = html.replace(
     /<meta name="description" content="[^"]*">/,
@@ -114,14 +224,14 @@ function buildPostHtml(template, data) {
   );
   html = html.replace(
     /<meta property="og:type" content="[^"]*">/,
-    `<meta property="og:type" content="article">`
+    `<meta property="og:type" content="${ogType}">`
   );
   html = html.replace(
     /<meta property="og:locale" content="[^"]*">/,
     `<meta property="og:locale" content="${OG_LOCALE[lang]}">`
   );
 
-  // Existing Twitter tags — upgrade card to large image and replace title/description
+  // Twitter — upgrade card to large image + sync title/description
   html = html.replace(
     /<meta name="twitter:card" content="[^"]*">/,
     `<meta name="twitter:card" content="summary_large_image">`
@@ -135,42 +245,24 @@ function buildPostHtml(template, data) {
     `<meta name="twitter:description" content="${escapeHtml(description)}">`
   );
 
-  // Extra OG/SEO tags to inject before </head>. Each hreflang must use
-  // the alias for its own language, not the current page's alias.
-  const hreflangTags = LANGS.map(l => {
-    const langAlias = (slugsMap[canonicalSlug] && slugsMap[canonicalSlug][l]) || canonicalSlug;
-    return `  <link rel="alternate" hreflang="${l}" href="${buildPostUrl(l, langAlias)}">`;
-  }).join('\n');
+  const hreflangTags = hreflangs
+    .map(h => `  <link rel="alternate" hreflang="${h.lang}" href="${h.url}">`)
+    .join('\n');
+
+  const articleTags = (tags && tags.length)
+    ? `  <meta name="article:tag" content="${tags.map(escapeHtml).join(',')}">\n`
+    : '';
 
   const extras = `
   <meta property="og:url" content="${url}">
   <meta property="og:image" content="${ogImage}">
   <meta name="twitter:image" content="${ogImage}">
-  <meta name="article:tag" content="${(tags || []).map(escapeHtml).join(',')}">
-  <link rel="canonical" href="${url}">
+${articleTags}  <link rel="canonical" href="${url}">
 ${hreflangTags}
 `;
   html = html.replace('</head>', `${extras}</head>`);
-
-  // Bootstrap script: run before the SPA loads. Rewrites the URL to the
-  // hash form the SPA understands, without a redirect/reload.
-  const bootstrap = `
-<script>
-  (function() {
-    try {
-      var lang = ${JSON.stringify(lang)};
-      var alias = ${JSON.stringify(alias)};
-      var u = new URL(location.href);
-      u.pathname = '/';
-      if (lang !== ${JSON.stringify(DEFAULT_LANG)}) u.searchParams.set('lang', lang);
-      else u.searchParams.delete('lang');
-      u.hash = '#/blog/' + alias;
-      history.replaceState(null, '', u.toString());
-    } catch (e) { /* no-op — SPA will still try to render home */ }
-  })();
-</script>
-`;
-  // Insert right after the opening <head> so it runs before any other script
+  // Inject the bootstrap as the first child of <head> so it runs before
+  // any other script on the page.
   html = html.replace(/<head>/, `<head>${bootstrap}`);
 
   return html;
@@ -191,6 +283,90 @@ async function copyDir(src, dest) {
 
 async function copyIfExists(src, dest) {
   try { await fs.copyFile(src, dest); } catch { /* skip missing files */ }
+}
+
+/* ---------- pre-render: posts ---------- */
+
+async function preRenderPosts(template, postIndex, slugsMap) {
+  let count = 0;
+  for (const entry of postIndex) {
+    const canonicalSlug = typeof entry === 'string' ? entry : entry.slug;
+    if (!canonicalSlug) continue;
+
+    for (const lang of LANGS) {
+      let md;
+      try { md = await readMarkdownForLang(canonicalSlug, lang); }
+      catch (e) { console.warn(`  skip ${canonicalSlug}/${lang}: ${e.message}`); continue; }
+
+      const { meta, body } = parseFrontmatter(md);
+      const alias = (slugsMap[canonicalSlug] && slugsMap[canonicalSlug][lang]) || canonicalSlug;
+      const ogImage = extractFirstImageUrl(body) || DEFAULT_OG_IMAGE;
+      const fullTitle = `${meta.title || canonicalSlug} — Louis`;
+
+      const hreflangs = LANGS.map(l => ({
+        lang: l,
+        url: buildPostUrl(l, (slugsMap[canonicalSlug] && slugsMap[canonicalSlug][l]) || canonicalSlug),
+      }));
+
+      const html = buildHtml(template, {
+        lang,
+        url: buildPostUrl(lang, alias),
+        fullTitle,
+        description: meta.excerpt || '',
+        ogType: 'article',
+        ogImage,
+        tags: meta.tags || [],
+        hreflangs,
+        bootstrap: makeBootstrap(lang, `#/blog/${alias}`),
+      });
+
+      const outPath = postOutputPath(lang, alias);
+      await fs.mkdir(path.dirname(outPath), { recursive: true });
+      await fs.writeFile(outPath, html, 'utf8');
+      count++;
+      const rel = lang === DEFAULT_LANG ? `/blog/${alias}/` : `/${lang}/blog/${alias}/`;
+      console.log(`  ✓ ${rel}`);
+    }
+  }
+  return count;
+}
+
+/* ---------- pre-render: panels ---------- */
+
+async function preRenderPanels(template) {
+  let count = 0;
+  for (const panel of PANELS) {
+    for (const lang of LANGS) {
+      const meta = PANEL_META[lang][panel.id];
+      if (!meta) continue;
+
+      const hreflangs = LANGS.map(l => ({
+        lang: l,
+        url: buildPanelUrl(l, panel),
+      }));
+
+      const html = buildHtml(template, {
+        lang,
+        url: buildPanelUrl(lang, panel),
+        fullTitle: meta.title,
+        description: meta.description,
+        ogType: 'website',
+        ogImage: DEFAULT_OG_IMAGE,
+        tags: [],
+        hreflangs,
+        bootstrap: makeBootstrap(lang, panel.hash),
+      });
+
+      const outPath = panelOutputPath(lang, panel);
+      await fs.mkdir(path.dirname(outPath), { recursive: true });
+      await fs.writeFile(outPath, html, 'utf8');
+      count++;
+      const langSeg = lang === DEFAULT_LANG ? '' : `/${lang}`;
+      const panelSeg = panel.slug ? `/${panel.slug}` : '';
+      console.log(`  ✓ ${langSeg}${panelSeg}/`);
+    }
+  }
+  return count;
 }
 
 /* ---------- main ---------- */
@@ -222,44 +398,12 @@ async function main() {
   const template = await fs.readFile(path.join(ROOT, 'index.html'), 'utf8');
 
   console.log('Pre-rendering posts...');
-  let count = 0;
-  for (const entry of postIndex) {
-    const canonicalSlug = typeof entry === 'string' ? entry : entry.slug;
-    if (!canonicalSlug) continue;
+  const postCount = await preRenderPosts(template, postIndex, slugsMap);
 
-    for (const lang of LANGS) {
-      let md;
-      try { md = await readMarkdownForLang(canonicalSlug, lang); }
-      catch (e) { console.warn(`  skip ${canonicalSlug}/${lang}: ${e.message}`); continue; }
+  console.log('Pre-rendering panels...');
+  const panelCount = await preRenderPanels(template);
 
-      const { meta, body } = parseFrontmatter(md);
-      const alias = (slugsMap[canonicalSlug] && slugsMap[canonicalSlug][lang]) || canonicalSlug;
-
-      const ogImage = extractFirstImageUrl(body) || `${SITE_URL}/assets/favicon.svg`;
-
-      const html = buildPostHtml(template, {
-        lang,
-        alias,
-        canonicalSlug,
-        slugsMap,
-        title: meta.title || canonicalSlug,
-        description: meta.excerpt || '',
-        tags: meta.tags || [],
-        ogImage,
-      });
-
-      const outDir = lang === DEFAULT_LANG
-        ? path.join(DIST, 'blog', alias)
-        : path.join(DIST, lang, 'blog', alias);
-      await fs.mkdir(outDir, { recursive: true });
-      await fs.writeFile(path.join(outDir, 'index.html'), html, 'utf8');
-      count++;
-      const rel = lang === DEFAULT_LANG ? `/blog/${alias}/` : `/${lang}/blog/${alias}/`;
-      console.log(`  ✓ ${rel}`);
-    }
-  }
-
-  console.log(`\nDone. Pre-rendered ${count} files into dist/.`);
+  console.log(`\nDone. Pre-rendered ${postCount} posts and ${panelCount} panels into dist/.`);
 }
 
 main().catch(err => { console.error(err); process.exit(1); });

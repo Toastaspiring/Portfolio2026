@@ -127,8 +127,8 @@ const Markdown = (() => {
     const canonical = (typeof Slugs !== 'undefined') ? Slugs.canonical(slug) : slug;
     const suffix = (typeof I18n !== 'undefined') ? I18n.postSuffix() : '';
     const candidates = suffix
-      ? [`posts/${canonical}${suffix}.md`, `posts/${canonical}.md`]
-      : [`posts/${canonical}.md`];
+      ? [`/posts/${canonical}${suffix}.md`, `/posts/${canonical}.md`]
+      : [`/posts/${canonical}.md`];
 
     for (const path of candidates) {
       try {
