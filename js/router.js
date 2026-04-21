@@ -231,6 +231,17 @@ const Router = (() => {
   async function navigate() {
     if (transitioning) return;
 
+    // Keep the URL pathname clean for non-post routes. When arriving from
+    // a pre-rendered post file (/en/blog/<alias>/) the pathname is non-root;
+    // reset it so hash transitions don't leave stale paths like
+    // "/en/blog/<alias>/#/blog". blogPost() re-sets the pathname to the
+    // localized path form after a post successfully loads.
+    const pn = window.location.pathname;
+    if (pn !== '/' && pn !== '/index.html') {
+      const clean = '/' + window.location.search + window.location.hash;
+      history.replaceState(null, '', clean);
+    }
+
     const { path, params } = getRoute();
     const handler = routes[path] || routes['#/'];
     const app = document.getElementById('app');

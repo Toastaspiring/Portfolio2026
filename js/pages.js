@@ -256,6 +256,20 @@ const Pages = (() => {
       return;
     }
 
+    // Rewrite the browser URL to the path form (/en/blog/apprentice-intern/)
+    // so that copy-pasting it into Discord/Slack/etc. gets the pre-rendered
+    // OG tags. Hash routing still drives the actual SPA navigation.
+    try {
+      if (typeof Slugs !== 'undefined') {
+        const lang = typeof I18n !== 'undefined' ? I18n.current() : 'fr';
+        const canonical = Slugs.canonical(slug);
+        const alias = Slugs.localized(canonical, lang);
+        const prefix = lang === 'fr' ? '/blog/' : '/' + lang + '/blog/';
+        const pathUrl = prefix + alias + '/' + window.location.search;
+        history.replaceState(null, '', pathUrl);
+      }
+    } catch { /* replaceState failures are non-fatal */ }
+
     const localeMap = { fr: 'fr-FR', en: 'en-US', de: 'de-DE', es: 'es-ES' };
     const dateLocale = localeMap[typeof I18n !== 'undefined' ? I18n.current() : 'fr'] || 'en-US';
     const date = post.meta.date ? new Date(post.meta.date).toLocaleDateString(dateLocale, { year: 'numeric', month: 'long', day: 'numeric' }) : '';
