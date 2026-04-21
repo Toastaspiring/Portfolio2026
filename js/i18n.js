@@ -348,11 +348,13 @@ const I18n = (() => {
     return LOCALES.includes(lang) ? lang : null;
   }
 
-  /* Detect the language from the pathname prefix ("/en/...", "/de/...").
-     Returns a supported locale or null — the default lang has no prefix. */
+  /* Detect the language from the pathname prefix ("/en/...", "/de/...",
+     "/fr/..."). Returns a supported locale or null. Accepts the default
+     lang too — /fr/ is a pre-rendered alias and must be honoured so a
+     user with a stale localStorage doesn't get served the wrong language. */
   function getPathLang() {
     const match = window.location.pathname.match(/^\/([a-z]{2})(\/|$)/);
-    if (match && LOCALES.includes(match[1]) && match[1] !== DEFAULT) return match[1];
+    if (match && LOCALES.includes(match[1])) return match[1];
     return null;
   }
 
