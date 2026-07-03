@@ -310,6 +310,62 @@
   margin-top: calc(-1 * var(--space-sm));
 }
 
+/* Repo embed card (bottom-of-post GitHub link). The `.prose a` selector is
+   more specific than a bare class, so the anchor rule is scoped under .prose. */
+.prose a.repo-embed {
+  display: block;
+  margin: 2em 0 0;
+  padding: var(--space-md) var(--space-lg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+}
+
+.prose a.repo-embed:hover {
+  border-color: var(--border-accent);
+  background: var(--bg-tertiary);
+  text-decoration: none;
+}
+
+.repo-embed__top {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.repo-embed__icon { width: 20px; height: 20px; color: var(--text-secondary); flex-shrink: 0; }
+
+.repo-embed__name { font-family: var(--font-mono); font-size: var(--text-base); }
+.repo-embed__name strong { color: var(--accent); font-weight: 700; }
+
+.repo-embed__lang {
+  margin-left: auto;
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 1px var(--space-xs);
+}
+
+.repo-embed__desc {
+  display: block;
+  margin-top: var(--space-xs);
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  line-height: var(--line-height-base);
+}
+
+.repo-embed__cta {
+  display: inline-block;
+  margin-top: var(--space-sm);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--accent);
+}
+
 /* Tables */
 .prose table {
   width: 100%;
