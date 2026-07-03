@@ -249,15 +249,12 @@
 }
 
 .intro__avatar {
-  width: 92px;
-  height: 92px;
-  border-radius: var(--radius-md);
+  width: 104px;
+  height: 104px;
   object-fit: contain;
-  padding: 6px;
   flex-shrink: 0;
-  /* Light tile so the transparent black line-art logo stays readable in
-     both themes; `contain` shows the whole logo instead of cropping it. */
-  background: #fbfbf9;
+  /* Transparent PNG logo, no frame/tile. Slightly larger. On the dark theme
+     the black line-art reads faintly: that's the trade-off for a bare look. */
 }
 
 /* Monogram fallback shown when no avatar image is present */

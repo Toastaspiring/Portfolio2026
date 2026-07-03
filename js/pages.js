@@ -74,12 +74,12 @@ const Pages = (() => {
 
   /* ---- HOME (blog-first: intro + latest posts) ---- */
   async function home(app) {
-    const intro = t('home.intro_text', "Dev autodidacte basé en France. Je touche un peu à tout, en ce moment surtout de l'AI et de la computer vision. J'écris ici quand un problème m'a appris un truc.");
+    const intro = t('home.intro_text', "Développeur autodidacte basé en France. Je touche un peu à tout, en ce moment surtout de l'IA et de la vision par ordinateur. J'écris ici quand un problème me donne mal à la tête.");
     app.innerHTML = `
       <div class="container">
         ${translateBannerHTML()}
         <section class="intro reveal">
-          <img class="intro__avatar" src="/assets/images/avatar.png" alt="Louis" width="84" height="84"
+          <img class="intro__avatar" src="/assets/images/avatar.png" alt="Louis" width="104" height="104"
                onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'intro__avatar intro__avatar--mono',textContent:'L'}))">
           <div class="intro__body">
             <h1 class="intro__name">Louis</h1>

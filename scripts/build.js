@@ -51,7 +51,7 @@ const PANEL_META = {
   fr: {
     home: {
       title: 'Louis · Dev Portfolio',
-      description: 'Dev autodidacte basé en France. AI, computer vision, et des trucs qui marchent (des fois).',
+      description: 'Développeur autodidacte basé en France. IA, vision par ordinateur, et des trucs qui marchent (des fois).',
     },
     blog: {
       title: 'Blog · Louis',

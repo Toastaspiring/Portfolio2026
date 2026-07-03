@@ -293,11 +293,13 @@
   margin: 2.2em 0;
 }
 
-/* Images */
+/* Images. Light backing so transparent / line-art figures (e.g. an SVG
+   diagram) stay readable on the dark theme; invisible behind opaque images. */
 .prose img {
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   margin: 1.6em auto;
+  background: #fbfbf9;
 }
 
 .prose img + em {
