@@ -15,7 +15,7 @@ Prends un café. C'est parti pour environ 20 minutes de lecture.
 
 ## I. Le rêve : une machine qui apprend toute seule
 
-Revenons en 1950. Alan Turing publie un article célèbre, *Computing Machinery and Intelligence*, dans lequel il pose une question simple : *"Can machines think ?"* Il propose un test — le fameux Turing test — pour évaluer si une machine peut tenir une conversation indiscernable de celle d'un humain. Mais au détour d'un paragraphe, Turing glisse une idée encore plus provocante : au lieu d'essayer de programmer une machine adulte, pourquoi ne pas programmer une machine-bébé, et **la faire apprendre** ?
+Revenons en 1950. Alan Turing publie un article célèbre, *Computing Machinery and Intelligence*, dans lequel il pose une question simple : *"Can machines think ?"* Il propose un test, le fameux Turing test, pour évaluer si une machine peut tenir une conversation indiscernable de celle d'un humain. Mais au détour d'un paragraphe, Turing glisse une idée encore plus provocante : au lieu d'essayer de programmer une machine adulte, pourquoi ne pas programmer une machine-bébé, et **la faire apprendre** ?
 
 L'idée est révolutionnaire parce qu'elle renverse complètement la manière dont on concevait l'informatique jusque-là. En 1950, programmer veut dire *dire à la machine quoi faire, étape par étape*. Turing suggère l'inverse : *montrer à la machine ce qu'on veut*, et la laisser trouver comment. Ça s'appelle le **machine learning**, et toute la suite de cette histoire découle de cette idée-là.
 
@@ -25,9 +25,9 @@ Mais il y a un détail gênant : Turing ne dit pas comment faire. Comment est-ce
 
 Ton cerveau contient environ 86 milliards de neurones. Chacun est une petite cellule qui fait, au fond, une chose assez simple : il reçoit des signaux électriques d'autres neurones à travers ses dendrites, les intègre dans son corps cellulaire, et s'il y a "assez" de signal accumulé, il émet à son tour un signal électrique le long de son axone, qui se propage vers d'autres neurones. Les connexions entre neurones, les synapses, peuvent être plus ou moins fortes. Et c'est l'intensité de ces synapses, ainsi que l'organisation spatiale du réseau, qui encode ce que tu sais, ce dont tu te souviens, et ce que tu es capable de faire.
 
-C'est une description caricaturale. Les vrais neurones sont infiniment plus complexes — il y a des dizaines de neurotransmetteurs différents, des temporalités fines, des phénomènes électrochimiques subtils, des boucles de régulation à tous les étages. Mais pour notre propos, cette simplification suffit. Le cerveau est un réseau gigantesque d'unités simples qui s'additionnent et se déclenchent, et dont la connectivité encode le savoir.
+C'est une description caricaturale. Les vrais neurones sont infiniment plus complexes, il y a des dizaines de neurotransmetteurs différents, des temporalités fines, des phénomènes électrochimiques subtils, des boucles de régulation à tous les étages. Mais pour notre propos, cette simplification suffit. Le cerveau est un réseau gigantesque d'unités simples qui s'additionnent et se déclenchent, et dont la connectivité encode le savoir.
 
-En 1943, deux chercheurs — le neurophysiologiste **Warren McCulloch** et le logicien **Walter Pitts** — publient un papier qui va poser les bases de tout ce qui suit. Ils proposent un modèle mathématique radicalement simplifié du neurone biologique, qu'on appelle aujourd'hui le **neurone de McCulloch-Pitts**. L'idée : oublie l'électrochimie, oublie les subtilités temporelles. Représente un neurone comme une fonction qui prend plusieurs entrées, les combine linéairement, et sort 1 ou 0 selon si la somme dépasse un seuil.
+En 1943, deux chercheurs, le neurophysiologiste **Warren McCulloch** et le logicien **Walter Pitts**, publient un papier qui va poser les bases de tout ce qui suit. Ils proposent un modèle mathématique radicalement simplifié du neurone biologique, qu'on appelle aujourd'hui le **neurone de McCulloch-Pitts**. L'idée : oublie l'électrochimie, oublie les subtilités temporelles. Représente un neurone comme une fonction qui prend plusieurs entrées, les combine linéairement, et sort 1 ou 0 selon si la somme dépasse un seuil.
 
 $$\text{sortie} = \begin{cases} 1 & \text{si } \sum_i w_i x_i \geq \theta \\ 0 & \text{sinon} \end{cases}$$
 
@@ -37,11 +37,11 @@ C'est radicalement simpliste. C'est aussi mathématiquement tractable. Et c'est 
 
 Ce petit diagramme résume tout le modèle. Plusieurs entrées $x_1, x_2, \dots, x_n$ arrivent avec des poids $w_1, w_2, \dots, w_n$. On calcule la somme pondérée $\sum_i w_i x_i$, on y ajoute un biais $b$, et on passe le tout à travers une **fonction d'activation** $\varphi$ qui décide si le neurone "tire" ou non. La sortie est $y = \varphi(\sum_i w_i x_i + b)$.
 
-C'est tout. Ce qu'on appelle un neurone artificiel, au XXIe siècle, c'est *ça*. Une somme pondérée, un biais, une fonction d'activation. Ne sois pas déçu si tu trouves ça trop simple — c'est précisément parce que c'est simple que ça marche à grande échelle.
+C'est tout. Ce qu'on appelle un neurone artificiel, au XXIe siècle, c'est *ça*. Une somme pondérée, un biais, une fonction d'activation. Ne sois pas déçu si tu trouves ça trop simple, c'est précisément parce que c'est simple que ça marche à grande échelle.
 
 ## III. Rosenblatt, le Perceptron, et la première promesse
 
-En 1958, Frank Rosenblatt, psychologue et chercheur à Cornell, prend le neurone de McCulloch-Pitts et ajoute une chose cruciale : un **algorithme d'apprentissage**. Il l'appelle le **Perceptron**. L'idée est que les poids $w_i$ ne sont plus câblés à la main — le Perceptron les apprend à partir d'exemples.
+En 1958, Frank Rosenblatt, psychologue et chercheur à Cornell, prend le neurone de McCulloch-Pitts et ajoute une chose cruciale : un **algorithme d'apprentissage**. Il l'appelle le **Perceptron**. L'idée est que les poids $w_i$ ne sont plus câblés à la main, le Perceptron les apprend à partir d'exemples.
 
 La règle d'apprentissage du Perceptron est d'une simplicité désarmante. Pour chaque exemple $(x, y)$ dans ton jeu d'entraînement (où $x$ est l'input et $y \in \{0, 1\}$ est le label attendu) :
 
@@ -49,7 +49,7 @@ La règle d'apprentissage du Perceptron est d'une simplicité désarmante. Pour 
 2. Si $\hat{y} = y$, ne fais rien.
 3. Sinon, mets à jour les poids : $w \leftarrow w + \eta (y - \hat{y}) x$, où $\eta$ est un petit learning rate.
 
-C'est tout. Et Rosenblatt démontre — c'est le **Perceptron Convergence Theorem** — que si les données sont **linéairement séparables** (c'est-à-dire qu'il existe un hyperplan qui sépare parfaitement les exemples positifs des négatifs), alors cet algorithme converge en un nombre fini d'étapes vers une solution qui classe parfaitement toutes les données.
+C'est tout. Et Rosenblatt démontre, c'est le **Perceptron Convergence Theorem**, que si les données sont **linéairement séparables** (c'est-à-dire qu'il existe un hyperplan qui sépare parfaitement les exemples positifs des négatifs), alors cet algorithme converge en un nombre fini d'étapes vers une solution qui classe parfaitement toutes les données.
 
 À l'époque, c'est une bombe. Un journaliste du New York Times écrit en 1958 que le Perceptron est "l'embryon d'un ordinateur électronique capable de marcher, parler, voir, écrire, se reproduire et être conscient de sa propre existence". Rosenblatt lui-même parle de machines qui, dans un futur proche, liront des livres et piloteront des avions. L'enthousiasme est à son comble.
 
@@ -82,7 +82,7 @@ Essaie de tracer ces quatre points sur un plan. $(0,0)$ et $(1,1)$ appartiennent
 
 Il n'y en a pas. Aucune droite ne peut mettre $(0,0)$ et $(1,1)$ d'un côté et $(0,1)$ et $(1,0)$ de l'autre. Le problème n'est pas linéairement séparable. Et donc, par définition, **le Perceptron de Rosenblatt ne peut pas apprendre XOR**. Ce n'est pas une question de réglage, ce n'est pas une question de données, c'est une impossibilité mathématique de la classe d'hypothèses.
 
-En 1969, deux grandes figures de l'IA classique — **Marvin Minsky** et **Seymour Papert** — publient un livre (*Perceptrons*) qui formalise cette limitation et plusieurs autres. Le livre est rigoureux, et ses conclusions sont dévastatrices pour le camp "connexionniste" : les perceptrons simples sont fondamentalement limités. Minsky et Papert notent que, théoriquement, en empilant plusieurs couches de perceptrons, on pourrait surmonter ces limitations — mais qu'on ne sait pas comment entraîner de tels réseaux. Ils suggèrent que c'est probablement impossible.
+En 1969, deux grandes figures de l'IA classique, **Marvin Minsky** et **Seymour Papert**, publient un livre (*Perceptrons*) qui formalise cette limitation et plusieurs autres. Le livre est rigoureux, et ses conclusions sont dévastatrices pour le camp "connexionniste" : les perceptrons simples sont fondamentalement limités. Minsky et Papert notent que, théoriquement, en empilant plusieurs couches de perceptrons, on pourrait surmonter ces limitations, mais qu'on ne sait pas comment entraîner de tels réseaux. Ils suggèrent que c'est probablement impossible.
 
 Le résultat du livre est catastrophique pour le domaine. Le financement s'évapore. Les labos se ferment. Les chercheurs passent à autre chose. C'est ce qu'on appelle le **premier hiver de l'IA**. Pendant presque vingt ans, les réseaux de neurones deviennent un sujet tabou dans le milieu académique. Travailler dessus, c'est du gaspillage de carrière.
 
@@ -90,13 +90,13 @@ Et puis, en 1986, quelque chose change.
 
 ## V. Le retour : backpropagation et réseaux multi-couches
 
-En 1986, un trio de chercheurs — **David Rumelhart**, **Geoffrey Hinton** et **Ronald Williams** — publient dans *Nature* un article qui change la face du domaine. Ils redécouvrent et popularisent un algorithme qu'on appelle la **backpropagation** (l'algorithme était en fait connu depuis les années 60 sous diverses formes, mais personne n'avait vraiment vu son potentiel). Cet algorithme résout précisément le problème que Minsky et Papert avaient déclaré quasi-impossible : comment entraîner un réseau de neurones à **plusieurs couches** ?
+En 1986, un trio de chercheurs, **David Rumelhart**, **Geoffrey Hinton** et **Ronald Williams**, publient dans *Nature* un article qui change la face du domaine. Ils redécouvrent et popularisent un algorithme qu'on appelle la **backpropagation** (l'algorithme était en fait connu depuis les années 60 sous diverses formes, mais personne n'avait vraiment vu son potentiel). Cet algorithme résout précisément le problème que Minsky et Papert avaient déclaré quasi-impossible : comment entraîner un réseau de neurones à **plusieurs couches** ?
 
-L'idée fondamentale est simple : un réseau multi-couches (ou **MLP**, Multi-Layer Perceptron) applique une succession de transformations. Chaque couche prend la sortie de la précédente, la combine linéairement avec ses propres poids, passe le résultat à travers une non-linéarité, et transmet à la suivante. Avec suffisamment de couches et de non-linéarités, un tel réseau peut en théorie représenter n'importe quelle fonction mesurable — c'est le **théorème d'approximation universelle**. Le XOR, par exemple, devient trivial avec un MLP à une seule couche cachée de deux neurones.
+L'idée fondamentale est simple : un réseau multi-couches (ou **MLP**, Multi-Layer Perceptron) applique une succession de transformations. Chaque couche prend la sortie de la précédente, la combine linéairement avec ses propres poids, passe le résultat à travers une non-linéarité, et transmet à la suivante. Avec suffisamment de couches et de non-linéarités, un tel réseau peut en théorie représenter n'importe quelle fonction mesurable, c'est le **théorème d'approximation universelle**. Le XOR, par exemple, devient trivial avec un MLP à une seule couche cachée de deux neurones.
 
 ![Diagramme d'un réseau de neurones multi-couches : couche d'entrée, couche cachée, couche de sortie](https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Artificial_neural_network.svg/1280px-Artificial_neural_network.svg.png)
 
-Voilà la structure de base d'un MLP. À gauche, les entrées (par exemple, les pixels d'une image). Au milieu, une ou plusieurs couches dites "cachées", parce qu'elles ne sont ni des entrées ni des sorties — elles sont les mécanismes internes de représentation. À droite, la couche de sortie (par exemple, dix neurones si on classe des chiffres de 0 à 9).
+Voilà la structure de base d'un MLP. À gauche, les entrées (par exemple, les pixels d'une image). Au milieu, une ou plusieurs couches dites "cachées", parce qu'elles ne sont ni des entrées ni des sorties, elles sont les mécanismes internes de représentation. À droite, la couche de sortie (par exemple, dix neurones si on classe des chiffres de 0 à 9).
 
 Le gros problème, c'est que si tu as un réseau avec plusieurs couches et des milliers de paramètres, tu ne peux pas les régler à la main. Tu as besoin d'un algorithme qui, étant donné une erreur de prédiction sur un exemple, sache comment ajuster **chaque poids du réseau** pour réduire cette erreur. C'est exactement ce que fait la backpropagation.
 
@@ -114,7 +114,7 @@ Pour que les couches cachées apportent quelque chose, il faut une **non-linéar
 
 **La sigmoïde** (ou fonction logistique) :
 $$\sigma(x) = \frac{1}{1 + e^{-x}}$$
-Historiquement la plus utilisée. Elle a l'avantage de produire une sortie entre 0 et 1, interprétable comme une probabilité. Elle a l'énorme défaut d'être "saturante" — quand $|x|$ devient grand, la dérivée $\sigma'(x) = \sigma(x)(1 - \sigma(x))$ devient proche de zéro, ce qui gèle l'apprentissage. C'est le fameux problème du **vanishing gradient**.
+Historiquement la plus utilisée. Elle a l'avantage de produire une sortie entre 0 et 1, interprétable comme une probabilité. Elle a l'énorme défaut d'être "saturante", quand $|x|$ devient grand, la dérivée $\sigma'(x) = \sigma(x)(1 - \sigma(x))$ devient proche de zéro, ce qui gèle l'apprentissage. C'est le fameux problème du **vanishing gradient**.
 
 **La tangente hyperbolique** :
 $$\tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}$$
@@ -165,7 +165,7 @@ L'idée est géométrique et très intuitive. Imagine que tu es au milieu d'un p
 
 Mathématiquement, le **gradient** d'une fonction $L$ par rapport à ses paramètres $\theta$ est un vecteur qui pointe dans la direction de **montée** la plus abrupte. Pour descendre, on prend donc l'opposé :
 $$\theta \leftarrow \theta - \eta \nabla_\theta L$$
-où $\eta$ est le **learning rate** — la taille du pas. Tu fais un petit pas dans la direction opposée au gradient. Tu recalcules le gradient. Tu refais un pas. Et tu continues jusqu'à ce que la perte ne diminue plus.
+où $\eta$ est le **learning rate**, la taille du pas. Tu fais un petit pas dans la direction opposée au gradient. Tu recalcules le gradient. Tu refais un pas. Et tu continues jusqu'à ce que la perte ne diminue plus.
 
 ```mermaid
 flowchart TD
@@ -298,7 +298,7 @@ for epoch in range(epochs):
 
 Ce code contient tout ce qu'on a vu jusqu'ici. Un forward pass explicite, une perte cross-entropy, et une backpropagation calculée à la main en appliquant la règle de chaîne couche par couche. Pas de framework, pas de magie, juste du numpy. Tu le copies-colles, tu le lances, et en deux secondes tu as un réseau qui classe correctement deux spirales entrelacées.
 
-Quelques détails qui méritent qu'on s'y arrête. L'**initialisation de He** (`np.sqrt(2.0 / input_dim)`) est la méthode standard pour initialiser les poids quand on utilise ReLU — elle est calibrée pour que la variance des activations reste stable à travers les couches. Utiliser une initialisation naïve (par exemple, des gaussiennes avec écart-type 1) donne typiquement un réseau qui ne converge pas ou qui explose.
+Quelques détails qui méritent qu'on s'y arrête. L'**initialisation de He** (`np.sqrt(2.0 / input_dim)`) est la méthode standard pour initialiser les poids quand on utilise ReLU, elle est calibrée pour que la variance des activations reste stable à travers les couches. Utiliser une initialisation naïve (par exemple, des gaussiennes avec écart-type 1) donne typiquement un réseau qui ne converge pas ou qui explose.
 
 La **softmax stable** (en soustrayant le max avant l'exponentielle) est un hack numérique essentiel. Sans ça, dès que tes logits dépassent 700 environ, $e^{z}$ déborde et tu obtiens des `inf` et des `NaN` partout. L'astuce consiste à utiliser l'identité $\text{softmax}(z) = \text{softmax}(z - c)$ pour n'importe quelle constante $c$, et à choisir $c = \max(z)$ pour garantir que tous les exposants sont négatifs ou nuls.
 
@@ -312,7 +312,7 @@ Coder un MLP qui tourne est une chose. L'entraîner pour qu'il marche vraiment s
 
 Ton réseau a trop de paramètres par rapport à tes données, et au lieu d'apprendre les patterns généraux, il mémorise les exemples. Le symptôme classique : la perte d'entraînement descend joliment, mais la perte de validation (sur des données que le modèle n'a jamais vues) remonte. Le modèle est devenu excellent pour le jeu d'entraînement et terrible pour tout le reste.
 
-Les remèdes classiques : plus de données (toujours la meilleure solution), **régularisation L2** (ajouter $\lambda \|W\|^2$ à la loss pour pénaliser les gros poids), **dropout** (couper aléatoirement 10-50% des neurones à chaque passe d'entraînement — ça force le réseau à ne pas dépendre d'un neurone en particulier), et **early stopping** (arrêter l'entraînement quand la perte de validation commence à remonter).
+Les remèdes classiques : plus de données (toujours la meilleure solution), **régularisation L2** (ajouter $\lambda \|W\|^2$ à la loss pour pénaliser les gros poids), **dropout** (couper aléatoirement 10-50% des neurones à chaque passe d'entraînement, ça force le réseau à ne pas dépendre d'un neurone en particulier), et **early stopping** (arrêter l'entraînement quand la perte de validation commence à remonter).
 
 ### Vanishing et exploding gradients
 
@@ -322,7 +322,7 @@ Les remèdes : **ReLU** (qui a une dérivée de 1 sur la partie active, ce qui l
 
 ### Local minima et selles
 
-Traditionnellement, on s'inquiétait que la descente de gradient se coince dans un minimum local qui ne soit pas global. En pratique, dans les réseaux très profonds et très larges, les chercheurs ont découvert que les minima locaux stricts sont extrêmement rares — le paysage de la perte est plus souvent dominé par des **points de selle** (des endroits où le gradient est nul mais qui ne sont pas des minima). Les optimizers modernes comme **Adam** gèrent assez bien les points de selle grâce à leurs moments accumulés.
+Traditionnellement, on s'inquiétait que la descente de gradient se coince dans un minimum local qui ne soit pas global. En pratique, dans les réseaux très profonds et très larges, les chercheurs ont découvert que les minima locaux stricts sont extrêmement rares, le paysage de la perte est plus souvent dominé par des **points de selle** (des endroits où le gradient est nul mais qui ne sont pas des minima). Les optimizers modernes comme **Adam** gèrent assez bien les points de selle grâce à leurs moments accumulés.
 
 ### Le choix du learning rate
 
@@ -330,7 +330,7 @@ Je l'ai déjà dit, mais c'est tellement important que je le répète : le learn
 
 ### Les optimizers modernes
 
-La descente de gradient pure (SGD) est utilisée dans beaucoup de cas, mais elle a des concurrents. **SGD avec momentum** ajoute une inertie aux mises à jour pour lisser le chemin. **RMSProp** et **Adagrad** adaptent le learning rate par paramètre selon l'historique des gradients. **Adam**, combinaison des deux idées précédentes, est aujourd'hui l'optimizer par défaut quand on ne veut pas se prendre la tête. Pour les très gros modèles (LLM, etc.), **AdamW** — une variante qui sépare proprement la régularisation — est la référence.
+La descente de gradient pure (SGD) est utilisée dans beaucoup de cas, mais elle a des concurrents. **SGD avec momentum** ajoute une inertie aux mises à jour pour lisser le chemin. **RMSProp** et **Adagrad** adaptent le learning rate par paramètre selon l'historique des gradients. **Adam**, combinaison des deux idées précédentes, est aujourd'hui l'optimizer par défaut quand on ne veut pas se prendre la tête. Pour les très gros modèles (LLM, etc.), **AdamW**, une variante qui sépare proprement la régularisation, est la référence.
 
 ## XII. Au-delà du MLP : l'explosion des architectures
 
@@ -338,13 +338,13 @@ Le MLP, avec sa structure fully-connected, est le modèle universel. Mais il est
 
 ### Les CNN, ou comment tricher sur la structure spatiale
 
-Quand tu regardes une image, deux pixels adjacents sont beaucoup plus susceptibles d'être liés que deux pixels très éloignés. De plus, un chat en haut à gauche de l'image et un chat au milieu devraient être reconnus par le même mécanisme. Ces deux observations — **localité** et **invariance par translation** — sont à la base des **réseaux convolutionnels** (CNN, Convolutional Neural Networks).
+Quand tu regardes une image, deux pixels adjacents sont beaucoup plus susceptibles d'être liés que deux pixels très éloignés. De plus, un chat en haut à gauche de l'image et un chat au milieu devraient être reconnus par le même mécanisme. Ces deux observations, **localité** et **invariance par translation**, sont à la base des **réseaux convolutionnels** (CNN, Convolutional Neural Networks).
 
 Un CNN remplace les couches fully-connected par des couches **de convolution**. Au lieu que chaque neurone de sortie soit connecté à tous les pixels d'entrée, il est connecté à une petite fenêtre locale (par exemple 3x3 pixels), et le **même** ensemble de poids (le filtre ou le kernel) est appliqué en glissant sur toute l'image. Résultat : beaucoup moins de paramètres, et une structure qui exploite la géométrie de l'image.
 
-![Exemples de chiffres manuscrits MNIST — le dataset historique qui a servi à valider des dizaines d'architectures](https://upload.wikimedia.org/wikipedia/commons/2/27/MnistExamples.png)
+![Exemples de chiffres manuscrits MNIST, le dataset historique qui a servi à valider des dizaines d'architectures](https://upload.wikimedia.org/wikipedia/commons/2/27/MnistExamples.png)
 
-Le dataset **MNIST** (ces chiffres manuscrits ci-dessus) est l'exemple canonique. Avant les CNN, les meilleurs modèles atteignaient environ 0.7% d'erreur. Avec des CNN bien réglés (LeNet-5, Yann LeCun, 1998), on descend à 0.3%. Avec des CNN modernes et du data augmentation, on est en dessous de 0.1%. MNIST a été tellement solidement résolu qu'il est aujourd'hui considéré comme un benchmark "triste" — tout le monde le fait marcher. Mais historiquement, c'est sur lui que s'est construite l'école convolutionnelle.
+Le dataset **MNIST** (ces chiffres manuscrits ci-dessus) est l'exemple canonique. Avant les CNN, les meilleurs modèles atteignaient environ 0.7% d'erreur. Avec des CNN bien réglés (LeNet-5, Yann LeCun, 1998), on descend à 0.3%. Avec des CNN modernes et du data augmentation, on est en dessous de 0.1%. MNIST a été tellement solidement résolu qu'il est aujourd'hui considéré comme un benchmark "triste", tout le monde le fait marcher. Mais historiquement, c'est sur lui que s'est construite l'école convolutionnelle.
 
 ### Les RNN, pour les séquences
 
@@ -377,7 +377,7 @@ Le moment décisif, c'est 2012. La compétition annuelle **ImageNet Large Scale 
 
 On a fait le tour. Du neurone de McCulloch-Pitts aux Transformers, de Rosenblatt à Hinton, des XOR impossibles aux modèles qui écrivent mieux que nous. Si tu as suivi jusqu'ici, tu as dans la tête la cartographie complète des concepts qui animent l'IA moderne. Tu sais ce qu'est une activation, tu sais pourquoi la backpropagation marche, tu sais pourquoi on utilise ReLU, tu sais pourquoi Adam est devenu populaire, tu sais ce qu'est un CNN et un Transformer. Tu peux lire un papier de ML et comprendre le vocabulaire.
 
-Mais il te manque encore une chose : comprendre comment ces réseaux deviennent des **agents**. Comment on passe d'un modèle qui classe des images ou prédit le prochain mot à un modèle qui **agit** dans un environnement, qui explore, qui échoue, qui se corrige, qui apprend à jouer à un jeu ou à piloter un bras robotique. Cette bascule — du prédicteur passif à l'agent actif — est précisément ce qui transforme un réseau de neurones en système de reinforcement learning.
+Mais il te manque encore une chose : comprendre comment ces réseaux deviennent des **agents**. Comment on passe d'un modèle qui classe des images ou prédit le prochain mot à un modèle qui **agit** dans un environnement, qui explore, qui échoue, qui se corrige, qui apprend à jouer à un jeu ou à piloter un bras robotique. Cette bascule, du prédicteur passif à l'agent actif, est précisément ce qui transforme un réseau de neurones en système de reinforcement learning.
 
 Si tu veux aller jusqu'au bout, la suite est [ici](#/post/RL). On y parle d'équations de Bellman, de Q-learning, d'exploration vs exploitation, de Deep RL, d'AlphaGo, et de pourquoi le reinforcement learning est peut-être la forme d'apprentissage la plus proche de ce que c'est, vraiment, qu'apprendre.
 
@@ -395,6 +395,6 @@ Les réseaux de neurones sont, à un certain niveau, d'une simplicité déconcer
 
 Et pourtant, c'est avec ces briques simples qu'on a construit les systèmes les plus capables que l'humanité ait jamais conçus. Les systèmes qui reconnaissent ta voix, qui traduisent tes messages, qui génèrent des images à partir de mots, qui jouent aux échecs mieux que n'importe quel humain, qui résolvent la structure 3D de protéines, qui écrivent du code mieux que des développeurs juniors. Tout ça découle, directement, des équations qu'on a vues dans ce post.
 
-La leçon, si tu veux en prendre une : la complexité émerge de la répétition à grande échelle de choses simples. Le perceptron de 1958 n'a pas beaucoup changé dans sa forme mathématique. Ce qui a changé, c'est qu'on en a empilé beaucoup, qu'on les a entraînés sur beaucoup de données, avec beaucoup de compute, en réglant beaucoup de petits détails. L'IA n'est pas une idée géniale — c'est une idée simple à laquelle on a dédié cinquante ans de labeur cumulatif. Et qui est enfin, sous nos yeux, en train de porter ses fruits.
+La leçon, si tu veux en prendre une : la complexité émerge de la répétition à grande échelle de choses simples. Le perceptron de 1958 n'a pas beaucoup changé dans sa forme mathématique. Ce qui a changé, c'est qu'on en a empilé beaucoup, qu'on les a entraînés sur beaucoup de données, avec beaucoup de compute, en réglant beaucoup de petits détails. L'IA n'est pas une idée géniale, c'est une idée simple à laquelle on a dédié cinquante ans de labeur cumulatif. Et qui est enfin, sous nos yeux, en train de porter ses fruits.
 
 Maintenant, va lire le [post sur le RL](#/post/RL). Tu as toutes les bases.

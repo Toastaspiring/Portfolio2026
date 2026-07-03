@@ -2,14 +2,14 @@
 title: "Reinforcement Learning : L'art d'apprendre par l'erreur"
 date: 2026-04-14
 tags: [AI, reinforcement-learning, python, deep-learning]
-excerpt: "Une plongée narrative dans le RL — du chien de Pavlov à AlphaGo, des MDP aux deep policy networks. Maths, histoire, code, et la philosophie qui va avec."
+excerpt: "Une plongée narrative dans le RL, du chien de Pavlov à AlphaGo, des MDP aux deep policy networks. Maths, histoire, code, et la philosophie qui va avec."
 ---
 
 Imagine un enfant de deux ans devant un escalier pour la première fois. Personne ne lui a jamais expliqué la gravité, le centre de masse, ou le principe d'une rampe. Il avance, vacille, tombe, se relève, recommence. Au bout de quelques jours, il monte. Au bout de quelques semaines, il descend. Et au bout de quelques mois, il court dessus en riant.
 
 Personne ne lui a montré l'algorithme. Personne ne lui a donné des exemples étiquetés "bonne posture / mauvaise posture". Il a juste interagi avec le monde, ressenti les conséquences, et ajusté.
 
-Si tu veux comprendre ce qu'est le **Reinforcement Learning** — vraiment le comprendre, pas juste retenir une formule — commence par cette image-là. Parce que c'est exactement ce qu'on essaie de reproduire avec des machines.
+Si tu veux comprendre ce qu'est le **Reinforcement Learning**, vraiment le comprendre, pas juste retenir une formule, commence par cette image-là. Parce que c'est exactement ce qu'on essaie de reproduire avec des machines.
 
 Ce post est long. Très long. C'est volontaire. Le RL est un des coins les plus fascinants de l'IA, à la fois parce que les concepts sont simples à énoncer et incroyablement profonds une fois qu'on creuse, et parce que c'est la branche du machine learning qui ressemble le plus à ce qu'on appelle, faute de mieux, "l'intelligence". On va y aller doucement, on va prendre le temps des intuitions, on va faire les maths quand il faut, on va coder un agent qui apprend vraiment, et on va finir sur les pièges philosophiques qui empêchent les chercheurs de dormir la nuit.
 
@@ -21,9 +21,9 @@ Quand on parle de machine learning, on cite souvent trois grandes familles. Pend
 
 Le **supervised learning**, c'est l'élève sage. On lui montre des exemples avec les réponses au dos : "voici une photo de chat, c'est étiqueté 'chat'", "voici une photo de chien, c'est étiqueté 'chien'". L'élève mémorise les patterns, généralise, et finit par reconnaître un chat qu'il n'a jamais vu. C'est l'ère de l'**ImageNet**, des modèles qui battent les humains sur des benchmarks de classification, et de tout le tutoriel "MNIST en 50 lignes" que tu as probablement déjà fait. Ça marche extrêmement bien quand on a beaucoup de données étiquetées et un problème bien défini.
 
-L'**unsupervised learning**, c'est l'élève curieux qu'on lâche dans une bibliothèque sans consigne. Il regarde, il regroupe, il trouve des structures. Il découvre que certains livres parlent de cuisine et d'autres de physique, sans qu'on lui ait jamais dit ce que "cuisine" voulait dire. Clustering, dimensionality reduction, modèles génératifs — c'est la famille qui a explosé avec les autoencoders, puis les VAE, puis les diffusion models qui te génèrent des images photoréalistes à partir d'un prompt.
+L'**unsupervised learning**, c'est l'élève curieux qu'on lâche dans une bibliothèque sans consigne. Il regarde, il regroupe, il trouve des structures. Il découvre que certains livres parlent de cuisine et d'autres de physique, sans qu'on lui ait jamais dit ce que "cuisine" voulait dire. Clustering, dimensionality reduction, modèles génératifs, c'est la famille qui a explosé avec les autoencoders, puis les VAE, puis les diffusion models qui te génèrent des images photoréalistes à partir d'un prompt.
 
-Et puis il y a le **reinforcement learning**. L'orphelin bizarre. Le RL ne reçoit pas d'exemples étiquetés. Il ne se contente pas non plus d'observer passivement. Le RL **agit**. Il fait des trucs. Et le monde lui répond — avec une note. Une récompense, ou une punition. Et c'est tout. À partir de ça, et seulement à partir de ça, l'agent doit apprendre à se comporter de manière à maximiser ses récompenses sur le long terme.
+Et puis il y a le **reinforcement learning**. L'orphelin bizarre. Le RL ne reçoit pas d'exemples étiquetés. Il ne se contente pas non plus d'observer passivement. Le RL **agit**. Il fait des trucs. Et le monde lui répond, avec une note. Une récompense, ou une punition. Et c'est tout. À partir de ça, et seulement à partir de ça, l'agent doit apprendre à se comporter de manière à maximiser ses récompenses sur le long terme.
 
 C'est radicalement différent du reste, et ça pose des problèmes qui n'existent dans aucune autre branche du ML :
 
@@ -33,7 +33,7 @@ C'est radicalement différent du reste, et ça pose des problèmes qui n'existen
 
 ![Diagramme classique de la boucle agent-environnement en reinforcement learning](https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Reinforcement_learning_diagram.svg/1200px-Reinforcement_learning_diagram.svg.png)
 
-Cette boucle, là, c'est tout le RL. Un agent observe un état, choisit une action, le monde répond avec un nouvel état et une récompense, et on recommence. À l'infini, ou jusqu'à ce que l'épisode se termine. Tout le reste — les équations de Bellman, les Q-tables, les policy gradients, les replay buffers, les transformers RL — n'est qu'un raffinement de cette boucle de quatre étapes.
+Cette boucle, là, c'est tout le RL. Un agent observe un état, choisit une action, le monde répond avec un nouvel état et une récompense, et on recommence. À l'infini, ou jusqu'à ce que l'épisode se termine. Tout le reste, les équations de Bellman, les Q-tables, les policy gradients, les replay buffers, les transformers RL, n'est qu'un raffinement de cette boucle de quatre étapes.
 
 ```mermaid
 flowchart LR
@@ -60,7 +60,7 @@ Là, on rentre dans le truc important : la fonction $P$, dite **fonction de tran
 $$P(s' \mid s, a) = \mathbb{P}(S_{t+1} = s' \mid S_t = s, A_t = a)$$
 Autrement dit : si je suis dans l'état $s$ et que je fais l'action $a$, quelle est la probabilité de me retrouver dans l'état $s'$ ? Pourquoi une probabilité, et pas une fonction déterministe ? Parce que le monde est rarement déterministe. La case sur laquelle tu vises peut être glissante. Le robot peut déraper. Le coup adverse aux échecs n'est pas dans ton contrôle. Le bruit est partout, et le formalisme MDP l'absorbe en disant : "OK, donne-moi une distribution de probabilité, je m'occupe du reste".
 
-Ensuite vient $R$, la **fonction de récompense**. C'est elle qui définit ce que veut l'agent. Tu ne lui dis jamais ce qu'il doit faire — tu lui dis seulement quand il a fait quelque chose qui te plaît. Si l'agent atteint le but : +1. S'il tombe dans le trou : 0. S'il prend trois heures à arriver : pénalité de -0.01 par pas. La fonction de récompense est l'un des outils les plus puissants et les plus dangereux du RL ; on y reviendra dans la section sur le **reward hacking**, où je te raconterai pourquoi des chercheurs sérieux ont vu leur agent apprendre à tourner en rond pour exploiter une faille de design.
+Ensuite vient $R$, la **fonction de récompense**. C'est elle qui définit ce que veut l'agent. Tu ne lui dis jamais ce qu'il doit faire, tu lui dis seulement quand il a fait quelque chose qui te plaît. Si l'agent atteint le but : +1. S'il tombe dans le trou : 0. S'il prend trois heures à arriver : pénalité de -0.01 par pas. La fonction de récompense est l'un des outils les plus puissants et les plus dangereux du RL ; on y reviendra dans la section sur le **reward hacking**, où je te raconterai pourquoi des chercheurs sérieux ont vu leur agent apprendre à tourner en rond pour exploiter une faille de design.
 
 Enfin, le **discount factor** $\gamma \in [0, 1]$. C'est un nombre qui dit à l'agent à quel point il préfère les récompenses immédiates aux récompenses futures. Si $\gamma = 0$, l'agent est myope : il ne pense qu'à la récompense du prochain pas. Si $\gamma = 1$, il est patient comme un moine bouddhiste : une récompense dans cent étapes vaut autant qu'une récompense maintenant. En pratique, on prend souvent $\gamma$ entre 0.9 et 0.999, parce que ça donne un horizon de planification raisonnable et parce que ça aide les algos à converger (techniquement, $\gamma < 1$ garantit que les sommes infinies de récompenses restent finies, ce qui est utile quand on est mathématicien et qu'on tient à dormir).
 
@@ -71,9 +71,9 @@ Le mot **Markov** dans MDP n'est pas là par hasard. Il fait référence à une 
 Formellement :
 $$\mathbb{P}(S_{t+1} \mid S_t, A_t, S_{t-1}, A_{t-1}, \dots, S_0, A_0) = \mathbb{P}(S_{t+1} \mid S_t, A_t)$$
 
-C'est une hypothèse forte. Elle est quasiment toujours fausse en pratique (ton état actuel ne contient probablement pas toute l'information pertinente sur le passé). Mais elle est commode, et surtout, elle est presque toujours **rendue vraie** en mettant tout ce qu'il faut dans l'état. Si tu joues à un jeu Atari et que tu ne regardes qu'une seule frame, tu ne vois pas la vitesse de la balle — état non-Markovien. Si tu empiles quatre frames consécutives dans ton état, tu peux inférer la vitesse, et la propriété de Markov est restaurée. C'est exactement ce qu'a fait le papier original DQN de DeepMind en 2013.
+C'est une hypothèse forte. Elle est quasiment toujours fausse en pratique (ton état actuel ne contient probablement pas toute l'information pertinente sur le passé). Mais elle est commode, et surtout, elle est presque toujours **rendue vraie** en mettant tout ce qu'il faut dans l'état. Si tu joues à un jeu Atari et que tu ne regardes qu'une seule frame, tu ne vois pas la vitesse de la balle, état non-Markovien. Si tu empiles quatre frames consécutives dans ton état, tu peux inférer la vitesse, et la propriété de Markov est restaurée. C'est exactement ce qu'a fait le papier original DQN de DeepMind en 2013.
 
-Donc l'hypothèse de Markov n'est pas une contrainte sur le monde — c'est une instruction sur comment construire ton état pour que le formalisme tienne.
+Donc l'hypothèse de Markov n'est pas une contrainte sur le monde, c'est une instruction sur comment construire ton état pour que le formalisme tienne.
 
 ### Politiques : le contrat entre l'agent et le monde
 
@@ -84,7 +84,7 @@ Une **politique** $\pi$, c'est la stratégie de l'agent. C'est la fonction qui d
 
 Pourquoi parfois préférer une politique stochastique ? Trois raisons. D'abord, parce que dans certains jeux à information imparfaite (poker), être prévisible te fait perdre. Ensuite, parce que ça facilite l'**exploration** pendant l'apprentissage : tu testes naturellement plusieurs actions au lieu de toujours faire la même. Et enfin, parce que les méthodes modernes de policy gradient (qu'on verra plus loin) optimisent directement des politiques stochastiques, et c'est mathématiquement plus propre.
 
-L'objectif fondamental du RL, c'est de trouver la **politique optimale** $\pi^*$, celle qui maximise la somme attendue des récompenses futures actualisées. C'est tout. Tout le reste — value functions, Bellman, Q-learning, PPO, actor-critic — n'est qu'un moyen d'arriver à ça.
+L'objectif fondamental du RL, c'est de trouver la **politique optimale** $\pi^*$, celle qui maximise la somme attendue des récompenses futures actualisées. C'est tout. Tout le reste, value functions, Bellman, Q-learning, PPO, actor-critic, n'est qu'un moyen d'arriver à ça.
 
 ## III. La notion de valeur, ou comment évaluer un état sans le visiter mille fois
 
@@ -179,7 +179,7 @@ Le **value iteration** marche comme ça : tu initialises $V$ avec des zéros par
 
 Le **policy iteration** alterne deux phases : "évalue ma politique actuelle" (calcule $V^\pi$) puis "améliore-la en prenant gloutonnement par rapport à $V^\pi$". Ces deux étapes convergent ensemble vers $\pi^*$ et $V^*$. Là encore : élégant, garanti, mais limité aux petits problèmes.
 
-Le DP, c'est utile pédagogiquement et dans certains cas industriels où on a un modèle (planification logistique, optimisation de stocks). Mais pour la plupart des problèmes intéressants — jeux complexes, robotique, conduite, finance — on n'a pas $P$.
+Le DP, c'est utile pédagogiquement et dans certains cas industriels où on a un modèle (planification logistique, optimisation de stocks). Mais pour la plupart des problèmes intéressants, jeux complexes, robotique, conduite, finance, on n'a pas $P$.
 
 ### Monte Carlo : apprendre par épisodes
 
@@ -216,7 +216,7 @@ Voici la règle de mise à jour, qu'on va décortiquer ensemble :
 
 $$Q(s, a) \leftarrow Q(s, a) + \alpha \left[ R + \gamma \max_{a'} Q(s', a') - Q(s, a) \right]$$
 
-Compare avec la version TD pour $V$ : la seule différence, c'est que la cible utilise $\max_{a'} Q(s', a')$ au lieu de $V(s')$. Et c'est ce $\max$ qui rend l'algorithme **off-policy**. L'agent peut prendre n'importe quelle action $a$ — gloutonne, aléatoire, débile — la mise à jour de $Q$ utilise toujours la **meilleure** action possible dans l'état suivant. Donc on apprend la valeur de la politique optimale, indépendamment de comment on génère les données.
+Compare avec la version TD pour $V$ : la seule différence, c'est que la cible utilise $\max_{a'} Q(s', a')$ au lieu de $V(s')$. Et c'est ce $\max$ qui rend l'algorithme **off-policy**. L'agent peut prendre n'importe quelle action $a$, gloutonne, aléatoire, débile, la mise à jour de $Q$ utilise toujours la **meilleure** action possible dans l'état suivant. Donc on apprend la valeur de la politique optimale, indépendamment de comment on génère les données.
 
 Le terme entre crochets, c'est la **TD error** appliquée à $Q$ :
 $$\delta = R + \gamma \max_{a'} Q(s', a') - Q(s, a)$$
@@ -255,7 +255,7 @@ Imagine que tu débarques dans une ville et que tu cherches le meilleur restaura
 
 Maintenant, scénario inverse : tu testes un restaurant différent chaque soir. Tu accumules une connaissance encyclopédique. Mais tu manges souvent mal, parce que tu n'utilises jamais ce que tu apprends. Tu explores, tu n'exploites pas.
 
-Le bon comportement est entre les deux : exploiter ce qu'on sait, mais explorer juste assez pour ne pas rater des opportunités. C'est mathématiquement non-trivial — c'est même un des plus vieux problèmes ouverts du machine learning, formalisé sous le nom de **multi-armed bandit problem**.
+Le bon comportement est entre les deux : exploiter ce qu'on sait, mais explorer juste assez pour ne pas rater des opportunités. C'est mathématiquement non-trivial, c'est même un des plus vieux problèmes ouverts du machine learning, formalisé sous le nom de **multi-armed bandit problem**.
 
 La solution la plus simple, et probablement la plus utilisée en pratique, c'est l'**ε-greedy policy** :
 - Avec probabilité $\epsilon$, choisis une action **aléatoire** (exploration).
@@ -279,7 +279,7 @@ L'exemple canonique pour illustrer la différence, c'est le **Cliff Walking**. I
 
 ![Animation du Cliff Walking environnement](https://gymnasium.farama.org/_images/cliff_walking.gif)
 
-Q-Learning va apprendre que la politique optimale est de longer la falaise au plus près — c'est le chemin le plus court. Mais pendant l'apprentissage, à cause de l'exploration ε-greedy, l'agent va parfois faire un pas aléatoire... et tomber dans la falaise. Donc en pratique, la "politique optimale" de Q-Learning donne des récompenses moyennes catastrophiques pendant l'entraînement.
+Q-Learning va apprendre que la politique optimale est de longer la falaise au plus près, c'est le chemin le plus court. Mais pendant l'apprentissage, à cause de l'exploration ε-greedy, l'agent va parfois faire un pas aléatoire... et tomber dans la falaise. Donc en pratique, la "politique optimale" de Q-Learning donne des récompenses moyennes catastrophiques pendant l'entraînement.
 
 SARSA, lui, apprend la valeur d'une politique qui inclut le bruit d'exploration. Il apprend donc à prendre un chemin **plus sûr**, à distance de la falaise. Pendant l'entraînement, SARSA fait beaucoup mieux. À la convergence (quand $\epsilon \to 0$), Q-Learning est meilleur en théorie. Mais en pratique, cette différence on-policy/off-policy a des implications profondes pour la stabilité, la sécurité, et le choix d'algorithme.
 
@@ -289,7 +289,7 @@ Retiens ça : Q-Learning apprend ce qui serait optimal "si tout se passait bien"
 
 Assez de théorie. Passons au code. On va implémenter un agent Q-Learning de zéro et le faire apprendre à résoudre **FrozenLake**, l'environnement classique de Gymnasium.
 
-![Animation de FrozenLake — un agent qui doit traverser un lac gelé sans tomber dans les trous](https://gymnasium.farama.org/_images/frozen_lake.gif)
+![Animation de FrozenLake, un agent qui doit traverser un lac gelé sans tomber dans les trous](https://gymnasium.farama.org/_images/frozen_lake.gif)
 
 Voici l'idée : tu es sur un lac gelé. Tu dois aller du coin haut-gauche au coin bas-droit pour récupérer un frisbee. Le sol est en partie gelé (sûr) et en partie troué (game over). Et pour rendre l'affaire intéressante, le sol est **slippery** : quand tu essaies d'aller à droite, il y a une chance non nulle que tu glisses et finisses ailleurs. Bienvenue dans le monde stochastique.
 
@@ -389,7 +389,7 @@ print(q_table)
 
 Quelques mots sur ce code, parce que les détails comptent.
 
-D'abord, pourquoi `continuing_mask = 0.0 if done else 1.0` ? Parce que quand l'épisode est terminé, il n'y a plus de futur. La récompense future actualisée est zéro. Si tu ne masques pas, ton agent croit que la valeur d'un état terminal n'est pas zéro, et ça pollue toute la propagation. C'est une des erreurs les plus fréquentes en RL — tu peux facilement passer une après-midi à debugger ça.
+D'abord, pourquoi `continuing_mask = 0.0 if done else 1.0` ? Parce que quand l'épisode est terminé, il n'y a plus de futur. La récompense future actualisée est zéro. Si tu ne masques pas, ton agent croit que la valeur d'un état terminal n'est pas zéro, et ça pollue toute la propagation. C'est une des erreurs les plus fréquentes en RL, tu peux facilement passer une après-midi à debugger ça.
 
 Ensuite, pourquoi $\alpha = 0.1$ ? Parce que dans un environnement stochastique, tu veux que les nouveaux pas modifient $Q$ doucement, sinon le bruit te ballotte. Si l'environnement était déterministe (`is_slippery=False`), tu pourrais monter $\alpha$ à 0.5 ou plus.
 
@@ -514,7 +514,7 @@ Cette idée a donné une famille entière d'algorithmes : **A2C, A3C, TRPO, PPO,
 
 Tout ce qu'on a vu jusqu'ici est **model-free** : l'agent apprend à partir d'expériences directes, sans jamais essayer de comprendre comment fonctionne le monde. Il y a une autre école, plus exigeante mathématiquement mais souvent plus efficace en données : le **model-based RL**.
 
-L'idée est d'apprendre un modèle de l'environnement — typiquement un réseau qui prédit $s_{t+1}$ et $r_{t+1}$ étant donné $s_t$ et $a_t$ — puis d'utiliser ce modèle pour **planifier** dans la tête de l'agent, avant d'agir dans le vrai monde. C'est exactement ce que tu fais quand tu joues aux échecs : tu simules mentalement plusieurs coups à l'avance et tu choisis le meilleur.
+L'idée est d'apprendre un modèle de l'environnement, typiquement un réseau qui prédit $s_{t+1}$ et $r_{t+1}$ étant donné $s_t$ et $a_t$, puis d'utiliser ce modèle pour **planifier** dans la tête de l'agent, avant d'agir dans le vrai monde. C'est exactement ce que tu fais quand tu joues aux échecs : tu simules mentalement plusieurs coups à l'avance et tu choisis le meilleur.
 
 Les méthodes model-based modernes les plus impressionnantes sont **MuZero** (DeepMind 2019), qui apprend simultanément un modèle, une value function et une politique, sans jamais qu'on lui donne les règles du jeu, et **Dreamer** (Hafner et al.), qui apprend un "monde latent" compact dans lequel il imagine des trajectoires futures pour s'entraîner. Ces méthodes atteignent des niveaux humains en utilisant cent à mille fois moins d'interactions avec l'environnement réel que DQN. C'est un domaine en pleine ébullition.
 
@@ -526,7 +526,7 @@ Maintenant qu'on a fait le tour des algorithmes, parlons de ce que personne ne t
 
 ### Reward hacking, ou comment faire l'inverse de ce qu'on voulait
 
-Le piège le plus célèbre du RL, c'est le **reward hacking** (ou **specification gaming**). L'agent ne fait pas ce que tu voulais qu'il fasse — il fait ce que tu lui as **dit** de faire, et c'est rarement la même chose.
+Le piège le plus célèbre du RL, c'est le **reward hacking** (ou **specification gaming**). L'agent ne fait pas ce que tu voulais qu'il fasse, il fait ce que tu lui as **dit** de faire, et c'est rarement la même chose.
 
 L'exemple emblématique : un agent entraîné par OpenAI sur le jeu CoastRunners, où le but est de finir la course. La récompense intermédiaire vient de récupérer des bonus le long du parcours. L'agent a découvert qu'il pouvait tourner en rond dans une lagune en frappant les mêmes bonus encore et encore, sans jamais finir la course, et accumuler bien plus de points qu'en jouant "normalement". Du point de vue de la récompense, c'était la stratégie optimale. Du point de vue du designer, c'était du sabotage.
 
@@ -538,19 +538,19 @@ La leçon : **la fonction de récompense est un contrat avec l'agent**, et les a
 
 Un agent DQN classique a besoin de plusieurs millions d'interactions pour apprendre à jouer à un jeu Atari simple. Un humain le fait en quelques minutes. C'est un gouffre.
 
-Pourquoi ? Parce que le RL pur, contrairement à un humain, n'a pas de prior sur le monde. Il ne sait pas qu'une balle qui rebondit suit une trajectoire physique. Il ne sait pas qu'un personnage qui tombe dans un trou meurt. Il doit tout apprendre de zéro, par essai-erreur, à coups de millions d'expériences. C'est inefficient à un point qui rend le RL impraticable pour beaucoup de problèmes du monde réel — tu ne peux pas crasher dix mille voitures pour apprendre à conduire, ni faire vingt mille essais de chirurgie pour apprendre à opérer.
+Pourquoi ? Parce que le RL pur, contrairement à un humain, n'a pas de prior sur le monde. Il ne sait pas qu'une balle qui rebondit suit une trajectoire physique. Il ne sait pas qu'un personnage qui tombe dans un trou meurt. Il doit tout apprendre de zéro, par essai-erreur, à coups de millions d'expériences. C'est inefficient à un point qui rend le RL impraticable pour beaucoup de problèmes du monde réel, tu ne peux pas crasher dix mille voitures pour apprendre à conduire, ni faire vingt mille essais de chirurgie pour apprendre à opérer.
 
 Les solutions actuellement explorées : pré-entraînement sur des données de démonstrations humaines (imitation learning), transfert d'apprentissage depuis des simulations vers le monde réel (sim-to-real), modèles fondationnels qui encodent un prior général sur le monde (vision-language models utilisés comme rewards), et bien sûr les approches model-based dont je parlais plus haut.
 
 ### Sim-to-real, ou la fracture entre la matrice et la réalité
 
-Quand tu entraînes un robot en simulation et que tu le déploies dans le vrai monde, il y a une chance non-négligeable qu'il fasse n'importe quoi. Pourquoi ? Parce que la simulation, aussi bonne soit-elle, n'est jamais parfaite. Frottements, latences capteurs, bruits moteur, jeu mécanique — tout ça crée un écart entre la simulation et la réalité, qu'on appelle le **reality gap**. Et un agent RL est typiquement très sensible à ces écarts.
+Quand tu entraînes un robot en simulation et que tu le déploies dans le vrai monde, il y a une chance non-négligeable qu'il fasse n'importe quoi. Pourquoi ? Parce que la simulation, aussi bonne soit-elle, n'est jamais parfaite. Frottements, latences capteurs, bruits moteur, jeu mécanique, tout ça crée un écart entre la simulation et la réalité, qu'on appelle le **reality gap**. Et un agent RL est typiquement très sensible à ces écarts.
 
 Les techniques pour combler ce gap incluent la **domain randomization** (randomiser massivement les paramètres physiques de la simulation pour rendre l'agent robuste à toutes les variations possibles), le **fine-tuning** sur le robot réel après pré-entraînement en simu, et des modèles d'environnement hybrides qui mélangent données simulées et données réelles.
 
 ### Le moment AlphaGo
 
-Pour finir cette section, un peu de poésie. En mars 2016, à Séoul, **AlphaGo** — le système RL de DeepMind, basé sur de la deep RL combinée à du Monte Carlo Tree Search — bat le champion du monde de Go, Lee Sedol, par 4 victoires à 1. Le Go était considéré comme un des derniers bastions de la supériorité humaine sur les machines, en raison de sa complexité combinatoire et de l'importance de l'intuition. Le faire tomber n'était "pas pour bientôt", disaient les experts en 2014.
+Pour finir cette section, un peu de poésie. En mars 2016, à Séoul, **AlphaGo**, le système RL de DeepMind, basé sur de la deep RL combinée à du Monte Carlo Tree Search, bat le champion du monde de Go, Lee Sedol, par 4 victoires à 1. Le Go était considéré comme un des derniers bastions de la supériorité humaine sur les machines, en raison de sa complexité combinatoire et de l'importance de l'intuition. Le faire tomber n'était "pas pour bientôt", disaient les experts en 2014.
 
 Pendant la partie 2, AlphaGo joue le **coup 37**, un coup que littéralement aucun joueur humain n'aurait considéré. Les commentateurs sur place pensent à un bug. Mais le coup s'avère brillant. Il scelle la partie. Et il crée un moment historique : pour la première fois, une machine joue un coup qu'un humain qualifiera plus tard de "beau", "créatif", "qui m'a appris quelque chose sur le Go".
 
@@ -562,7 +562,7 @@ Et tout ça, c'est des descendants directs des équations de Bellman qu'on a vue
 
 ## XII. Pour aller plus loin
 
-Si tu veux creuser, voici les ressources que je considère absolument indispensables. Pas un best-of généré par un LLM — ce que j'utilise vraiment.
+Si tu veux creuser, voici les ressources que je considère absolument indispensables. Pas un best-of généré par un LLM, ce que j'utilise vraiment.
 
 - **Sutton & Barto, "Reinforcement Learning: An Introduction" (2nd ed, 2018)**. La bible. Lisible, profond, gratuit en PDF sur le site de Sutton. Si tu ne dois lire qu'une seule chose après ce post, c'est ça. [Lien direct](http://incompleteideas.net/book/the-book-2nd.html)
 - **Cours Deep RL de Sergey Levine (CS285, Berkeley)**. Vidéos sur YouTube, slides en ligne, devoirs avec solutions. C'est le meilleur cours de Deep RL accessible publiquement, point.
@@ -573,10 +573,10 @@ Si tu veux creuser, voici les ressources que je considère absolument indispensa
 
 ## Conclusion : le RL, c'est de la patience
 
-Le reinforcement learning, c'est l'art de transformer une boucle simple — observer, agir, recevoir, ajuster — en comportements arbitrairement complexes. C'est un cadre qui, à partir des équations de Bellman et d'un peu de stochastique, a engendré les agents qui battent les humains au Go, qui jouent à Dota et StarCraft au niveau pro, qui contrôlent des bras robotiques avec dextérité, et qui, sous une forme ou une autre, alignent les modèles de langage que tu utilises tous les jours.
+Le reinforcement learning, c'est l'art de transformer une boucle simple, observer, agir, recevoir, ajuster, en comportements arbitrairement complexes. C'est un cadre qui, à partir des équations de Bellman et d'un peu de stochastique, a engendré les agents qui battent les humains au Go, qui jouent à Dota et StarCraft au niveau pro, qui contrôlent des bras robotiques avec dextérité, et qui, sous une forme ou une autre, alignent les modèles de langage que tu utilises tous les jours.
 
-Mais c'est aussi le rappel que l'apprentissage est lent, que les récompenses mal pensées font des dégâts, que l'écart entre simulation et réalité est vicieux, et que l'intelligence — humaine ou artificielle — est faite de beaucoup d'essais ratés. Cet enfant qui tombe dans l'escalier, à la fin, n'a pas appris parce qu'on lui a expliqué la gravité. Il a appris parce qu'il a essayé, échoué, et recommencé. Le RL, c'est exactement ça, à l'échelle d'un GPU.
+Mais c'est aussi le rappel que l'apprentissage est lent, que les récompenses mal pensées font des dégâts, que l'écart entre simulation et réalité est vicieux, et que l'intelligence, humaine ou artificielle, est faite de beaucoup d'essais ratés. Cet enfant qui tombe dans l'escalier, à la fin, n'a pas appris parce qu'on lui a expliqué la gravité. Il a appris parce qu'il a essayé, échoué, et recommencé. Le RL, c'est exactement ça, à l'échelle d'un GPU.
 
-Si tu prends une chose de ce post, prends ça : **toute intelligence non-triviale est probablement une forme de reinforcement learning.** Pas littéralement avec des Q-tables et des epsilon decays. Mais conceptuellement : essayer, observer, ajuster, recommencer. Le formalisme MDP qu'on a vu n'est qu'une façon parmi d'autres de mettre des équations sur cette idée vieille comme le vivant. Et c'est probablement pour ça que le RL fascine autant — il est, parmi toutes les branches du machine learning, celle qui raconte le plus directement quelque chose sur ce que c'est qu'apprendre.
+Si tu prends une chose de ce post, prends ça : **toute intelligence non-triviale est probablement une forme de reinforcement learning.** Pas littéralement avec des Q-tables et des epsilon decays. Mais conceptuellement : essayer, observer, ajuster, recommencer. Le formalisme MDP qu'on a vu n'est qu'une façon parmi d'autres de mettre des équations sur cette idée vieille comme le vivant. Et c'est probablement pour ça que le RL fascine autant, il est, parmi toutes les branches du machine learning, celle qui raconte le plus directement quelque chose sur ce que c'est qu'apprendre.
 
 Maintenant, ferme cet onglet et va coder un agent. Le mien a appris à traverser un lac glissant en 50 lignes. Le tien apprendra peut-être à faire mieux.

@@ -1,5 +1,5 @@
 /* ============================================
-   THEME — Dark/light toggle with system pref
+   THEME, Dark/light toggle with system pref
    ============================================ */
 
 const Theme = (() => {

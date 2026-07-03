@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /*
- * Build script — pre-renders OG-tagged HTML for every blog post AND every
+ * Build script, pre-renders OG-tagged HTML for every blog post AND every
  * SPA panel (home, blog listing, projects), per language.
  *
  * Why this exists: the site is a client-side SPA with hash routing. Scrapers
@@ -26,7 +26,7 @@ const POSTS_DIR = path.join(ROOT, 'posts');
 
 const SITE_URL = 'https://www.toastydevblog.xyz';
 const DEFAULT_OG_IMAGE = `${SITE_URL}/assets/favicon.svg`;
-const LANGS = ['fr', 'en', 'de', 'es'];
+const LANGS = ['fr'];   // single-language site (multilingual system removed)
 const DEFAULT_LANG = 'fr';
 
 const OG_LOCALE = {
@@ -50,58 +50,58 @@ const PANELS = [
 const PANEL_META = {
   fr: {
     home: {
-      title: 'Louis — Dev Portfolio',
+      title: 'Louis · Dev Portfolio',
       description: 'Dev autodidacte basé en France. AI, computer vision, et des trucs qui marchent (des fois).',
     },
     blog: {
-      title: 'Blog — Louis',
+      title: 'Blog · Louis',
       description: "Articles sur l'AI, le dev, et les problèmes tordus qui m'ont appris un truc.",
     },
     projects: {
-      title: 'Projets — Louis',
-      description: "Open source et side projects — trucs que je build quand j'ai du temps.",
+      title: 'Projets · Louis',
+      description: "Open source et side projects, trucs que je build quand j'ai du temps.",
     },
   },
   en: {
     home: {
-      title: 'Louis — Dev Portfolio',
+      title: 'Louis · Dev Portfolio',
       description: 'Self-taught developer based in France. AI, computer vision, and things that work (sometimes).',
     },
     blog: {
-      title: 'Blog — Louis',
+      title: 'Blog · Louis',
       description: 'Posts on AI, development, and the weird problems that taught me something.',
     },
     projects: {
-      title: 'Projects — Louis',
-      description: 'Open source and side projects — stuff I build when I have time.',
+      title: 'Projects · Louis',
+      description: 'Open source and side projects, stuff I build when I have time.',
     },
   },
   de: {
     home: {
-      title: 'Louis — Dev Portfolio',
+      title: 'Louis · Dev Portfolio',
       description: 'Autodidaktischer Entwickler aus Frankreich. KI, Computer Vision und Sachen, die (manchmal) funktionieren.',
     },
     blog: {
-      title: 'Blog — Louis',
+      title: 'Blog · Louis',
       description: 'Beiträge über KI, Entwicklung und die kniffligen Probleme, die mich was gelehrt haben.',
     },
     projects: {
-      title: 'Projekte — Louis',
-      description: 'Open Source und Nebenprojekte — Sachen, die ich baue, wenn ich Zeit habe.',
+      title: 'Projekte · Louis',
+      description: 'Open Source und Nebenprojekte, Sachen, die ich baue, wenn ich Zeit habe.',
     },
   },
   es: {
     home: {
-      title: 'Louis — Dev Portfolio',
+      title: 'Louis · Dev Portfolio',
       description: 'Desarrollador autodidacta afincado en Francia. IA, computer vision, y cosas que funcionan (a veces).',
     },
     blog: {
-      title: 'Blog — Louis',
+      title: 'Blog · Louis',
       description: 'Posts sobre IA, desarrollo y los problemas raros que me enseñaron algo.',
     },
     projects: {
-      title: 'Proyectos — Louis',
-      description: 'Open source y side projects — cosas que construyo cuando tengo tiempo.',
+      title: 'Proyectos · Louis',
+      description: 'Open source y side projects, cosas que construyo cuando tengo tiempo.',
     },
   },
 };
@@ -122,7 +122,7 @@ function parseFrontmatter(content) {
   const match = normalized.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
   if (!match) return { meta: {}, body: normalized };
   let meta = {};
-  try { meta = yaml.load(match[1]) || {}; } catch { /* ignore — body still usable */ }
+  try { meta = yaml.load(match[1]) || {}; } catch { /* ignore, body still usable */ }
   return { meta, body: match[2] };
 }
 
@@ -147,7 +147,7 @@ function buildPanelUrl(lang, panel) {
 }
 
 /* For the default language, pages live at two URLs: the canonical one
-   (no prefix — /blog/, /) AND a symmetric one (/fr/blog/, /fr/) so users
+   (no prefix, /blog/, /) AND a symmetric one (/fr/blog/, /fr/) so users
    who type the language prefix don't hit a 404. Returns an array of paths;
    the first entry is the canonical output (canonical tag points there). */
 function panelOutputPaths(lang, panel) {
@@ -191,7 +191,7 @@ async function readMarkdownForLang(canonicalSlug, lang) {
 }
 
 /* Inline bootstrap that runs before the SPA boots. The pathname already
-   communicates the language (/en/, /de/, ...) — all the SPA router needs
+   communicates the language (/en/, /de/, ...), all the SPA router needs
    from us is the hash for non-home panels/posts so it routes correctly
    on first load. User-supplied hashes are left alone. */
 function makeBootstrap(lang, hashTarget) {
@@ -204,7 +204,7 @@ function makeBootstrap(lang, hashTarget) {
         u.hash = ${JSON.stringify(hashTarget)};
         history.replaceState(null, '', u.toString());
       }
-    } catch (e) { /* no-op — SPA will still try to render */ }
+    } catch (e) { /* no-op, SPA will still try to render */ }
   })();
 </script>
 `;
@@ -251,7 +251,7 @@ function buildHtml(template, data) {
     `<meta property="og:locale" content="${OG_LOCALE[lang]}">`
   );
 
-  // Twitter — upgrade card to large image + sync title/description
+  // Twitter, upgrade card to large image + sync title/description
   html = html.replace(
     /<meta name="twitter:card" content="[^"]*">/,
     `<meta name="twitter:card" content="summary_large_image">`
@@ -321,7 +321,7 @@ async function preRenderPosts(template, postIndex, slugsMap) {
       const { meta, body } = parseFrontmatter(md);
       const alias = (slugsMap[canonicalSlug] && slugsMap[canonicalSlug][lang]) || canonicalSlug;
       const ogImage = extractFirstImageUrl(body) || DEFAULT_OG_IMAGE;
-      const fullTitle = `${meta.title || canonicalSlug} — Louis`;
+      const fullTitle = `${meta.title || canonicalSlug} · Louis`;
 
       const hreflangs = LANGS.map(l => ({
         lang: l,
@@ -414,7 +414,7 @@ async function main() {
   let slugsMap = {};
   try {
     slugsMap = JSON.parse(await fs.readFile(path.join(POSTS_DIR, 'slugs.json'), 'utf8'));
-  } catch { /* no slug translations — everyone uses the canonical slug */ }
+  } catch { /* no slug translations, everyone uses the canonical slug */ }
 
   const template = await fs.readFile(path.join(ROOT, 'index.html'), 'utf8');
 

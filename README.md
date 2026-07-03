@@ -6,7 +6,7 @@ Construit en une session avec exactement **un commit** avant de push. Oui.
 
 ## Stack
 
-- HTML/CSS/JS pur — pas de React, pas de Next, pas de Tailwind, pas de npm install qui prend 45min
+- HTML/CSS/JS pur, pas de React, pas de Next, pas de Tailwind, pas de npm install qui prend 45min
 - SPA router maison avec transitions Web Animations API
 - Markdown blog engine avec support Mermaid
 - GitHub API pour les projets

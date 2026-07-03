@@ -1,5 +1,5 @@
 /* ============================================
-   MARKDOWN — Parse MD with frontmatter,
+   MARKDOWN, Parse MD with frontmatter,
    syntax highlight, embed support
    ============================================ */
 
@@ -60,7 +60,7 @@ const Markdown = (() => {
     renderer.code = function(code, language) {
       const lang = language || '';
 
-      // Mermaid diagrams — render as a special div, not a code block
+      // Mermaid diagrams, render as a special div, not a code block
       if (lang === 'mermaid') {
         return `<pre class="mermaid" translate="no">${code}</pre>`;
       }
@@ -118,35 +118,21 @@ const Markdown = (() => {
     return html;
   }
 
-  /* Fetch and parse a markdown file. Tries the current-locale variant first
-     (e.g. posts/RL.en.md) and falls back to the original French file.
-     The input slug may be a per-language alias (e.g. "apprentice-intern"
-     for EN) — we resolve it to the canonical filename slug first. */
+  /* Fetch and parse a markdown file (French-only, single file per slug). */
   async function loadPost(slug) {
-    if (typeof Slugs !== 'undefined') await Slugs.ready();
-    const canonical = (typeof Slugs !== 'undefined') ? Slugs.canonical(slug) : slug;
-    const suffix = (typeof I18n !== 'undefined') ? I18n.postSuffix() : '';
-    const candidates = suffix
-      ? [`/posts/${canonical}${suffix}.md`, `/posts/${canonical}.md`]
-      : [`/posts/${canonical}.md`];
-
-    for (const path of candidates) {
-      try {
-        const res = await fetch(path);
-        if (!res.ok) continue;
-        const raw = await res.text();
-        const { meta, body } = parseFrontmatter(raw);
-        const html = render(body);
-
-        const words = body.trim().split(/\s+/).length;
-        meta.readingTime = Math.max(1, Math.ceil(words / 250));
-
-        return { meta, html, raw: body };
-      } catch (e) {
-        console.warn(`[markdown] failed to load ${path}`, e);
-      }
+    try {
+      const res = await fetch(`/posts/${slug}.md`);
+      if (!res.ok) return null;
+      const raw = await res.text();
+      const { meta, body } = parseFrontmatter(raw);
+      const html = render(body);
+      const words = body.trim().split(/\s+/).length;
+      meta.readingTime = Math.max(1, Math.ceil(words / 250));
+      return { meta, html, raw: body };
+    } catch (e) {
+      console.warn(`[markdown] failed to load ${slug}`, e);
+      return null;
     }
-    return null;
   }
 
   /* Copy code block content */

@@ -1,32 +1,33 @@
 <!DOCTYPE html>
-<html lang="en"><script>document.documentElement.dataset.theme=localStorage.getItem('portfolio-theme')||(matchMedia('(prefers-color-scheme:light)').matches?'light':'dark')</script>
+<html lang="fr"><script>document.documentElement.dataset.theme=localStorage.getItem('portfolio-theme')||(matchMedia('(prefers-color-scheme:light)').matches?'light':'dark')</script>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Louis — Dev Portfolio</title>
+  <title>Louis · Dev Portfolio</title>
   <meta name="description" content="Dev autodidacte basé en France. AI, computer vision, et des trucs qui marchent (des fois).">
   <meta name="author" content="Louis">
-  <meta name="theme-color" content="#e63946" media="(prefers-color-scheme: dark)">
-  <meta name="theme-color" content="#c2223b" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0d1117" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
 
   <!-- Open Graph -->
-  <meta property="og:title" content="Louis — Dev Portfolio">
+  <meta property="og:title" content="Louis · Dev Portfolio">
   <meta property="og:description" content="Dev autodidacte basé en France. AI, computer vision, et des trucs qui marchent (des fois).">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="fr_FR">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Louis — Dev Portfolio">
+  <meta name="twitter:title" content="Louis · Dev Portfolio">
   <meta name="twitter:description" content="Dev autodidacte basé en France. AI, computer vision, et des trucs qui marchent (des fois).">
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <!-- Favicon: my logo (avatar), composited on white so it stays visible on any tab -->
+  <link rel="icon" type="image/png" href="/assets/favicon.png?v=43">
+  <link rel="apple-touch-icon" href="/assets/favicon.png?v=43">
 
-  <!-- Preload critical fonts -->
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
   <!-- Syntax highlighting -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" id="hljs-theme">
@@ -35,23 +36,29 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 
   <!-- Styles -->
-  <link rel="stylesheet" href="/css/design-system.css?v=25">
-  <link rel="stylesheet" href="/css/layout.css?v=25">
-  <link rel="stylesheet" href="/css/components.css?v=25">
-  <link rel="stylesheet" href="/css/animations.css?v=25">
-  <link rel="stylesheet" href="/css/blog.css?v=25">
-  <link rel="stylesheet" href="/css/responsive.css?v=25">
+  <link rel="stylesheet" href="/css/design-system.css?v=42">
+  <link rel="stylesheet" href="/css/layout.css?v=42">
+  <link rel="stylesheet" href="/css/components.css?v=42">
+  <link rel="stylesheet" href="/css/animations.css?v=42">
+  <link rel="stylesheet" href="/css/blog.css?v=42">
+  <link rel="stylesheet" href="/css/responsive.css?v=42">
 </head>
 <body>
-  <!-- Noise texture overlay -->
-  <div class="grain-overlay" aria-hidden="true"></div>
-
-  <!-- Animated gradient mesh background -->
-  <div class="mesh-gradient" aria-hidden="true">
-    <div class="mesh-blob mesh-blob--1"></div>
-    <div class="mesh-blob mesh-blob--2"></div>
-    <div class="mesh-blob mesh-blob--3"></div>
-  </div>
+  <!-- Site header -->
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a href="#/" class="site-brand">Louis<span class="site-brand__accent">.</span></a>
+      <nav class="site-nav">
+        <a href="#/" class="site-nav__link" data-nav="home">Accueil</a>
+        <a href="#/projects" class="site-nav__link" data-nav="projects">Projets</a>
+        <span class="site-header__sep" aria-hidden="true"></span>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" onclick="Theme.toggle()">
+          <svg class="theme-toggle__sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          <svg class="theme-toggle__moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+      </nav>
+    </div>
+  </header>
 
   <!-- Main content (SPA router target) -->
   <main class="main" id="app">
@@ -63,7 +70,7 @@
     <div class="footer__inner">
       <div class="footer__left">
         <span class="footer__brand">Louis<span class="footer__accent">.</span></span>
-        <p class="footer__tagline">I build stuff.</p>
+        <p class="footer__tagline">Je construis des trucs.</p>
       </div>
       <div class="footer__right">
         <div class="footer__socials">
@@ -78,37 +85,7 @@
     </div>
     <div class="footer__bottom">
       <p>Disponible &middot; France &middot; &copy; 2026 Louis</p>
-      <div class="lang-picker" id="lang-picker" translate="no">
-        <button type="button" class="lang-picker__trigger" aria-haspopup="listbox" aria-expanded="false" aria-controls="lang-picker-menu">
-          <svg class="lang-picker__globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <circle cx="12" cy="12" r="10"/>
-            <line x1="2" y1="12" x2="22" y2="12"/>
-            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-          </svg>
-          <span class="lang-picker__code" data-lang-code>FR</span>
-          <svg class="lang-picker__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <polyline points="6 9 12 15 18 9"/>
-          </svg>
-        </button>
-        <ul class="lang-picker__menu" id="lang-picker-menu" role="listbox" tabindex="-1">
-          <li class="lang-picker__option" role="option" data-lang="fr" tabindex="-1">
-            <span class="lang-picker__option-code">FR</span>
-            <span class="lang-picker__option-label">Français</span>
-          </li>
-          <li class="lang-picker__option" role="option" data-lang="en" tabindex="-1">
-            <span class="lang-picker__option-code">EN</span>
-            <span class="lang-picker__option-label">English</span>
-          </li>
-          <li class="lang-picker__option" role="option" data-lang="de" tabindex="-1">
-            <span class="lang-picker__option-code">DE</span>
-            <span class="lang-picker__option-label">Deutsch</span>
-          </li>
-          <li class="lang-picker__option" role="option" data-lang="es" tabindex="-1">
-            <span class="lang-picker__option-code">ES</span>
-            <span class="lang-picker__option-label">Español</span>
-          </li>
-        </ul>
-      </div>
+      <p class="footer__built">Vanilla HTML/CSS/JS &middot; zéro framework</p>
     </div>
   </footer>
 
@@ -121,15 +98,12 @@
   <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
 
   <!-- App -->
-  <script src="/js/i18n.js?v=25"></script>
-  <script src="/js/slugs.js?v=25"></script>
-  <script src="/js/config.js?v=25"></script>
-  <script src="/js/theme.js?v=25"></script>
-  <script src="/js/cursor.js?v=25"></script>
-  <script src="/js/animations.js?v=25"></script>
-  <script src="/js/markdown.js?v=25"></script>
-  <script src="/js/router.js?v=25"></script>
-  <script src="/js/pages.js?v=25"></script>
-  <script src="/js/app.js?v=25"></script>
+  <script src="/js/config.js?v=42"></script>
+  <script src="/js/theme.js?v=42"></script>
+  <script src="/js/animations.js?v=42"></script>
+  <script src="/js/markdown.js?v=42"></script>
+  <script src="/js/router.js?v=42"></script>
+  <script src="/js/pages.js?v=42"></script>
+  <script src="/js/app.js?v=42"></script>
 </body>
 </html>

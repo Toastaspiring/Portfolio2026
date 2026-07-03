@@ -1,5 +1,5 @@
 /* ============================================
-   ANIMATIONS — Scroll reveal, scroll progress
+   ANIMATIONS, Scroll reveal, scroll progress
    ============================================ */
 
 const Animations = (() => {
@@ -25,7 +25,7 @@ const Animations = (() => {
     });
   }
 
-  /* Observe elements — call after each page render */
+  /* Observe elements, call after each page render */
   function observeElements() {
     const targets = document.querySelectorAll('.reveal, .reveal--left, .reveal--right, .reveal--scale, .reveal-stagger, .hero-text-reveal');
     let count = 0;

@@ -1,11 +1,11 @@
 /* ============================================
-   CONFIG — Site-wide configuration
+   CONFIG, Site-wide configuration
    ============================================ */
 
 const CONFIG = {
   site: {
     name: 'Louis',
-    title: 'Louis — Developer Portfolio',
+    title: 'Louis · Developer Portfolio',
     description: 'Developer, builder, problem solver.',
     tagline: 'Building things that matter.',
   },
