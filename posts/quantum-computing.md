@@ -1,6 +1,6 @@
 ---
 title: "Quantum Computing : la machine qui calcule avec des vagues"
-date: 2026-07-03
+date: 2026-06-22
 tags: [quantum-computing, physics, math]
 excerpt: "Une plongée narrative dans le calcul quantique, de la pièce qui tourne encore au qubit, de l'interférence des amplitudes à l'intrication, d'Einstein à Shor. Les maths minimales, pourquoi c'est puissant sans être magique, et par ou commencer vraiment."
 ---
