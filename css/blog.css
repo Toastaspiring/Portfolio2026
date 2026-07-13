@@ -338,6 +338,17 @@
   background: #fbfbf9;
 }
 
+/* Logos are transparent and meant to sit directly on the page. Opt them out of
+   the light backing + frame above (that only exists for dark line-art figures),
+   and keep them at a sensible size rather than full column width. */
+.prose img[src*="logo"] {
+  border: none;
+  background: none;
+  display: block;
+  max-width: 300px;
+  margin: 1.8em auto;
+}
+
 .prose img + em {
   display: block;
   text-align: center;
