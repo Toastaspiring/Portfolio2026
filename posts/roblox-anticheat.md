@@ -1,5 +1,5 @@
 ---
-title: "From Exploited to Secure: A Practical Guide to Roblox Anti-Cheat"
+title: "De l'exploit à la sécu : guide pratique de l'anti-triche sur Roblox"
 date: 2026-07-13
 tags: [roblox, luau, security, anti-cheat]
 excerpt: "Le guide le plus complet que j'aie écrit. Le modèle client-serveur de Luau, ce qu'un exploiteur peut vraiment faire, la server authority, la validation des remotes, du mouvement, du combat, la protection de l'économie, un module réutilisable, et pourquoi il n'existe pas d'anti-cheat parfait. On construit le pourquoi avant le comment."
