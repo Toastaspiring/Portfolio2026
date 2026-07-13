@@ -29,7 +29,7 @@ Prends un café. Un grand. On y va.
 
 Quand un joueur lance ton expérience, il ne lance pas "ton jeu" comme un exécutable monolithique. Roblox est une plateforme, et ton jeu est une simulation distribuée qui tourne à deux endroits en même temps.
 
-![Logo Roblox](/assets/images/roblox-logo.svg)
+![Logo Roblox](/assets/images/roblox-logo.png)
 *La plateforme sur laquelle on construit. Tout le sujet de ce post, c'est que ton jeu vit des deux cotés à la fois. (Logo : Wikimedia Commons.)*
 
 D'un coté, il y a le **serveur**. C'est une machine dans un datacenter Roblox, que tu ne vois jamais mais que tu contrôles entièrement à travers ton code. C'est là que vivent tes `Script` classiques, rangés dans `ServerScriptService`. Le serveur héberge la partie, décide de ce qui est vrai, et synchronise tout le monde.
