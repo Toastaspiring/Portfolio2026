@@ -31,7 +31,7 @@ C'est radicalement différent du reste, et ça pose des problèmes qui n'existen
 - L'agent doit gérer le **délai temporel** : une action prise maintenant peut avoir des conséquences dans cent étapes. Comment savoir laquelle a vraiment causé le succès ?
 - L'agent change le monde en agissant : la distribution de ses données dépend de sa propre politique. Il génère ses propres exemples d'apprentissage. C'est circulaire, parfois instable, souvent magnifique.
 
-![Diagramme classique de la boucle agent-environnement en reinforcement learning](https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Reinforcement_learning_diagram.svg/1200px-Reinforcement_learning_diagram.svg.png)
+![Diagramme classique de la boucle agent-environnement en reinforcement learning](/assets/images/rl-agent-environment.svg)
 
 Cette boucle, là, c'est tout le RL. Un agent observe un état, choisit une action, le monde répond avec un nouvel état et une récompense, et on recommence. À l'infini, ou jusqu'à ce que l'épisode se termine. Tout le reste, les équations de Bellman, les Q-tables, les policy gradients, les replay buffers, les transformers RL, n'est qu'un raffinement de cette boucle de quatre étapes.
 
