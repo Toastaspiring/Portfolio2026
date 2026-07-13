@@ -21,6 +21,8 @@ const Pages = (() => {
     'reverse-engineering': 'Reverse Engineering',
     rust: 'Rust',
     'league-of-legends': 'League of Legends',
+    roblox: 'Roblox', luau: 'Luau', security: 'Sécurité',
+    'anti-cheat': 'Anti-cheat', 'game-dev': 'Game Dev',
     python: 'Python', math: 'Maths', business: 'Business', strategy: 'Stratégie',
     automation: 'Automatisation', meta: 'Méta', personal: 'Personnel',
     humor: 'Humour', test: 'Test', markdown: 'Markdown', debug: 'Debug',
