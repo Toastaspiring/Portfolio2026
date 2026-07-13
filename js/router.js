@@ -10,7 +10,17 @@ const Router = (() => {
   function register(path, handler) { routes[path] = handler; }
 
   function getRoute() {
-    const hash = window.location.hash || '#/';
+    // Prefer the hash. On a hard refresh of a path-form URL (the post page
+    // rewrites #/blog/slug to /blog/slug/, and shared deep links use that form
+    // too), there is no hash, so derive the route from the pathname instead.
+    // This makes F5 on a post work once the server serves index.html for it.
+    // On the live pre-rendered pages the bootstrap sets the hash first, so this
+    // fallback stays a no-op there.
+    let hash = window.location.hash;
+    if (!hash || hash === '#') {
+      const p = window.location.pathname.replace(/\/+$/, '');
+      hash = p ? '#' + p : '#/';
+    }
     if (routes[hash]) return { path: hash, params: {} };
     for (const pattern of Object.keys(routes)) {
       const regex = patternToRegex(pattern);
