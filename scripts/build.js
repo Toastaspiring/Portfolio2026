@@ -51,7 +51,7 @@ const PANEL_META = {
   fr: {
     home: {
       title: 'Louis · Dev Portfolio',
-      description: 'Développeur autodidacte basé en France. IA, vision par ordinateur, et des trucs qui marchent (des fois).',
+      description: 'Développeur autodidacte basé en France. Backend, IA, et des trucs qui marchent (des fois).',
     },
     blog: {
       title: 'Blog · Louis',
@@ -65,7 +65,7 @@ const PANEL_META = {
   en: {
     home: {
       title: 'Louis · Dev Portfolio',
-      description: 'Self-taught developer based in France. AI, computer vision, and things that work (sometimes).',
+      description: 'Self-taught developer based in France. Backend, AI, and things that work (sometimes).',
     },
     blog: {
       title: 'Blog · Louis',
@@ -79,7 +79,7 @@ const PANEL_META = {
   de: {
     home: {
       title: 'Louis · Dev Portfolio',
-      description: 'Autodidaktischer Entwickler aus Frankreich. KI, Computer Vision und Sachen, die (manchmal) funktionieren.',
+      description: 'Autodidaktischer Entwickler aus Frankreich. Backend, KI und Sachen, die (manchmal) funktionieren.',
     },
     blog: {
       title: 'Blog · Louis',
@@ -93,7 +93,7 @@ const PANEL_META = {
   es: {
     home: {
       title: 'Louis · Dev Portfolio',
-      description: 'Desarrollador autodidacta afincado en Francia. IA, computer vision, y cosas que funcionan (a veces).',
+      description: 'Desarrollador autodidacta afincado en Francia. Backend, IA, y cosas que funcionan (a veces).',
     },
     blog: {
       title: 'Blog · Louis',

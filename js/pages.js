@@ -79,7 +79,7 @@ const Pages = (() => {
 
   /* ---- HOME (blog-first: intro + latest posts) ---- */
   async function home(app) {
-    const intro = t('home.intro_text', "Développeur autodidacte basé en France. Je touche un peu à tout, en ce moment surtout de l'IA et de la vision par ordinateur. J'écris ici quand un problème me donne mal à la tête.");
+    const intro = t('home.intro_text', "Développeur autodidacte basé en France. Je touche un peu à tout, en ce moment surtout de l'IA. J'écris ici quand un problème me donne mal à la tête.");
     app.innerHTML = `
       <div class="container">
         ${translateBannerHTML()}
@@ -88,7 +88,7 @@ const Pages = (() => {
                onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'intro__avatar intro__avatar--mono',textContent:'L'}))">
           <div class="intro__body">
             <h1 class="intro__name">Louis</h1>
-            <p class="intro__role">${t('home.role', 'Developer · AI & Computer Vision')}</p>
+            <p class="intro__role">${t('home.role', 'Developer · Backend')}</p>
             <p class="intro__bio">${intro}</p>
             <div class="intro__links">
               <a href="${CONFIG.socials.github}" target="_blank" rel="noopener">GitHub</a>
