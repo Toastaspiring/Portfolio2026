@@ -179,14 +179,13 @@ const Pages = (() => {
   /* ---- BLOG POST ---- */
   async function blogPost(app, params) {
     const slug = params.slug;
+    const loaderStart = Date.now();
+    const MIN_LOADER_MS = 900; // keep the spinner up at least this long so it never just flickers
 
     app.innerHTML = `
-      <div class="container container--narrow">
-        <article class="article" id="article-skeleton">
-          <div class="skeleton" style="height: 36px; width: 70%; margin-bottom: var(--space-md);"></div>
-          <div class="skeleton" style="height: 20px; width: 40%; margin-bottom: var(--space-xl);"></div>
-          <div class="skeleton" style="height: 320px;"></div>
-        </article>
+      <div class="article-loader" id="article-loader">
+        <span class="spinner" aria-hidden="true"></span>
+        <span>Chargement de l'article...</span>
       </div>`;
 
     const post = await Markdown.loadPost(slug);
@@ -236,6 +235,10 @@ const Pages = (() => {
             </a>
           </div>
         </article>
+      </div>
+      <div class="article-loader" id="article-loader">
+        <span class="spinner" aria-hidden="true"></span>
+        <span>Chargement de l'article...</span>
       </div>`;
 
     const article = app.querySelector('.article');
@@ -268,8 +271,20 @@ const Pages = (() => {
       });
     }));
 
+    // Wait for the browser to actually paint the rendered content...
+    await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+    // ...and keep the loader up for a minimum beat so it never just flickers.
+    const elapsed = Date.now() - loaderStart;
+    if (elapsed < MIN_LOADER_MS) await new Promise(r => setTimeout(r, MIN_LOADER_MS - elapsed));
+
     article.classList.remove('article--preparing');
     article.classList.add('article--revealed');
+
+    const loaderEl = app.querySelector('#article-loader');
+    if (loaderEl) {
+      loaderEl.classList.add('article-loader--out');   // fade out
+      setTimeout(() => loaderEl.remove(), 320);
+    }
 
     if (typeof Animations !== 'undefined') Animations.observeElements();
 

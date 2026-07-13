@@ -88,6 +88,42 @@
 .article--preparing { opacity: 0; }
 .article--revealed { opacity: 1; }
 
+/* Loader shown while the post is fetched and while Mermaid/KaTeX/images
+   render (the article sits at opacity 0 underneath until it's ready). */
+.article-loader {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 56px;              /* below the sticky header */
+  bottom: 0;
+  z-index: 150;           /* above content, below the sticky header (200) */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
+  background: var(--bg-primary);
+  color: var(--text-tertiary);
+  font-size: var(--text-sm);
+  transition: opacity 300ms var(--ease-smooth);
+}
+
+.article-loader--out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.spinner {
+  width: 30px;
+  height: 30px;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spinner-rotate 0.7s linear infinite;
+}
+
+@keyframes spinner-rotate { to { transform: rotate(360deg); } }
+
 .article__nav {
   display: flex;
   align-items: center;
