@@ -26,7 +26,7 @@ Ouvrir `http://localhost:8000`
 ---
 
 <details>
-<summary>🧠 Comment poster un article (pour le Louis du futur qui a oublié)</summary>
+<summary>Comment poster un article (pour le Louis du futur qui aura oublié)</summary>
 
 ### 1. Créer le fichier
 
